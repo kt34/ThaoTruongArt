@@ -40,10 +40,20 @@ nav {
     object-fit: cover;
 }
 
+.facebook-image:hover {
+    height: 33px;
+    width: 33px;
+}
+
 .instagram-image {
     height: 32px;
     width: 32px;
     object-fit: cover;
+}
+
+.instagram-image:hover {
+    height: 34px;
+    width: 34px;
 }
 
 .links {
