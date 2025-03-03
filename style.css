@@ -13,12 +13,37 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    position: relative;
 }
 
 .logo {
     color: #4B3C21BF;
     font-size: 2rem;
     font-weight: 0;
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.social-media {
+    position: absolute;
+    right: 2%;
+    display: flex;
+    gap: 0;
+}
+
+.facebook-image {
+    height: 31px;
+    width: 31px;
+    object-fit: cover;
+}
+
+.instagram-image {
+    height: 32px;
+    width: 32px;
+    object-fit: cover;
 }
 
 .links {
