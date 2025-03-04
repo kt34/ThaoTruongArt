@@ -146,7 +146,6 @@ a:hover {
     max-height: 250px; /* Prevent images from becoming too tall */
     height: 100%;
     border-radius: 10px;
-    object-fit: cover; /* Ensures the image fills the container nicely */
 }
 
 .collection-item h2 {
@@ -159,4 +158,12 @@ a:hover {
     font-size: 1em;
     color: #555;
     text-align: left;
+}
+
+.contact-header {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    color: #332916bf;
+    font-size: 3rem; /* Large font size for the heading */
+    font-weight: bold; /* Makes it bold */
 }
