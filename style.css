@@ -253,3 +253,38 @@ a:hover {
     left: 12px;
     font-size: 16px;
 }
+
+.submit {
+    padding-top: 40px;
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.submit button {
+    background-color: #4c3200bf; /* Brown color */
+    color: white; /* White text */
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    width: 120px;
+    cursor: pointer;
+}
+
+.submit button:hover {
+    background-color: #231700bf; /* Darker brown on hover */
+}
+
+.submit button:active {
+    background-color: #000000bf;
+    color: white;
+}
+
+.faq-header {
+    padding-top: 50px;
+    padding-bottom: 30px;
+    color: #332916bf;
+    font-size: 3rem; /* Large font size for the heading */
+    font-weight: bold; /* Makes it bold */
+}
