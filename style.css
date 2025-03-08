@@ -150,6 +150,12 @@ a:hover {
     max-height: 250px; /* Prevent images from becoming too tall */
     height: 100%;
     border-radius: 10px;
+    transition: all 200ms ease-in-out;
+}
+
+.collection-item img:hover {
+    transform: scale(105%);
+    cursor: pointer;
 }
 
 .collection-item h2 {
@@ -165,9 +171,85 @@ a:hover {
 }
 
 .contact-header {
-    padding-top: 30px;
+    padding-top: 50px;
     padding-bottom: 30px;
     color: #332916bf;
     font-size: 3rem; /* Large font size for the heading */
     font-weight: bold; /* Makes it bold */
+}
+
+.contact-name-email {
+    padding-top: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+.input-container {
+    position: relative;
+    flex: 1;
+}
+
+.input-container input {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border: 1.5px solid #333;
+    border-radius: 5px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.input-container input::placeholder {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    font-size: 15px;
+    transition: all 0.3s ease;
+    color: #aaa;
+}
+
+.input-container input:focus {
+    border: 2px solid #000;
+    transition: none;
+}
+
+.input-container input:focus::placeholder {
+    top: 15px;
+    left: 12px;
+    font-size: 12px;
+    color: #333; /* Color change when focused */
+}
+
+.contact-message {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+}
+
+.contact-message textarea:focus {
+    border: 2px solid #000;
+}
+
+.contact-message textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px;
+    font-size: 16px;
+    border: 1.5px solid #333;
+    border-radius: 5px;
+    box-sizing: border-box;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.contact-message textarea::placeholder {
+    color: #aaa;
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-size: 16px;
 }
