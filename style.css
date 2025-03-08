@@ -288,3 +288,18 @@ a:hover {
     font-size: 3rem; /* Large font size for the heading */
     font-weight: bold; /* Makes it bold */
 }
+
+.faq-information {
+    color: #332916bf;
+    font-size: 1.2rem;             /* Normal text size */
+}
+
+.faq-information p {
+    margin-bottom: 25px;
+}
+
+.questions {
+    color: #151109bf;
+    font-size: 1.4rem;             /* Normal text size */
+    font-weight: bold;
+}
