@@ -7,6 +7,10 @@
     font-family: 'Poppins', 'Playfair Display', 'Trebuchet MS', Arial, sans-serif;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 nav {
     padding-top: 30px;
     height: 100px;
@@ -16,6 +20,12 @@ nav {
     width: 100%;
     position: relative;
 }
+
+/* .header {
+    position: sticky;
+    top: 0;
+    background-color: white;
+} */
 
 .logo {
     color: #4B3C21BF;
@@ -38,22 +48,26 @@ nav {
     height: 31px;
     width: 31px;
     object-fit: cover;
+    transition: all 100ms ease-in-out;
+    cursor: pointer;
 }
 
 .facebook-image:hover {
-    height: 33px;
-    width: 33px;
+    transform: scale(110%);
+    cursor: pointer;
 }
 
 .instagram-image {
     height: 32px;
     width: 32px;
     object-fit: cover;
+    transition: all 100ms ease-in-out;
+    cursor: pointer;
 }
 
 .instagram-image:hover {
-    height: 34px;
-    width: 34px;
+    transform: scale(110%);
+    cursor: pointer;
 }
 
 .links {
@@ -105,4 +119,187 @@ a:hover {
 
 .about-information p {
     margin-bottom: 25px;
+}
+
+.collection-header {
+    color: #332916bf;
+    font-size: 3rem; /* Large font size for the heading */
+    font-weight: bold; /* Makes it bold */
+    text-align: center;
+    padding-top: 20px;
+}
+
+.collections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.collection-item {
+    text-align: center;
+}
+
+.collection-item img {
+    width: 100%;
+    max-width: 350px;
+    max-height: 250px; /* Prevent images from becoming too tall */
+    height: 100%;
+    border-radius: 10px;
+    transition: all 200ms ease-in-out;
+}
+
+.collection-item img:hover {
+    transform: scale(105%);
+    cursor: pointer;
+}
+
+.collection-item h2 {
+    margin-top: 15px;
+    font-size: 1.3em;
+    margin-bottom: 5px;
+}
+
+.collection-item p {
+    font-size: 1em;
+    color: #555;
+    text-align: left;
+}
+
+.contact-header {
+    padding-top: 50px;
+    padding-bottom: 30px;
+    color: #332916bf;
+    font-size: 3rem; /* Large font size for the heading */
+    font-weight: bold; /* Makes it bold */
+}
+
+.contact-name-email {
+    padding-top: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+.input-container {
+    position: relative;
+    flex: 1;
+}
+
+.input-container input {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border: 1.5px solid #333;
+    border-radius: 5px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.input-container input::placeholder {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    font-size: 15px;
+    transition: all 0.3s ease;
+    color: #aaa;
+}
+
+.input-container input:focus {
+    border: 2px solid #000;
+    transition: none;
+}
+
+.input-container input:focus::placeholder {
+    top: 15px;
+    left: 12px;
+    font-size: 12px;
+    color: #333; /* Color change when focused */
+}
+
+.contact-message {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+}
+
+.contact-message textarea:focus {
+    border: 2px solid #000;
+}
+
+.contact-message textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px;
+    font-size: 16px;
+    border: 1.5px solid #333;
+    border-radius: 5px;
+    box-sizing: border-box;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.contact-message textarea::placeholder {
+    color: #aaa;
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-size: 16px;
+}
+
+.submit {
+    padding-top: 40px;
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.submit button {
+    background-color: #4c3200bf; /* Brown color */
+    color: white; /* White text */
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    width: 120px;
+    cursor: pointer;
+}
+
+.submit button:hover {
+    background-color: #231700bf; /* Darker brown on hover */
+}
+
+.submit button:active {
+    background-color: #000000bf;
+    color: white;
+}
+
+.faq-header {
+    padding-top: 50px;
+    padding-bottom: 30px;
+    color: #332916bf;
+    font-size: 3rem; /* Large font size for the heading */
+    font-weight: bold; /* Makes it bold */
+}
+
+.faq-information {
+    color: #332916bf;
+    font-size: 1.2rem;             /* Normal text size */
+}
+
+.faq-information p {
+    margin-bottom: 25px;
+}
+
+.questions {
+    color: #151109bf;
+    font-size: 1.4rem;             /* Normal text size */
+    font-weight: bold;
 }
