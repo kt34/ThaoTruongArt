@@ -1,140 +1,153 @@
-import { AppBar, Toolbar, Typography, Box, IconButton, Link, Container } from '@mui/material';
+import { AppBar, Toolbar, Typography, Link, Box, IconButton, useTheme, useMediaQuery, Drawer, List, ListItem, ListItemText } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
-
-const scrollToSection = (sectionId: string) => {
-  const element = document.getElementById(sectionId);
-  if (element) {
-    const headerOffset = 80; // Height of the navbar plus some extra space
-    const elementPosition = element.getBoundingClientRect().top;
-    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: 'smooth'
-    });
-  }
-};
+import MenuIcon from '@mui/icons-material/Menu';
+import { useState } from 'react';
 
 const Navbar = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const headerOffset = 60;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      setMobileOpen(false);
+    }
+  };
+
+  const menuItems = [
+    { label: 'Home', sectionId: 'home' },
+    { label: 'About', sectionId: 'about' },
+    { label: 'Collections', sectionId: 'collections' },
+    { label: 'Contact', sectionId: 'contact' },
+    { label: 'FAQ', sectionId: 'faq' },
+  ];
+
+  const drawer = (
+    <List>
+      {menuItems.map((item) => (
+        <ListItem 
+          key={item.sectionId}
+          onClick={() => scrollToSection(item.sectionId)}
+          sx={{ cursor: 'pointer' }}
+        >
+          <ListItemText primary={item.label} />
+        </ListItem>
+      ))}
+    </List>
+  );
+
   return (
-    <AppBar 
-      position="sticky" 
-      color="default" 
-      elevation={0}
-      sx={{
-        backgroundColor: 'white',
-        borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
-      }}
-    >
-      <Container maxWidth="lg">
-        <Toolbar sx={{ 
-          justifyContent: 'space-between', 
-          py: 2,
-          minHeight: 'auto',
+    <AppBar position="sticky" sx={{ bgcolor: 'white', color: 'black' }}>
+      <Toolbar sx={{ 
+        flexDirection: 'column',
+        py: isMobile ? 1 : 2
+      }}>
+        <Box sx={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between',
+          width: '100%',
+          mb: isMobile ? 0 : 2,
+          position: 'relative'
         }}>
-          <Typography
-            variant="h4"
-            onClick={() => scrollToSection('home')}
-            sx={{
-              textDecoration: 'none',
-              color: 'primary.main',
-              position: 'absolute',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              fontFamily: "'Playfair Display', serif",
-              fontWeight: 400,
-              cursor: 'pointer',
-            }}
-          >
-            THAO TRUONG ART
-          </Typography>
-          
-          <Box sx={{ display: 'flex', gap: 2, ml: 'auto' }}>
+          <Box sx={{ 
+            position: 'absolute', 
+            left: 0,
+            display: 'flex',
+            gap: 1
+          }}>
             <IconButton
+              color="inherit"
               component="a"
-              href="https://www.facebook.com/"
+              href="https://www.facebook.com/thaotruongart"
               target="_blank"
               rel="noopener noreferrer"
-              sx={{ color: 'primary.main' }}
+              size={isMobile ? "small" : "medium"}
             >
-              <FacebookIcon />
+              <FacebookIcon fontSize={isMobile ? "small" : "medium"} />
             </IconButton>
             <IconButton
+              color="inherit"
               component="a"
-              href="https://www.instagram.com/"
+              href="https://www.instagram.com/thaotruongart"
               target="_blank"
               rel="noopener noreferrer"
-              sx={{ color: 'primary.main' }}
+              size={isMobile ? "small" : "medium"}
             >
-              <InstagramIcon />
+              <InstagramIcon fontSize={isMobile ? "small" : "medium"} />
             </IconButton>
           </Box>
-        </Toolbar>
-        
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: 4,
-            py: 2,
-            borderTop: 1,
-            borderBottom: 1,
-            borderColor: 'divider',
+
+          <Typography
+            variant="h4"
+            component="div"
+            sx={{ 
+              cursor: 'pointer',
+              fontSize: isMobile ? '1.5rem' : '2.125rem',
+              textAlign: 'center',
+              flex: 1
+            }}
+            onClick={() => scrollToSection('home')}
+          >
+            Thao Truong Art
+          </Typography>
+
+          {isMobile && (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              sx={{ position: 'absolute', right: 0 }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+        </Box>
+
+        {!isMobile && (
+          <Box sx={{ display: 'flex', gap: 4 }}>
+            {menuItems.map((item) => (
+              <Link
+                key={item.sectionId}
+                component="button"
+                variant="body1"
+                onClick={() => scrollToSection(item.sectionId)}
+                sx={{ 
+                  color: 'black', 
+                  textDecoration: 'none', 
+                  '&:hover': { color: 'primary.main' },
+                  '&:focus': { outline: 'none' },
+                  '&:focus-visible': { outline: 'none' }
+                }}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </Box>
+        )}
+
+        <Drawer
+          variant="temporary"
+          anchor="right"
+          open={mobileOpen}
+          onClose={() => setMobileOpen(false)}
+          ModalProps={{
+            keepMounted: true,
           }}
         >
-          <Link 
-            onClick={() => scrollToSection('home')}
-            sx={{ 
-              color: 'primary.main',
-              fontFamily: "'Poppins', sans-serif",
-              cursor: 'pointer',
-            }}
-          >
-            Home
-          </Link>
-          <Link 
-            onClick={() => scrollToSection('about')}
-            sx={{ 
-              color: 'primary.main',
-              fontFamily: "'Poppins', sans-serif",
-              cursor: 'pointer',
-            }}
-          >
-            About
-          </Link>
-          <Link 
-            onClick={() => scrollToSection('collections')}
-            sx={{ 
-              color: 'primary.main',
-              fontFamily: "'Poppins', sans-serif",
-              cursor: 'pointer',
-            }}
-          >
-            Collections
-          </Link>
-          <Link 
-            onClick={() => scrollToSection('contact')}
-            sx={{ 
-              color: 'primary.main',
-              fontFamily: "'Poppins', sans-serif",
-              cursor: 'pointer',
-            }}
-          >
-            Contact
-          </Link>
-          <Link 
-            onClick={() => scrollToSection('faq')}
-            sx={{ 
-              color: 'primary.main',
-              fontFamily: "'Poppins', sans-serif",
-              cursor: 'pointer',
-            }}
-          >
-            FAQs
-          </Link>
-        </Box>
-      </Container>
+          {drawer}
+        </Drawer>
+      </Toolbar>
     </AppBar>
   );
 };
