@@ -1,28 +1,28 @@
-import { Box, Typography, Container, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import { Container, Typography, Accordion, AccordionSummary, AccordionDetails, Box } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const faqs = [
   {
-    question: 'Commissions',
-    answer: 'Thao Truong is a self-taught artist whose work blends AI-generated elements with human creativity, crafting visually striking narratives that blur the line between technology and traditional storytelling. Based in Sydney, her artistic vision is deeply influenced by the intersection of digital media, storytelling, and human emotion.',
+    question: 'How can I purchase artwork?',
+    answer: 'You can purchase artwork directly through our website. Each piece will have a "Purchase" button that will guide you through the process. We accept various payment methods including credit cards and PayPal.'
   },
   {
-    question: 'Returns',
-    answer: 'Through her work, Thao explores themes of identity, memory, and the evolving role of artificial intelligence in artistic expression. She utilizes AI-generated compositions as a foundation, refining them with her own creative touch to evoke depth, nuance, and emotion. Her pieces often feature surreal, dreamlike imagery, drawing inspiration from mythology, personal experiences, and the fluidity of human imagination.',
+    question: 'What is your shipping policy?',
+    answer: 'We ship worldwide using trusted carriers. Shipping costs are calculated based on the size and weight of the artwork, as well as the destination. All artwork is carefully packaged to ensure safe delivery.'
   },
   {
-    question: 'Damages and Issues',
-    answer: "Thao's creative journey is driven by a fascination with how technology can enhance artistic expression rather than replace it. Her work has gained recognition among digital art communities and collectors, with pieces showcased in private collections both in Australia and internationally.",
+    question: 'Do you accept commissions?',
+    answer: 'Yes, we accept commissions for custom artwork. Please contact us through the contact form with your requirements, and we\'ll discuss the details and pricing.'
   },
   {
-    question: 'Exceptions',
-    answer: "Thao's creative journey is driven by a fascination with how technology can enhance artistic expression rather than replace it. Her work has gained recognition among digital art communities and collectors, with pieces showcased in private collections both in Australia and internationally.",
-  },
+    question: 'What is your return policy?',
+    answer: 'We want you to be completely satisfied with your purchase. If you\'re not happy with your artwork, you can return it within 14 days of receipt for a full refund, minus shipping costs.'
+  }
 ];
 
 const FAQ = () => {
   return (
-    <Container maxWidth="md" sx={{ py: 8 }}>
+    <Container maxWidth="md" sx={{ py: 8, scrollMarginTop: '60px' }}>
       <Typography
         variant="h2"
         component="h1"
@@ -44,6 +44,8 @@ const FAQ = () => {
                 '&:hover': {
                   backgroundColor: 'action.hover',
                 },
+                '&:focus': { outline: 'none' },
+                '&:focus-visible': { outline: 'none' }
               }}
             >
               <Typography variant="h6" sx={{ color: 'secondary.main' }}>
