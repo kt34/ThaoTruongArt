@@ -1,22 +1,31 @@
 import { AppBar, Toolbar, Typography, Link, Box, useMediaQuery, useTheme, IconButton, Drawer, List, ListItem, ListItemText } from '@mui/material';
 import { Facebook, Instagram, Menu as MenuIcon } from '@mui/icons-material';
 import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const offset = 60; // Height of the navbar
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+  const handleNavigation = (sectionId: string) => {
+    if (location.pathname !== '/') {
+      // If we're not on the home page, navigate to home first
+      navigate('/', { state: { scrollTo: sectionId } });
+    } else {
+      // If we're already on the home page, just scroll to the section
+      const element = document.getElementById(sectionId);
+      if (element) {
+        const offset = 60; // Height of the navbar
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
     }
     setMobileOpen(false);
   };
@@ -24,7 +33,7 @@ const Navbar = () => {
   const drawer = (
     <List>
       {['home', 'about', 'collections', 'contact', 'faq'].map((text) => (
-        <ListItem key={text} onClick={() => scrollToSection(text)} sx={{ cursor: 'pointer' }}>
+        <ListItem key={text} onClick={() => handleNavigation(text)} sx={{ cursor: 'pointer' }}>
           <ListItemText primary={text.charAt(0).toUpperCase() + text.slice(1)} />
         </ListItem>
       ))}
@@ -63,9 +72,9 @@ const Navbar = () => {
                 sx={{ 
                   cursor: 'pointer',
                   fontWeight: 'bold',
-                  color: 'primary.main'
+                  color: 'primary.main',
                 }}
-                onClick={() => scrollToSection('home')}
+                onClick={() => handleNavigation('home')}
               >
                 Thao Truong Art
               </Typography>
@@ -75,6 +84,14 @@ const Navbar = () => {
               aria-label="open drawer"
               edge="end"
               onClick={() => setMobileOpen(!mobileOpen)}
+              sx={{
+                '&:focus': {
+                  outline: 'none',
+                },
+                '&:active': {
+                  backgroundColor: 'transparent',
+                }
+              }}
             >
               <MenuIcon />
             </IconButton>
@@ -84,7 +101,7 @@ const Navbar = () => {
               open={mobileOpen}
               onClose={() => setMobileOpen(false)}
               ModalProps={{
-                keepMounted: true, // Better open performance on mobile.
+                keepMounted: true,
               }}
               sx={{
                 '& .MuiDrawer-paper': {
@@ -106,7 +123,7 @@ const Navbar = () => {
                 fontWeight: 'bold',
                 color: 'primary.main'
               }}
-              onClick={() => scrollToSection('home')}
+              onClick={() => handleNavigation('home')}
             >
               Thao Truong Art
             </Typography>
@@ -116,7 +133,7 @@ const Navbar = () => {
                   component="button"
                   variant="body1"
                   color="inherit"
-                  onClick={() => scrollToSection('home')}
+                  onClick={() => handleNavigation('home')}
                   sx={{ 
                     textDecoration: 'none !important', 
                     position: 'relative',
@@ -146,7 +163,7 @@ const Navbar = () => {
                   component="button"
                   variant="body1"
                   color="inherit"
-                  onClick={() => scrollToSection('about')}
+                  onClick={() => handleNavigation('about')}
                   sx={{ 
                     textDecoration: 'none !important', 
                     position: 'relative',
@@ -176,7 +193,7 @@ const Navbar = () => {
                   component="button"
                   variant="body1"
                   color="inherit"
-                  onClick={() => scrollToSection('collections')}
+                  onClick={() => handleNavigation('collections')}
                   sx={{ 
                     textDecoration: 'none !important', 
                     position: 'relative',
@@ -206,7 +223,7 @@ const Navbar = () => {
                   component="button"
                   variant="body1"
                   color="inherit"
-                  onClick={() => scrollToSection('contact')}
+                  onClick={() => handleNavigation('contact')}
                   sx={{ 
                     textDecoration: 'none !important', 
                     position: 'relative',
@@ -236,7 +253,7 @@ const Navbar = () => {
                   component="button"
                   variant="body1"
                   color="inherit"
-                  onClick={() => scrollToSection('faq')}
+                  onClick={() => handleNavigation('faq')}
                   sx={{ 
                     textDecoration: 'none !important', 
                     position: 'relative',
@@ -270,7 +287,7 @@ const Navbar = () => {
                   target="_blank"
                   sx={{ 
                     color: 'black',
-                    '&:hover': { color: 'primary.main' }
+                    '&:hover': { color: 'primary.main' },
                   }}
                 >
                   <Facebook />

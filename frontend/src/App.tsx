@@ -1,11 +1,14 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Collections from './pages/Collections';
 import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
 import Footer from './components/Footer';
+import CollectionDetails from './pages/CollectionDetails';
+import { useEffect } from 'react';
 
 const theme = createTheme({
   palette: {
@@ -71,27 +74,58 @@ const theme = createTheme({
   },
 });
 
+const ScrollToSection = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.scrollTo) {
+      const element = document.getElementById(location.state.scrollTo);
+      if (element) {
+        const offset = 60; // Height of the navbar
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, [location]);
+
+  return null;
+};
+
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Navbar />
-      <main>
-        <section id="home">
-          <Home />
-        </section>
-        <section id="collections">
-          <Collections />
-        </section>
-        <section id="contact">
-          <Contact />
-        </section>
-        <section id="faq">
-          <FAQ />
-        </section>
-      </main>
-      <Footer />
-    </ThemeProvider>
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <ScrollToSection />
+        <Navbar />
+        <main>
+          <Routes>
+            <Route path="/" element={
+              <>
+                <section id="home">
+                  <Home />
+                </section>
+                <section id="collections">
+                  <Collections />
+                </section>
+                <section id="contact">
+                  <Contact />
+                </section>
+                <section id="faq">
+                  <FAQ />
+                </section>
+              </>
+            } />
+            <Route path="/collections/:collectionId" element={<CollectionDetails />} />
+          </Routes>
+        </main>
+        <Footer />
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
 
