@@ -30,10 +30,10 @@ const Navbar = () => {
       ))}
       <ListItem>
         <Box sx={{ display: 'flex', gap: 2 }}>
-          <IconButton color="inherit" href="https://facebook.com" target="_blank">
+          <IconButton color="inherit" href="https://www.facebook.com/ThaoTruongArt" target="_blank">
             <Facebook />
           </IconButton>
-          <IconButton color="inherit" href="https://instagram.com" target="_blank">
+          <IconButton color="inherit" href="https://www.instagram.com/thaotruongart" target="_blank">
             <Instagram />
           </IconButton>
         </Box>
@@ -181,7 +181,7 @@ const Navbar = () => {
               <Box sx={{ display: 'flex', gap: 2, ml: 2 }}>
                 <IconButton 
                   color="inherit" 
-                  href="https://facebook.com" 
+                  href="https://www.facebook.com/ThaoTruongArt" 
                   target="_blank"
                   sx={{ 
                     color: 'black',
@@ -192,7 +192,7 @@ const Navbar = () => {
                 </IconButton>
                 <IconButton 
                   color="inherit" 
-                  href="https://instagram.com" 
+                  href="https://www.instagram.com/thaotruongart" 
                   target="_blank"
                   sx={{ 
                     color: 'black',
