@@ -103,7 +103,10 @@ const Home = () => {
                   '&:hover': {
                     boxShadow: '0 6px 8px rgba(0,0,0,0.2)',
                     transform: 'translateY(-2px)'
-                  }
+                  },
+                  outline: 'none',
+                  '&:focus': { outline: 'none' },
+                  '&:focus-visible': { outline: 'none' }
                 }}
               >
                 View Collections

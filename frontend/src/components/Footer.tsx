@@ -25,7 +25,7 @@ const Footer = () => {
           gap: 4
         }}>
           <Typography variant="body2" color="text.secondary">
-            © 2024 Thao Truong Artistry. All rights reserved.
+            © 2025 Thao Truong Artistry. All rights reserved.
           </Typography>
           <Box sx={{ display: 'flex', gap: 2 }}>
             <Button

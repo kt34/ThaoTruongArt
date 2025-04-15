@@ -118,9 +118,26 @@ const Navbar = () => {
                   color="inherit"
                   onClick={() => scrollToSection('home')}
                   sx={{ 
-                    textDecoration: 'none', 
+                    textDecoration: 'none !important', 
+                    position: 'relative',
                     '&:hover': { color: 'primary.main' },
-                    fontWeight: 500
+                    fontWeight: 500,
+                    outline: 'none',
+                    '&:focus': { outline: 'none' },
+                    '&:focus-visible': { outline: 'none' },
+                    '&::after': {
+                      content: '""',
+                      position: 'absolute',
+                      width: '0',
+                      height: '2px',
+                      bottom: '-4px',
+                      left: '0',
+                      backgroundColor: 'primary.main',
+                      transition: 'width 0.3s ease-in-out'
+                    },
+                    '&:hover::after': {
+                      width: '100%'
+                    }
                   }}
                 >
                   Home
@@ -131,9 +148,26 @@ const Navbar = () => {
                   color="inherit"
                   onClick={() => scrollToSection('about')}
                   sx={{ 
-                    textDecoration: 'none', 
+                    textDecoration: 'none !important', 
+                    position: 'relative',
                     '&:hover': { color: 'primary.main' },
-                    fontWeight: 500
+                    fontWeight: 500,
+                    outline: 'none',
+                    '&:focus': { outline: 'none' },
+                    '&:focus-visible': { outline: 'none' },
+                    '&::after': {
+                      content: '""',
+                      position: 'absolute',
+                      width: '0',
+                      height: '2px',
+                      bottom: '-4px',
+                      left: '0',
+                      backgroundColor: 'primary.main',
+                      transition: 'width 0.3s ease-in-out'
+                    },
+                    '&:hover::after': {
+                      width: '100%'
+                    }
                   }}
                 >
                   About
@@ -144,9 +178,26 @@ const Navbar = () => {
                   color="inherit"
                   onClick={() => scrollToSection('collections')}
                   sx={{ 
-                    textDecoration: 'none', 
+                    textDecoration: 'none !important', 
+                    position: 'relative',
                     '&:hover': { color: 'primary.main' },
-                    fontWeight: 500
+                    fontWeight: 500,
+                    outline: 'none',
+                    '&:focus': { outline: 'none' },
+                    '&:focus-visible': { outline: 'none' },
+                    '&::after': {
+                      content: '""',
+                      position: 'absolute',
+                      width: '0',
+                      height: '2px',
+                      bottom: '-4px',
+                      left: '0',
+                      backgroundColor: 'primary.main',
+                      transition: 'width 0.3s ease-in-out'
+                    },
+                    '&:hover::after': {
+                      width: '100%'
+                    }
                   }}
                 >
                   Collections
@@ -157,9 +208,26 @@ const Navbar = () => {
                   color="inherit"
                   onClick={() => scrollToSection('contact')}
                   sx={{ 
-                    textDecoration: 'none', 
+                    textDecoration: 'none !important', 
+                    position: 'relative',
                     '&:hover': { color: 'primary.main' },
-                    fontWeight: 500
+                    fontWeight: 500,
+                    outline: 'none',
+                    '&:focus': { outline: 'none' },
+                    '&:focus-visible': { outline: 'none' },
+                    '&::after': {
+                      content: '""',
+                      position: 'absolute',
+                      width: '0',
+                      height: '2px',
+                      bottom: '-4px',
+                      left: '0',
+                      backgroundColor: 'primary.main',
+                      transition: 'width 0.3s ease-in-out'
+                    },
+                    '&:hover::after': {
+                      width: '100%'
+                    }
                   }}
                 >
                   Contact
@@ -170,9 +238,26 @@ const Navbar = () => {
                   color="inherit"
                   onClick={() => scrollToSection('faq')}
                   sx={{ 
-                    textDecoration: 'none', 
+                    textDecoration: 'none !important', 
+                    position: 'relative',
                     '&:hover': { color: 'primary.main' },
-                    fontWeight: 500
+                    fontWeight: 500,
+                    outline: 'none',
+                    '&:focus': { outline: 'none' },
+                    '&:focus-visible': { outline: 'none' },
+                    '&::after': {
+                      content: '""',
+                      position: 'absolute',
+                      width: '0',
+                      height: '2px',
+                      bottom: '-4px',
+                      left: '0',
+                      backgroundColor: 'primary.main',
+                      transition: 'width 0.3s ease-in-out'
+                    },
+                    '&:hover::after': {
+                      width: '100%'
+                    }
                   }}
                 >
                   FAQ
