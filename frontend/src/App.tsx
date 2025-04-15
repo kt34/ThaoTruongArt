@@ -1,11 +1,11 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import { CssBaseline } from '@mui/material';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import About from './pages/About';
 import Collections from './pages/Collections';
 import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
+import Footer from './components/Footer';
 
 const theme = createTheme({
   palette: {
@@ -80,9 +80,6 @@ function App() {
         <section id="home">
           <Home />
         </section>
-        <section id="about">
-          <About />
-        </section>
         <section id="collections">
           <Collections />
         </section>
@@ -93,6 +90,7 @@ function App() {
           <FAQ />
         </section>
       </main>
+      <Footer />
     </ThemeProvider>
   );
 }
