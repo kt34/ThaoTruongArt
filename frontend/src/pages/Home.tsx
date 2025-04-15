@@ -134,13 +134,16 @@ const Home = () => {
               <AnimatedSection delay={0.2}>
                 <Box
                   component="img"
-                  src="/images/fluid-painting.jpg"
+                  src="/images/thao-image.jpg"
                   alt="Artist at Work"
                   sx={{
                     width: '100%',
+                    maxWidth: '450px',
                     height: 'auto',
                     borderRadius: 2,
-                    boxShadow: 3
+                    boxShadow: 3,
+                    display: 'block',
+                    mx: 'auto'
                   }}
                 />
               </AnimatedSection>
