@@ -116,6 +116,12 @@ const Contact = () => {
               '&:hover': {
                 backgroundColor: 'primary.dark',
               },
+              '&:focus': {
+                outline: 'none',
+              },
+              '&:active': {
+                backgroundColor: 'transparent',
+              }
             }}
           >
             Send
