@@ -1,30 +1,41 @@
 import { useState } from 'react';
-import { Box, Typography, Container, TextField, Button, Alert } from '@mui/material';
-import axios from 'axios';
+import { Box, Typography, Container, TextField, Button, Alert, CircularProgress } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 const Contact = () => {
+  const theme = useTheme();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     message: '',
   });
-  const [status, setStatus] = useState<{
-    type: 'success' | 'error' | null;
-    message: string;
-  }>({ type: null, message: '' });
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setStatus('loading');
+    setErrorMessage('');
+
     try {
-      await axios.post('http://localhost:8000/api/contact', formData);
-      setStatus({ type: 'success', message: 'Message sent successfully!' });
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+
+      setStatus('success');
       setFormData({ name: '', email: '', phone: '', message: '' });
     } catch (error) {
-      setStatus({
-        type: 'error',
-        message: 'Failed to send message. Please try again later.',
-      });
+      setStatus('error');
+      setErrorMessage('Failed to send message. Please try again later.');
     }
   };
 
@@ -57,9 +68,14 @@ const Contact = () => {
           thaotruongartistry@gmail.com
         </Typography>
       </Box>
-      {status.type && (
-        <Alert severity={status.type} sx={{ mb: 2 }}>
-          {status.message}
+      {status === 'success' && (
+        <Alert severity="success" sx={{ mb: 2 }}>
+          Message sent successfully!
+        </Alert>
+      )}
+      {status === 'error' && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {errorMessage}
         </Alert>
       )}
       <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
@@ -123,8 +139,9 @@ const Contact = () => {
                 backgroundColor: 'transparent',
               }
             }}
+            disabled={status === 'loading'}
           >
-            Send
+            {status === 'loading' ? <CircularProgress size={24} /> : 'Send'}
           </Button>
         </Box>
       </Box>
