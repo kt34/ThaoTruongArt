@@ -32,7 +32,7 @@ const Navbar = () => {
 
   const drawer = (
     <List>
-      {['home', 'about', 'collections', 'contact', 'faq'].map((text) => (
+      {['home', 'about', 'collections', 'contact', 'FAQ'].map((text) => (
         <ListItem key={text} onClick={() => handleNavigation(text)} sx={{ cursor: 'pointer' }}>
           <ListItemText primary={text.charAt(0).toUpperCase() + text.slice(1)} />
         </ListItem>
