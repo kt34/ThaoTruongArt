@@ -1,14 +1,12 @@
 import { useState } from 'react';
-import { Box, Typography, Container, TextField, Button, Alert, CircularProgress } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Box, Container, TextField, Button, Typography, Alert, CircularProgress } from '@mui/material';
 
 const Contact = () => {
-  const theme = useTheme();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    message: '',
+    message: ''
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
