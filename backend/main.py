@@ -27,6 +27,10 @@ class ContactForm(BaseModel):
     phone: str
     message: str
 
+@app.get("/ping")
+async def ping():
+    return {"message": "pong"}
+
 def send_confirmation_email(client_email: str, client_name: str):
     sender_email = os.getenv("EMAIL_USER")
     password = os.getenv("EMAIL_PASSWORD")
