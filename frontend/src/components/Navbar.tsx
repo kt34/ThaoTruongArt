@@ -138,19 +138,26 @@ const Navbar = () => {
                   onClick={() => handleNavigation(text)}
                   sx={{
                     color: 'inherit',
-                    textDecoration: 'none',
+                    textDecoration: 'none !important',
                     fontFamily: 'Playfair Display, serif',
                     fontSize: '1.1rem',
+                    position: 'relative',
+                    padding: 0,
+                    border: 'none',
+                    background: 'none',
+                    cursor: 'pointer',
                     '&:hover': {
                       color: 'primary.main',
                     },
                     '&::after': {
                       content: '""',
-                      display: 'block',
+                      position: 'absolute',
+                      bottom: '-4px',
+                      left: 0,
                       width: '0',
                       height: '2px',
-                      background: 'currentColor',
-                      transition: 'width 0.3s',
+                      backgroundColor: 'currentColor',
+                      transition: 'width 0.3s ease',
                     },
                     '&:hover::after': {
                       width: '100%',
