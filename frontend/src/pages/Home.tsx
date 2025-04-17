@@ -122,7 +122,15 @@ const Home = () => {
           <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 4, alignItems: 'center' }}>
             <Box sx={{ flex: 1 }}>
               <AnimatedSection>
-                <Typography variant="h4" component="h2" gutterBottom>
+                <Typography
+                  variant="h2"
+                  component="h1"
+                  sx={{
+                    color: 'secondary.main',
+                    mb: 6,
+                    textAlign: 'center',
+                  }}
+                >
                   About the Artist
                 </Typography>
                 <Typography variant="body1" paragraph>
