@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, Link, Box, useMediaQuery, useTheme, IconButton, Drawer, List, ListItem, ListItemText } from '@mui/material';
+import { AppBar, Toolbar, Typography, Link, Box, useMediaQuery, useTheme, IconButton, Drawer, List, ListItem, ListItemText, Menu, MenuItem } from '@mui/material';
 import { Facebook, Instagram, Menu as MenuIcon } from '@mui/icons-material';
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -9,6 +9,8 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const [collectionsAnchorEl, setCollectionsAnchorEl] = useState<null | HTMLElement>(null);
+  const openCollectionsMenu = Boolean(collectionsAnchorEl);
 
   const handleNavigation = (sectionId: string) => {
     if (location.pathname !== '/') {
@@ -28,6 +30,45 @@ const Navbar = () => {
       }
     }
     setMobileOpen(false);
+  };
+
+  const handleCollectionsClick = (event: React.MouseEvent<HTMLElement>) => {
+    setCollectionsAnchorEl(event.currentTarget);
+  };
+  
+  const handleCollectionsClose = () => {
+    setCollectionsAnchorEl(null);
+  };
+
+  const navLinkStyle = {
+    color: 'inherit',
+    textDecoration: 'none !important',
+    fontFamily: 'Playfair Display, serif',
+    fontSize: '1.1rem',
+    position: 'relative',
+    padding: 0,
+    border: 'none',
+    background: 'none',
+    cursor: 'pointer',
+    '&:hover': {
+      color: 'primary.main',
+    },
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      bottom: '-4px',
+      left: 0,
+      width: '0',
+      height: '2px',
+      backgroundColor: 'currentColor',
+      transition: 'width 0.3s ease',
+    },
+    '&:hover::after': {
+      width: '100%',
+    },
+    outline: 'none',
+    '&:focus': { outline: 'none' },
+    '&:focus-visible': { outline: 'none' }
   };
 
   const drawer = (
@@ -140,42 +181,73 @@ const Navbar = () => {
             >
               Thao Truong Art
             </Typography>
-            <Box sx={{ display: 'flex', gap: 4 }}>
-              {['home', 'about', 'collections', 'contact', 'faq'].map((text) => (
+            <Box sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+              {['home', 'about'].map((text) => (
                 <Link
                   key={text}
                   component="button"
                   onClick={() => handleNavigation(text)}
-                  sx={{
-                    color: 'inherit',
-                    textDecoration: 'none !important',
-                    fontFamily: 'Playfair Display, serif',
-                    fontSize: '1.1rem',
-                    position: 'relative',
-                    padding: 0,
-                    border: 'none',
-                    background: 'none',
-                    cursor: 'pointer',
-                    '&:hover': {
-                      color: 'primary.main',
-                    },
-                    '&::after': {
-                      content: '""',
-                      position: 'absolute',
-                      bottom: '-4px',
-                      left: 0,
-                      width: '0',
-                      height: '2px',
-                      backgroundColor: 'currentColor',
-                      transition: 'width 0.3s ease',
-                    },
-                    '&:hover::after': {
-                      width: '100%',
-                    },
-                    outline: 'none',
-                    '&:focus': { outline: 'none' },
-                    '&:focus-visible': { outline: 'none' }
-                  }}
+                  sx={navLinkStyle}
+                >
+                  {text.charAt(0).toUpperCase() + text.slice(1)}
+                </Link>
+              ))}
+
+            <Typography
+                onClick={handleCollectionsClick}
+                sx={{
+                  color: 'inherit',
+                  fontFamily: 'Playfair Display, serif',
+                  fontSize: '1.1rem',
+                  cursor: 'pointer',
+                  '&:hover': { color: 'primary.main' },
+                }}
+              >
+                Collections
+              </Typography>
+              <Menu
+                anchorEl={collectionsAnchorEl}
+                open={openCollectionsMenu}
+                onClose={handleCollectionsClose}
+                MenuListProps={{
+                  'aria-labelledby': 'collections-button',
+                  autoFocusItem: false,
+                }}
+                sx={{
+                  '& .MuiPaper-root': {
+                    mt: 1,
+                    boxShadow: '0px 4px 10px rgba(0,0,0,0.1)',
+                  },
+                }}
+              >
+                {[
+                  { title: 'Australian Birds', path: '/collections/australian-birds' },
+                  { title: 'Female Figures', path: '/collections/female-figures' },
+                  { title: 'Pet Portraits', path: '/collections/pet-portraits' },
+                  { title: 'Fluid Art', path: '/collections/fluid-art' }
+                ].map((item) => (
+                  <MenuItem
+                    key={item.title}
+                    onClick={() => {
+                      navigate(item.path);
+                      handleCollectionsClose();
+                    }}
+                    sx={{
+                      fontFamily: 'Playfair Display, serif',
+                      fontSize: '1rem',
+                    }}
+                  >
+                    {item.title}
+                  </MenuItem>
+                ))}
+              </Menu>
+
+              {['contact', 'faq'].map((text) => (
+                <Link
+                  key={text}
+                  component="button"
+                  onClick={() => handleNavigation(text)}
+                  sx={navLinkStyle}
                 >
                   {text.charAt(0).toUpperCase() + text.slice(1)}
                 </Link>
