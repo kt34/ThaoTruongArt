@@ -11,8 +11,8 @@ const collectionsData = {
     paintings: [
       {
         id: 1,
-        title: 'Ocean Flow',
-        image: '/images/fluid-painting.jpg',
+        title: "Natural's Blend",
+        image: '/images/fluid-art/natural-blend.png',
         description: 'A vibrant piece inspired by ocean waves',
         price: '$450',
         dimensions: '24" x 36"',
@@ -20,8 +20,8 @@ const collectionsData = {
       },
       {
         id: 2,
-        title: 'Color Burst',
-        image: '/images/nature-image.jpg',
+        title: 'Spring Aroma',
+        image: '/images/fluid-art/spring-aroma.png',
         description: 'Explosion of colors in perfect harmony',
         price: '$380',
         dimensions: '20" x 30"',
@@ -29,8 +29,53 @@ const collectionsData = {
       },
       {
         id: 3,
-        title: 'Color Burst',
-        image: '/images/nature-image.jpg',
+        title: 'Red Desert',
+        image: '/images/fluid-art/red-dessert.jpg',
+        description: 'Explosion of colors in perfect harmony',
+        price: '$380',
+        dimensions: '20" x 30"',
+        year: '2023'
+      },
+      {
+        id: 4,
+        title: "Colour's Dance",
+        image: '/images/fluid-art/colours-dance.jpg',
+        description: 'Explosion of colors in perfect harmony',
+        price: '$380',
+        dimensions: '20" x 30"',
+        year: '2023'
+      },
+      {
+        id: 5,
+        title: 'Aqua Swash',
+        image: '/images/fluid-art/aqua-swash.png',
+        description: 'Explosion of colors in perfect harmony',
+        price: '$380',
+        dimensions: '20" x 30"',
+        year: '2023'
+      },
+      {
+        id: 6,
+        title: 'The Harmony',
+        image: '/images/fluid-art/the-harmony.png',
+        description: 'Explosion of colors in perfect harmony',
+        price: '$380',
+        dimensions: '20" x 30"',
+        year: '2023'
+      },
+      {
+        id: 7,
+        title: 'Blue Lagoon',
+        image: '/images/fluid-art/blue-lagoon.jpg',
+        description: 'Explosion of colors in perfect harmony',
+        price: '$380',
+        dimensions: '20" x 30"',
+        year: '2023'
+      },
+      {
+        id: 8,
+        title: 'Contours',
+        image: '/images/fluid-art/contours.jpg',
         description: 'Explosion of colors in perfect harmony',
         price: '$380',
         dimensions: '20" x 30"',

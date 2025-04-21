@@ -24,7 +24,7 @@ const Collections = () => {
     },
     {
       title: 'Fluid Art',
-      image: '/images/fluid-painting.jpg',
+      image: '/images/fluid-art/fluid-painting.jpg',
       description: 'Australia is home to a diverse range of bird species, many of which are found nowhere else in the world. From the vibrant Rainbow Lorikeet and the iconic Laughing Kookaburra to the strikingly intelligent Australian Magpie, the country\'s birdlife is colorful and unique.',
       path: '/collections/fluid-art'
     }
