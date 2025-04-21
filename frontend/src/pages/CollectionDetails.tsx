@@ -1,5 +1,6 @@
 import { Box, Typography, Container, Card, CardMedia, CardContent, Button } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import AnimatedSection from '../components/AnimatedSection';
 
 // Temporary mock data - replace with your actual data
@@ -88,6 +89,10 @@ const CollectionDetail = () => {
   const { collectionId } = useParams();
   const navigate = useNavigate();
   const collection = collectionsData[collectionId as keyof typeof collectionsData];
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   if (!collection) {
     return (
