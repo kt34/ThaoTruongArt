@@ -162,6 +162,9 @@ const Navbar = () => {
                     '&:hover::after': {
                       width: '100%',
                     },
+                    outline: 'none',
+                    '&:focus': { outline: 'none' },
+                    '&:focus-visible': { outline: 'none' }
                   }}
                 >
                   {text.charAt(0).toUpperCase() + text.slice(1)}
