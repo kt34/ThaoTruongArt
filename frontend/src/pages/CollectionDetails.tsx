@@ -1,5 +1,5 @@
 import { Box, Typography, Container, Card, CardMedia, CardContent, Button } from '@mui/material';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import AnimatedSection from '../components/AnimatedSection';
 
@@ -208,7 +208,11 @@ const CollectionDetail = () => {
               margin: 0,
               padding: 0
             }}>
-              <AnimatedSection delay={index * 0.3}>
+              <AnimatedSection delay={index * 0.1}>
+                <Link 
+                  to={`/painting/${collectionId}/${painting.id}`} 
+                  style={{ textDecoration: 'none', color: 'inherit' }}
+                >
                 <Card sx={{ 
                   width: '100%',
                   height: '100%',
@@ -226,7 +230,7 @@ const CollectionDetail = () => {
                     component="img"
                     sx={{ 
                       width: '100%',
-                      height: '300px',
+                      aspectRatio: '3 / 2',
                       objectFit: 'cover',
                       display: 'block'
                     }}
@@ -255,6 +259,7 @@ const CollectionDetail = () => {
                     </Box>
                   </CardContent>
                 </Card>
+                </Link>
               </AnimatedSection>
             </Box>
           ))}

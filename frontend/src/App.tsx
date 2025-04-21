@@ -8,6 +8,7 @@ import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
 import Footer from './components/Footer';
 import CollectionDetails from './pages/CollectionDetails';
+import PaintingDetails from './pages/PaintingDetails';
 import { useEffect } from 'react';
 
 const theme = createTheme({
@@ -121,6 +122,7 @@ function App() {
               </>
             } />
             <Route path="/collections/:collectionId" element={<CollectionDetails />} />
+            <Route path="/painting/:collectionId/:paintingId" element={<PaintingDetails />} />
           </Routes>
         </main>
         <Footer />
