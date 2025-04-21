@@ -1,4 +1,5 @@
 import { Box, Typography, Container, Card, CardContent, CardMedia } from '@mui/material';
+import { Link } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
 
 const Collections = () => {
@@ -6,22 +7,26 @@ const Collections = () => {
     {
       title: 'Australian Birds',
       image: '/images/australian-bird.jpg',
-      description: 'Australia is home to a diverse range of bird species, many of which are found nowhere else in the world. From the vibrant Rainbow Lorikeet and the iconic Laughing Kookaburra to the strikingly intelligent Australian Magpie, the country\'s birdlife is colorful and unique.'
+      description: 'Australia is home to a diverse range of bird species, many of which are found nowhere else in the world. From the vibrant Rainbow Lorikeet and the iconic Laughing Kookaburra to the strikingly intelligent Australian Magpie, the country\'s birdlife is colorful and unique.',
+      path: '/collections/australian-birds'
     },
     {
       title: 'Female Figures',
       image: '/images/female-figure.jpg',
-      description: 'Australia is home to a diverse range of bird species, many of which are found nowhere else in the world. From the vibrant Rainbow Lorikeet and the iconic Laughing Kookaburra to the strikingly intelligent Australian Magpie, the country\'s birdlife is colorful and unique.'
+      description: 'Australia is home to a diverse range of bird species, many of which are found nowhere else in the world. From the vibrant Rainbow Lorikeet and the iconic Laughing Kookaburra to the strikingly intelligent Australian Magpie, the country\'s birdlife is colorful and unique.',
+      path: '/collections/female-figures'
     },
     {
       title: 'Pet Portraits',
       image: '/images/pet-painting.jpg',
-      description: 'Australia is home to a diverse range of bird species, many of which are found nowhere else in the world. From the vibrant Rainbow Lorikeet and the iconic Laughing Kookaburra to the strikingly intelligent Australian Magpie, the country\'s birdlife is colorful and unique.'
+      description: 'Australia is home to a diverse range of bird species, many of which are found nowhere else in the world. From the vibrant Rainbow Lorikeet and the iconic Laughing Kookaburra to the strikingly intelligent Australian Magpie, the country\'s birdlife is colorful and unique.',
+      path: '/collections/pet-portraits'
     },
     {
       title: 'Fluid Art',
       image: '/images/fluid-painting.jpg',
-      description: 'Australia is home to a diverse range of bird species, many of which are found nowhere else in the world. From the vibrant Rainbow Lorikeet and the iconic Laughing Kookaburra to the strikingly intelligent Australian Magpie, the country\'s birdlife is colorful and unique.'
+      description: 'Australia is home to a diverse range of bird species, many of which are found nowhere else in the world. From the vibrant Rainbow Lorikeet and the iconic Laughing Kookaburra to the strikingly intelligent Australian Magpie, the country\'s birdlife is colorful and unique.',
+      path: '/collections/fluid-art'
     }
   ];
 
@@ -56,13 +61,24 @@ const Collections = () => {
           {collections.map((collection, index) => (
             <AnimatedSection key={index} delay={index * 0.1}>
               <Card
+                component={Link}
+                to={collection.path}
                 sx={{
                   height: '100%',
                   display: 'flex',
                   flexDirection: 'column',
                   transition: 'transform 0.3s ease-in-out',
+                  color: 'inherit',
                   '&:hover': {
                     transform: 'scale(1.02)',
+                    color: 'inherit',
+                    textDecoration: 'none',
+                  },
+                  '&:focus': {
+                    outline: 'none',
+                  },
+                  '&:focus-visible': {
+                    outline: 'none',
                   },
                 }}
               >

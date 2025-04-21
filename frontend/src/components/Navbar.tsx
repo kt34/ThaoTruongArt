@@ -75,11 +75,16 @@ const Navbar = () => {
               <Typography
                 variant="h6"
                 component="div"
+                onClick={() => handleNavigation('home')}
                 sx={{ 
                   flexGrow: 1,
                   fontFamily: 'Playfair Display, serif',
                   fontWeight: 'bold',
-                  fontSize: '1.5rem'
+                  fontSize: '1.5rem',
+                  cursor: 'pointer',
+                  '&:hover': {
+                    color: 'primary.main',
+                  }
                 }}
               >
                 Thao Truong Art
@@ -121,11 +126,16 @@ const Navbar = () => {
             <Typography
               variant="h6"
               component="div"
+              onClick={() => handleNavigation('home')}
               sx={{ 
                 flexGrow: 1,
                 fontFamily: 'Playfair Display, serif',
                 fontWeight: 'bold',
-                fontSize: '1.5rem'
+                fontSize: '1.5rem',
+                cursor: 'pointer',
+                '&:hover': {
+                  color: 'primary.main',
+                }
               }}
             >
               Thao Truong Art

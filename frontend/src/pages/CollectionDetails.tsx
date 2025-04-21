@@ -28,7 +28,7 @@ const collectionsData = {
       }
     ]
   },
-  'nature': {
+  'australian-birds': {
     title: 'Nature Collection',
     description: 'Inspired by the beauty of the natural world.',
     paintings: [
@@ -43,7 +43,7 @@ const collectionsData = {
       }
     ]
   },
-  'portraits': {
+  'female-figures': {
     title: 'Portrait Collection',
     description: 'Expressive portraits that capture the essence of the subject.',
     paintings: [
@@ -54,6 +54,21 @@ const collectionsData = {
         description: 'A study in elegance and poise',
         price: '$600',
         dimensions: '24" x 36"',
+        year: '2023'
+      }
+    ]
+  },
+  'pet-portraits': {
+    title: 'Pet Portraits Collection',
+    description: 'Capturing the unique personalities of our furry friends.',
+    paintings: [
+      {
+        id: 5,
+        title: 'Whiskers',
+        image: '/images/pet-painting.jpg',
+        description: 'A portrait of a playful cat',
+        price: '$480',
+        dimensions: '20" x 30"',
         year: '2023'
       }
     ]
