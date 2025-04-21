@@ -5,7 +5,7 @@ import AnimatedSection from '../components/AnimatedSection';
 // Temporary mock data - replace with your actual data
 const collectionsData = {
   'fluid-art': {
-    title: 'Fluid Art Collection',
+    title: 'Fluid Art',
     description: 'A mesmerizing collection of fluid art paintings that capture the beauty of color and movement.',
     paintings: [
       {
@@ -25,11 +25,20 @@ const collectionsData = {
         price: '$380',
         dimensions: '20" x 30"',
         year: '2023'
+      },
+      {
+        id: 3,
+        title: 'Color Burst',
+        image: '/images/nature-image.jpg',
+        description: 'Explosion of colors in perfect harmony',
+        price: '$380',
+        dimensions: '20" x 30"',
+        year: '2023'
       }
     ]
   },
   'australian-birds': {
-    title: 'Nature Collection',
+    title: 'Australian Birds',
     description: 'Inspired by the beauty of the natural world.',
     paintings: [
       {
@@ -44,7 +53,7 @@ const collectionsData = {
     ]
   },
   'female-figures': {
-    title: 'Portrait Collection',
+    title: 'Female Figures',
     description: 'Expressive portraits that capture the essence of the subject.',
     paintings: [
       {
@@ -59,7 +68,7 @@ const collectionsData = {
     ]
   },
   'pet-portraits': {
-    title: 'Pet Portraits Collection',
+    title: 'Pet Portraits',
     description: 'Capturing the unique personalities of our furry friends.',
     paintings: [
       {
@@ -109,52 +118,72 @@ const CollectionDetail = () => {
       minHeight: '100vh',
       display: 'flex',
       flexDirection: 'column',
-      pt: { xs: '64px', sm: '64px' } // Account for navbar height
     }}>
-      <Container maxWidth="lg" sx={{ flex: 1, py: 8 }}>
+      <Box sx={{ 
+        flex: 1, 
+        py: 3, 
+        width: '100vw', // Full viewport width
+        maxWidth: '100%',
+        overflow: 'hidden',
+        marginX: 0,
+        paddingX: 0
+      }}>
         <AnimatedSection>
-          <Typography variant="h3" component="h1" gutterBottom align="center">
-            {collection.title}
-          </Typography>
-          <Typography variant="h6" color="text.secondary" align="center" sx={{ mb: 6 }}>
-            {collection.description}
-          </Typography>
+          <Container maxWidth="xl">
+            <Typography variant="h3" component="h1" gutterBottom align="center">
+              {collection.title}
+            </Typography>
+            <Typography variant="h6" color="text.secondary" align="center" sx={{ mb: 6 }}>
+              {collection.description}
+            </Typography>
+          </Container>
         </AnimatedSection>
 
+        {/* Full-width grid container */}
         <Box sx={{ 
           display: 'grid',
-          gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
+          gridTemplateColumns: { 
+            xs: '1fr', 
+            sm: 'repeat(2, 1fr)', 
+            md: 'repeat(3, 1fr)' 
+          },
           gap: 4,
-          maxWidth: '1200px',
-          mx: 'auto',
-          px: 2
+          width: '100%',
+          margin: 0,
+          px: { xs: 2, sm: 4, md: 6 }
         }}>
           {collection.paintings.map((painting, index) => (
-            <Box key={painting.id}>
-              <AnimatedSection delay={index * 0.1}>
-                <Card 
-                  sx={{ 
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    transition: 'transform 0.3s ease-in-out',
-                    '&:hover': {
-                      transform: 'translateY(-8px)',
-                      boxShadow: 6
-                    }
-                  }}
-                >
+            <Box key={painting.id} sx={{ 
+              width: '100%', 
+              margin: 0,
+              padding: 0
+            }}>
+              <AnimatedSection delay={index * 0.3}>
+                <Card sx={{ 
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  margin: 0,
+                  borderRadius: 0,
+                  boxShadow: 'none',
+                  '&:hover': {
+                    transform: 'translateY(-8px)',
+                    boxShadow: 6
+                  }
+                }}>
                   <CardMedia
                     component="img"
-                    height="300"
+                    sx={{ 
+                      width: '100%',
+                      height: '300px',
+                      objectFit: 'cover',
+                      display: 'block'
+                    }}
                     image={painting.image}
                     alt={painting.title}
-                    sx={{ 
-                      objectFit: 'cover',
-                      width: '100%'
-                    }}
                   />
-                  <CardContent sx={{ 
+                   <CardContent sx={{ 
                     flexGrow: 1,
                     display: 'flex',
                     flexDirection: 'column',
@@ -180,9 +209,10 @@ const CollectionDetail = () => {
             </Box>
           ))}
         </Box>
-      </Container>
+      </Box>
     </Box>
   );
 };
+
 
 export default CollectionDetail; 
