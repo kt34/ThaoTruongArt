@@ -242,9 +242,9 @@ const CollectionDetail = () => {
                     component="img"
                     sx={{
                       width: '100%',
-                      aspectRatio: '3 / 2',        // Keep card size uniform
-                      objectFit: 'contain',        // Show full image with original aspect ratio
-                      backgroundColor: 'white',    // Fill remaining space with white
+                      aspectRatio: '3 / 2',
+                      objectFit: 'contain',
+                      background: 'linear-gradient(to bottom, white 90%, #fff5e6 100%)', // Start gradient at 50%
                       display: 'block'
                     }}
                     image={painting.image}
@@ -255,7 +255,8 @@ const CollectionDetail = () => {
                       flexGrow: 1,
                       display: 'flex',
                       flexDirection: 'column',
-                      gap: 1
+                      gap: 1,
+                      backgroundColor: '#fff5e6'  // Light yellow background to match gradient end
                     }}>
                       <Typography gutterBottom variant="h5" component="h2">
                         {painting.title}
