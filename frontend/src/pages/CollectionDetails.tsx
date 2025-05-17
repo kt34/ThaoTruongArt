@@ -12,20 +12,12 @@ const collectionsData = {
       {
         id: 1,
         title: "Natural's Blend",
-        image: '/images/fluid-art/natural-blend.png',
-        description: 'A vibrant piece inspired by ocean waves',
-        price: '$450',
-        dimensions: '24" x 36"',
-        year: '2023'
+        image: '/images/fluid-art/natural-blend.png'
       },
       {
         id: 2,
         title: 'Spring Aroma',
-        image: '/images/fluid-art/spring-aroma.png',
-        description: 'Explosion of colors in perfect harmony',
-        price: '$380',
-        dimensions: '20" x 30"',
-        year: '2023'
+        image: '/images/fluid-art/spring-aroma.png'
       },
       {
         id: 3,
@@ -88,7 +80,7 @@ const collectionsData = {
     description: 'Inspired by the beauty of the natural world.',
     paintings: [
       {
-        id: 3,
+        id: 9,
         title: 'Mountain Sunrise',
         image: '/images/nature-image2.jpg',
         description: 'Capturing the first light of day',
@@ -103,7 +95,7 @@ const collectionsData = {
     description: 'Expressive portraits that capture the essence of the subject.',
     paintings: [
       {
-        id: 4,
+        id: 10,
         title: 'Grace',
         image: '/images/female-figure.jpg',
         description: 'A study in elegance and poise',
@@ -115,17 +107,38 @@ const collectionsData = {
   },
   'pet-portraits': {
     title: 'Pet Portraits',
-    description: 'Capturing the unique personalities of our furry friends.',
+    description: 'Artworks are a unique way of preserving cherished moments with our loved ones, and pets are no exception. Commision a unique pet portrait of your beloved pet, or gift one to a friend for a special occasion! Each painting is made with quality oil paint and inclues a signed certificate of authenticity.',
     paintings: [
       {
-        id: 5,
+        id: 11,
         title: 'Whiskers',
-        image: '/images/pet-painting.jpg',
-        description: 'A portrait of a playful cat',
-        price: '$480',
-        dimensions: '20" x 30"',
-        year: '2023'
-      }
+        image: '/images/pet-portrait/Jessie.jpg',
+      },
+      {
+        id: 12,
+        title: 'Whiskers',
+        image: '/images/pet-portrait/Hector-Maud-Buster.jpg',
+      },
+      {
+        id: 13,
+        title: 'Whiskers',
+        image: '/images/pet-portrait/Mame.jpg',
+      },
+      {
+        id: 14,
+        title: 'Whiskers',
+        image: '/images/pet-portrait/Wander-Vanesse.jpg',
+      },
+      {
+        id: 15,
+        title: 'Whiskers',
+        image: '/images/pet-portrait/pug.JPG',
+      },
+      {
+        id: 16,
+        title: 'Whiskers',
+        image: '/images/pet-portrait/Cosmo-Atom.jpg',
+      },
     ]
   }
 };
@@ -172,7 +185,7 @@ const CollectionDetail = () => {
       <Box sx={{ 
         flex: 1, 
         py: 3, 
-        width: '100vw', // Full viewport width
+        width: '100vw',
         maxWidth: '100%',
         overflow: 'hidden',
         marginX: 0,
@@ -189,7 +202,6 @@ const CollectionDetail = () => {
           </Container>
         </AnimatedSection>
 
-        {/* Full-width grid container */}
         <Box sx={{ 
           display: 'grid',
           gridTemplateColumns: { 
@@ -228,36 +240,28 @@ const CollectionDetail = () => {
                 }}>
                   <CardMedia
                     component="img"
-                    sx={{ 
+                    sx={{
                       width: '100%',
-                      aspectRatio: '3 / 2',
-                      objectFit: 'cover',
+                      aspectRatio: '3 / 2',        // Keep card size uniform
+                      objectFit: 'contain',        // Show full image with original aspect ratio
+                      backgroundColor: 'white',    // Fill remaining space with white
                       display: 'block'
                     }}
                     image={painting.image}
                     alt={painting.title}
                   />
-                   <CardContent sx={{ 
-                    flexGrow: 1,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 1
-                  }}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {painting.title}
-                    </Typography>
-                    <Typography variant="body1" color="text.secondary" paragraph>
-                      {painting.description}
-                    </Typography>
-                    <Box sx={{ mt: 'auto' }}>
-                      <Typography variant="body2" color="text.secondary">
-                        {painting.dimensions} • {painting.year}
+                  {collectionId !== 'pet-portraits' && (
+                    <CardContent sx={{ 
+                      flexGrow: 1,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 1
+                    }}>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {painting.title}
                       </Typography>
-                      <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
-                        {painting.price}
-                      </Typography>
-                    </Box>
-                  </CardContent>
+                    </CardContent>
+                  )}
                 </Card>
                 </Link>
               </AnimatedSection>
@@ -270,4 +274,4 @@ const CollectionDetail = () => {
 };
 
 
-export default CollectionDetail; 
+export default CollectionDetail;

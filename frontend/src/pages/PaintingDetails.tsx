@@ -127,53 +127,55 @@ const collectionsData = {
     }
   };
 
-const PaintingDetail = () => {
-  const { collectionId, paintingId } = useParams();
-  const navigate = useNavigate();
-
-  const collection = collectionsData[collectionId as keyof typeof collectionsData];
-  const painting = collection?.paintings.find(p => p.id === Number(paintingId));
-
-  if (!painting) {
+  const PaintingDetail = () => {
+    const { collectionId, paintingId } = useParams();
+    const navigate = useNavigate();
+  
+    const collection = collectionsData[collectionId as keyof typeof collectionsData];
+    const painting = collection?.paintings.find(p => p.id === Number(paintingId));
+  
+    if (!painting) {
+      return (
+        <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', px: 2 }}>
+          <Typography variant="h4">Painting not found</Typography>
+          <Button onClick={() => navigate(-1)} sx={{ mt: 2 }} variant="contained">
+            Go Back
+          </Button>
+        </Box>
+      );
+    }
+  
     return (
-      <Box sx={{ py: 10, textAlign: 'center' }}>
-        <Typography variant="h4">Painting not found</Typography>
-        <Button onClick={() => navigate(-1)} sx={{ mt: 2 }} variant="contained">
-          Go Back
-        </Button>
+      <Box sx={{ minHeight: '100vh', bgcolor: '#f9f9f9', py: 6 }}>
+        <Container maxWidth="md">
+          <Box component="img"
+            src={painting.image}
+            alt={painting.title}
+            sx={{ 
+              width: '100%', 
+              borderRadius: 2, 
+              objectFit: 'contain', 
+              mb: 4 
+            }}
+          />
+          <Typography variant="h3" gutterBottom>{painting.title}</Typography>
+          <Typography variant="h6" color="text.secondary" paragraph>
+            {painting.description}
+          </Typography>
+          <Typography variant="body1" paragraph>
+            Dimensions: {painting.dimensions}
+          </Typography>
+          <Typography variant="body1" paragraph>
+            Year: {painting.year}
+          </Typography>
+          <Typography variant="h5" color="primary">{painting.price}</Typography>
+  
+          <Button variant="outlined" onClick={() => navigate(-1)} sx={{ mt: 4 }}>
+            Back to Collection
+          </Button>
+        </Container>
       </Box>
     );
-  }
-
-  return (
-    <Container maxWidth="md" sx={{ py: 6 }}>
-      <Box component="img"
-        src={painting.image}
-        alt={painting.title}
-        sx={{ 
-          width: '100%', 
-          borderRadius: 2, 
-          objectFit: 'contain', 
-          mb: 4 
-        }}
-      />
-      <Typography variant="h3" gutterBottom>{painting.title}</Typography>
-      <Typography variant="h6" color="text.secondary" paragraph>
-        {painting.description}
-      </Typography>
-      <Typography variant="body1" paragraph>
-        Dimensions: {painting.dimensions}
-      </Typography>
-      <Typography variant="body1" paragraph>
-        Year: {painting.year}
-      </Typography>
-      <Typography variant="h5" color="primary">{painting.price}</Typography>
-
-      <Button variant="outlined" onClick={() => navigate(-1)} sx={{ mt: 4 }}>
-        Back to Collection
-      </Button>
-    </Container>
-  );
-};
-
+  };
+  
 export default PaintingDetail;
