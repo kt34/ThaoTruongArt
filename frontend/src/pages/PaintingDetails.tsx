@@ -9,7 +9,7 @@ const collectionsData = {
         {
           id: 1,
           title: "Natural's Blend",
-          image: '/images/fluid-art/natural-blend.png',
+          image: '/images/fluid-art/Natural-Blend-1.jpg',
           description: 'A vibrant piece inspired by ocean waves',
           price: '$450',
           dimensions: '24" x 36"',

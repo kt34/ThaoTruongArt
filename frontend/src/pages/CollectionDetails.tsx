@@ -12,17 +12,17 @@ const collectionsData = {
       {
         id: 1,
         title: "Natural's Blend",
-        image: '/images/fluid-art/natural-blend.png'
+        image: '/images/fluid-art/natural-blend-1.jpg'
       },
       {
         id: 2,
         title: 'Spring Aroma',
-        image: '/images/fluid-art/spring-aroma.png'
+        image: '/images/fluid-art/spring-aroma-1.jpg'
       },
       {
         id: 3,
         title: 'Red Desert',
-        image: '/images/fluid-art/red-dessert.jpg',
+        image: '/images/fluid-art/red-desert-1.jpg',
         description: 'Explosion of colors in perfect harmony',
         price: '$380',
         dimensions: '20" x 30"',
@@ -31,7 +31,7 @@ const collectionsData = {
       {
         id: 4,
         title: "Colour's Dance",
-        image: '/images/fluid-art/colours-dance.jpg',
+        image: '/images/fluid-art/colour-dance-1.jpg',
         description: 'Explosion of colors in perfect harmony',
         price: '$380',
         dimensions: '20" x 30"',
@@ -40,7 +40,7 @@ const collectionsData = {
       {
         id: 5,
         title: 'Aqua Swash',
-        image: '/images/fluid-art/aqua-swash.png',
+        image: '/images/fluid-art/aqua-swash-1.jpg',
         description: 'Explosion of colors in perfect harmony',
         price: '$380',
         dimensions: '20" x 30"',
@@ -49,7 +49,7 @@ const collectionsData = {
       {
         id: 6,
         title: 'The Harmony',
-        image: '/images/fluid-art/the-harmony.png',
+        image: '/images/fluid-art/the-harmony-1.jpg',
         description: 'Explosion of colors in perfect harmony',
         price: '$380',
         dimensions: '20" x 30"',
@@ -58,7 +58,7 @@ const collectionsData = {
       {
         id: 7,
         title: 'Blue Lagoon',
-        image: '/images/fluid-art/blue-lagoon.jpg',
+        image: '/images/fluid-art/blue-lagoon-1.jpg',
         description: 'Explosion of colors in perfect harmony',
         price: '$380',
         dimensions: '20" x 30"',
@@ -67,7 +67,7 @@ const collectionsData = {
       {
         id: 8,
         title: 'Contours',
-        image: '/images/fluid-art/contours.jpg',
+        image: '/images/fluid-art/contours-1.jpg',
         description: 'Explosion of colors in perfect harmony',
         price: '$380',
         dimensions: '20" x 30"',
