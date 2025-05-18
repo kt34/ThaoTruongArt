@@ -1,6 +1,7 @@
-import { Box, Typography, Container, Card, CardMedia, CardContent, Button } from '@mui/material';
+import { Box, Typography, Container, Card, CardMedia, CardContent, Button, TextField, Grid, Alert, CircularProgress } from '@mui/material';
+import type { GridProps } from '@mui/material';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import AnimatedSection from '../components/AnimatedSection';
 
 // Temporary mock data - replace with your actual data
@@ -147,6 +148,51 @@ const CollectionDetail = () => {
   const { collectionId } = useParams();
   const navigate = useNavigate();
   const collection = collectionsData[collectionId as keyof typeof collectionsData];
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('loading');
+    setErrorMessage('');
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          message: `Pet Portrait Commission Request:\n\nPet's Name: ${formData.phone}\n\nAdditional Details:\n${formData.message}`
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+
+      setStatus('success');
+      setFormData({ name: '', email: '', phone: '', message: '' });
+    } catch (error) {
+      setStatus('error');
+      setErrorMessage('Failed to send message. Please try again later.');
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -242,9 +288,9 @@ const CollectionDetail = () => {
                     component="img"
                     sx={{
                       width: '100%',
-                      aspectRatio: '3 / 2',
-                      objectFit: 'contain',
-                      background: 'linear-gradient(to bottom, white 90%, #fff5e6 100%)', // Start gradient at 50%
+                      aspectRatio: '3 / 2',        // Keep card size uniform
+                      objectFit: 'contain',        // Show full image with original aspect ratio
+                      backgroundColor: 'white',    // Fill remaining space with white
                       display: 'block'
                     }}
                     image={painting.image}
@@ -255,8 +301,7 @@ const CollectionDetail = () => {
                       flexGrow: 1,
                       display: 'flex',
                       flexDirection: 'column',
-                      gap: 1,
-                      backgroundColor: '#fff5e6'  // Light yellow background to match gradient end
+                      gap: 1
                     }}>
                       <Typography gutterBottom variant="h5" component="h2">
                         {painting.title}
@@ -269,10 +314,101 @@ const CollectionDetail = () => {
             </Box>
           ))}
         </Box>
+
+        {collectionId === 'pet-portraits' && (
+          <AnimatedSection>
+            <Container maxWidth="lg" sx={{ mt: 8, mb: 8 }}>
+              <Typography variant="h3" component="h2" gutterBottom align="center" sx={{ mb: 4 }}>
+                Commission Your Pet Portrait
+              </Typography>
+              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 4 }}>
+                <Box sx={{ flex: 1 }}>
+                  <Card sx={{ height: '100%', borderRadius: 2 }}>
+                    <CardMedia
+                      component="img"
+                      image="/images/pet-portrait/Bruno.jpg"
+                      alt="Commission Example"
+                      sx={{
+                        width: '100%',
+                        padding: '20px',  // Equal padding on all sides
+                        objectFit: 'contain',  // Show full image without cropping
+                        backgroundColor: 'white',
+                        display: 'block'
+                      }}
+                    />
+                  </Card>
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  {status === 'success' && (
+                    <Alert severity="success" sx={{ mb: 2 }}>
+                      Your commission request has been sent successfully!
+                    </Alert>
+                  )}
+                  {status === 'error' && (
+                    <Alert severity="error" sx={{ mb: 2 }}>
+                      {errorMessage}
+                    </Alert>
+                  )}
+                  <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                    <Typography variant="h6" gutterBottom>
+                      Request a Commission
+                    </Typography>
+                    <TextField
+                      required
+                      fullWidth
+                      label="Your Name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      variant="outlined"
+                    />
+                    <TextField
+                      required
+                      fullWidth
+                      label="Email Address"
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      variant="outlined"
+                    />
+                    <TextField
+                      fullWidth
+                      label="Pet's Name"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      variant="outlined"
+                    />
+                    <TextField
+                      fullWidth
+                      label="Additional Details"
+                      name="message"
+                      multiline
+                      rows={4}
+                      value={formData.message}
+                      onChange={handleChange}
+                      variant="outlined"
+                    />
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      size="large"
+                      sx={{ mt: 2 }}
+                      disabled={status === 'loading'}
+                    >
+                      {status === 'loading' ? <CircularProgress size={24} /> : 'Submit Request'}
+                    </Button>
+                  </Box>
+                </Box>
+              </Box>
+            </Container>
+          </AnimatedSection>
+        )}
       </Box>
     </Box>
   );
 };
-
 
 export default CollectionDetail;
