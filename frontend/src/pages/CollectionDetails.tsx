@@ -317,9 +317,157 @@ const CollectionDetail = () => {
         {collectionId === 'pet-portraits' && (
           <AnimatedSection>
             <Container maxWidth="lg" sx={{ mt: 8, mb: 8 }}>
-              <Typography variant="h3" component="h2" gutterBottom align="center" sx={{ mb: 4 }}>
+              <Typography variant="h3" component="h2" gutterBottom align="center" sx={{ 
+                mb: 6,
+                fontFamily: "'Playfair Display', serif",
+                fontWeight: 500,
+                color: 'primary.main'
+              }}>
                 Commission Your Pet Portrait
               </Typography>
+
+              <Box sx={{ 
+                mb: 8, 
+                textAlign: 'center',
+                maxWidth: '800px',
+                mx: 'auto',
+                px: 2
+              }}>
+                <Typography variant="h5" sx={{ 
+                  mb: 4, 
+                  fontWeight: 'bold',
+                  color: 'primary.main',
+                  fontFamily: "'Playfair Display', serif"
+                }}>
+                  ORDER IN 3 SIMPLE STEPS:
+                </Typography>
+                <Box sx={{ 
+                  display: 'flex', 
+                  flexDirection: 'column',
+                  gap: 2,
+                  mb: 6,
+                  '& > *': {
+                    position: 'relative',
+                    pl: 4,
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      left: 0,
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      width: '24px',
+                      height: '24px',
+                      borderRadius: '50%',
+                      backgroundColor: 'primary.main',
+                      color: 'white',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '14px',
+                      fontWeight: 'bold'
+                    }
+                  }
+                }}>
+                  <Typography variant="body1" sx={{ 
+                    '&::before': { content: '"1"' }
+                  }}>
+                    CHOOSE A CANVAS SIZE FROM THE LIST BELOW
+                  </Typography>
+                  <Typography variant="body1" sx={{ 
+                    '&::before': { content: '"2"' }
+                  }}>
+                    TAKE PHOTOS OF YOUR PET, OR USE THE ONES YOU ALREADY HAVE
+                  </Typography>
+                  <Typography variant="body1" sx={{ 
+                    '&::before': { content: '"3"' }
+                  }}>
+                    CONTACT ME VIA PHONE OR EMAIL TO CONFIRM YOUR COMMISSION AND TO FURTHER DISCUSS ANY QUESTIONS YOU MIGHT HAVE.
+                  </Typography>
+                </Box>
+
+                <Typography variant="h5" sx={{ mb: 3, fontWeight: 'bold' }}>
+                  SIZE AND PRICE GUIDE
+                </Typography>
+                <Box sx={{ 
+                  display: 'flex', 
+                  flexDirection: { xs: 'column', md: 'row' },
+                  gap: 3,
+                  justifyContent: 'center',
+                  mb: 6
+                }}>
+                  <Card sx={{ 
+                    flex: 1,
+                    p: 3,
+                    textAlign: 'center',
+                    border: '1px solid #e0e0e0',
+                    '&:hover': {
+                      boxShadow: 3,
+                      transform: 'translateY(-4px)',
+                      transition: 'all 0.3s ease'
+                    }
+                  }}>
+                    <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>STANDARD</Typography>
+                    <Typography variant="h4" sx={{ mb: 2, color: 'primary.main' }}>$490</Typography>
+                    <Typography variant="body1" sx={{ mb: 1 }}>25 x 30 cm (approximately)</Typography>
+                    <Typography variant="body2" color="text.secondary">Oil paint on a gallery quality canvas</Typography>
+                  </Card>
+
+                  <Card sx={{ 
+                    flex: 1,
+                    p: 3,
+                    textAlign: 'center',
+                    border: '1px solid #e0e0e0',
+                    '&:hover': {
+                      boxShadow: 6,
+                      transform: 'translateY(-8px)',
+                      borderColor: 'primary.main'
+                    }
+                  }}>
+                    <Typography variant="h6" sx={{ 
+                      mb: 2, 
+                      fontWeight: 'bold',
+                      color: 'primary.main',
+                      fontFamily: "'Playfair Display', serif"
+                    }}>MEDIUM</Typography>
+                    <Typography variant="h4" sx={{ 
+                      mb: 2, 
+                      color: 'primary.main',
+                      fontWeight: 'bold'
+                    }}>$790</Typography>
+                    <Typography variant="body1" sx={{ mb: 1 }}>35 x 45 cm (approximately)</Typography>
+                    <Typography variant="body2" color="text.secondary">Oil paint on a gallery quality canvas</Typography>
+                  </Card>
+
+                  <Card sx={{ 
+                    flex: 1,
+                    p: 4,
+                    textAlign: 'center',
+                    border: '1px solid #e0e0e0',
+                    borderRadius: 2,
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      boxShadow: 6,
+                      transform: 'translateY(-8px)',
+                      borderColor: 'primary.main'
+                    }
+                  }}>
+                    <Typography variant="h6" sx={{ 
+                      mb: 2, 
+                      fontWeight: 'bold',
+                      color: 'primary.main',
+                      fontFamily: "'Playfair Display', serif"
+                    }}>LARGE</Typography>
+                    <Typography variant="h4" sx={{ 
+                      mb: 2, 
+                      color: 'primary.main',
+                      fontWeight: 'bold'
+                    }}>$990</Typography>
+                    <Typography variant="body1" sx={{ mb: 1 }}>51 x 61 cm (approximately)</Typography>
+                    <Typography variant="body2" color="text.secondary">Oil paint on a gallery quality canvas</Typography>
+                  </Card>
+                </Box>
+              </Box>
+
               <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 4 }}>
                 <Box sx={{ flex: 1 }}>
                   <Card sx={{ height: '100%', borderRadius: 2 }}>
