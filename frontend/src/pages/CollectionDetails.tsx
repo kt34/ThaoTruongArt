@@ -1,5 +1,4 @@
-import { Box, Typography, Container, Card, CardMedia, CardContent, Button, TextField, Grid, Alert, CircularProgress } from '@mui/material';
-import type { GridProps } from '@mui/material';
+import { Box, Typography, Container, Card, CardMedia, CardContent, Button, TextField, Alert, CircularProgress } from '@mui/material';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import AnimatedSection from '../components/AnimatedSection';
