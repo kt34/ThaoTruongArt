@@ -10,9 +10,9 @@ const Collections = () => {
       path: '/collections/australian-birds'
     },
     {
-      title: 'Female Figures',
-      image: '/images/female-figure.jpg',
-      path: '/collections/female-figures'
+      title: 'Women Figures',
+      image: '/images/women-figure.jpg',
+      path: '/collections/women-figures'
     },
     {
       title: 'Pet Portraits',

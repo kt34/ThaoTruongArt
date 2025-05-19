@@ -1,13 +1,12 @@
 import os
 
-# Change this to your directory path
-directory = "/Users/kevinton/Desktop/Projects/ThaoTruongArt/frontend/public/images/fluid-art"
+# Set the directory containing your images
+directory = '/Users/kevinton/Desktop/Projects/ThaoTruongArt/frontend/public/images/women-figures'  # or replace with the path to your folder
 
 for filename in os.listdir(directory):
-    old_path = os.path.join(directory, filename)
-    # Only rename if it's a file
-    if os.path.isfile(old_path):
-        new_filename = filename.replace(' ', '-').lower()
-        new_path = os.path.join(directory, new_filename)
+    if filename.startswith('#'):
+        new_name = filename.replace('#', '')
+        old_path = os.path.join(directory, filename)
+        new_path = os.path.join(directory, new_name)
         os.rename(old_path, new_path)
-        print(f"Renamed: {filename} -> {new_filename}")
+        print(f'Renamed: {filename} -> {new_name}')

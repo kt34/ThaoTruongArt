@@ -222,7 +222,7 @@ const Navbar = () => {
               >
                 {[
                   { title: 'Australian Birds', path: '/collections/australian-birds' },
-                  { title: 'Female Figures', path: '/collections/female-figures' },
+                  { title: 'Women Figures', path: '/collections/women-figures' },
                   { title: 'Pet Portraits', path: '/collections/pet-portraits' },
                   { title: 'Fluid Art', path: '/collections/fluid-art' }
                 ].map((item) => (
