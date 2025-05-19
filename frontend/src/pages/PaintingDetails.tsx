@@ -14,7 +14,6 @@ interface Painting {
   description?: string;
   price?: string;
   dimensions?: string;
-  year?: string;
 }
 
 interface Collection {
@@ -36,91 +35,91 @@ const collectionsData: CollectionsData = {
           id: 1,
           title: "Natural's Blend",
           image: '/images/fluid-art/natural-blend-1.jpg',
-          additionalImages: ['/images/fluid-art/natural-blend-2.jpg', '/images/fluid-art/natural-blend-3.jpg'],
-          description: 'A vibrant piece inspired by ocean waves',
-          price: '$450',
-          dimensions: '24" x 36"',
-          year: '2023'
+          additionalImages: ['/images/fluid-art/natural-blend-3.jpg'],
+          description: 'Abstract Fluid Art',
+          price: 'A$420',
+          dimensions: '70cm(H) x 50cm(w) x 1.5cm(D)'
         },
         {
           id: 2,
           title: 'Spring Aroma',
           image: '/images/fluid-art/spring-aroma-1.jpg',
-          additionalImages: ['/images/fluid-art/spring-aroma-2.jpg', '/images/fluid-art/spring-aroma-3.jpg'],
-          description: 'Explosion of colors in perfect harmony',
-          price: '$380',
-          dimensions: '20" x 30"',
-          year: '2023'
+          additionalImages: ['/images/fluid-art/spring-aroma-3.jpg'],
+          description: 'Abstract Fluid Art',
+          price: 'A$300',
+          dimensions: '35cm(H) x 70cm(w) x 3.5cm(D)'
         },
         {
           id: 3,
           title: 'Red Desert',
           image: '/images/fluid-art/red-desert-1.jpg',
           additionalImages: ['/images/fluid-art/red-desert-2.jpg'],
-          description: 'Explosion of colors in perfect harmony',
-          price: '$380',
-          dimensions: '20" x 30"',
-          year: '2023'
+          description: 'Abstract Fluid Art',
+          price: '$300',
+          dimensions: '35cm(H) x 70cm(w) x 3.5cm(D)'
         },
         {
           id: 4,
           title: "Colour's Dance",
           image: '/images/fluid-art/colour-dance-1.jpg',
-          additionalImages: ['/images/fluid-art/colour-dance-2.jpg', '/images/fluid-art/colour-dance-3.jpg'],
-          description: 'Explosion of colors in perfect harmony',
-          price: '$380',
-          dimensions: '20" x 30"',
-          year: '2023'
+          additionalImages: ['/images/fluid-art/colour-dance-3.jpg'],
+          description: 'Abstract Fluid Art',
+          price: '$400',
+          dimensions: '60cm(H) x 30cm(w) x 1.5cm(D)',
         },
         {
           id: 5,
           title: 'Aqua Swash',
           image: '/images/fluid-art/aqua-swash-1.jpg',
           additionalImages: ['/images/fluid-art/aqua-swash-2.jpg'],
-          description: 'Explosion of colors in perfect harmony',
-          price: '$380',
-          dimensions: '20" x 30"',
-          year: '2023'
+          description: 'Abstract Fluid Art',
+          price: '$300',
+          dimensions: '35cm(H) x 70cm(w) x 3.5cm(D)'
         },
         {
           id: 6,
           title: 'The Harmony',
           image: '/images/fluid-art/the-harmony-1.jpg',
           additionalImages: ['/images/fluid-art/the-harmony-2.jpg'],
-          description: 'Explosion of colors in perfect harmony',
-          price: '$380',
-          dimensions: '20" x 30"',
-          year: '2023'
+          description: 'Abstract Fluid Art',
+          price: '$350',
+          dimensions: '40cm(H) x 80cm(w) x 3.5cm(D)'
         },
         {
           id: 7,
           title: 'Blue Lagoon',
           image: '/images/fluid-art/blue-lagoon-1.jpg',
           additionalImages: ['/images/fluid-art/blue-lagoon-2.jpg'],
-          description: 'Explosion of colors in perfect harmony',
-          price: '$380',
-          dimensions: '20" x 30"',
-          year: '2023'
+          description: 'Abstract Fluid Art',
+          price: '$300',
+          dimensions: '35cm(H) x 70cm(w) x 3.5cm(D)'
+        },
+        {
+          id: 25,
+          title: 'Young & Beauty',
+          image: '/images/fluid-art/young-n-beauty-1.jpg',
+          additionalImages: ['/images/fluid-art/young-n-beauty-2.png'],
+          description: 'Abstract Fluid Art',
+          price: '$300',
+          dimensions: '25cm(H) x 25cm(w) x 3.5cm(D)'
         },
         {
           id: 8,
           title: 'Jellyfish Prom',
           image: '/images/fluid-art/jellyfish-prom-1.jpg',
-          additionalImages: ['/images/fluid-art/jellyfish-prom-2.jpg', '/images/fluid-art/jellyfish-prom-2.png'],
-          description: 'Explosion of colors in perfect harmony',
-          price: '$380',
-          dimensions: '20" x 30"',
-          year: '2023'
+          additionalImages: ['/images/fluid-art/jellyfish-prom-2.jpg'],
+          description: 'Abstract Fluid Art',
+          price: '$300',
+          dimensions: '25cm(H) x 25cm(w) x 3.5cm(D)'
         },
         {
           id: 9,
           title: 'Contours',
           image: '/images/fluid-art/contours-1.jpg',
-          additionalImages: ['/images/fluid-art/contours-2.jpg', '/images/fluid-art/contours-3.jpg', '/images/fluid-art/contours-4.jpg'],
-          description: 'Explosion of colors in perfect harmony',
-          price: '$380',
-          dimensions: '20" x 30"',
-          year: '2023'
+          additionalImages: ['/images/fluid-art/contours-2.jpg', '/images/fluid-art/contours-4.jpg'],
+          description: 'Abstract Fluid Art',
+          price: '$300',
+          dimensions: '30cm(H) x 40cm(w) x 3.5cm(D)'
         }
       ]
     },
@@ -135,7 +134,6 @@ const collectionsData: CollectionsData = {
           description: 'Capturing the first light of day',
           price: '$520',
           dimensions: '30" x 40"',
-          year: '2023'
         }
       ]
     },
@@ -150,8 +148,7 @@ const collectionsData: CollectionsData = {
           additionalImages: ['/images/women-figures/1a.jpg', '/images/women-figures/1b.jpg'],
           description: 'A study in elegance and poise',
           price: '$600',
-          dimensions: '24" x 36"',
-          year: '2023'
+          dimensions: '24" x 36"'
         },
         {
           id: 17,
@@ -161,7 +158,6 @@ const collectionsData: CollectionsData = {
           description: 'A study in elegance and poise',
           price: '$600',
           dimensions: '24" x 36"',
-          year: '2023'
         },
         {
           id: 18,
@@ -171,7 +167,6 @@ const collectionsData: CollectionsData = {
           description: 'A study in elegance and poise',
           price: '$600',
           dimensions: '24" x 36"',
-          year: '2023'
         },
         {
           id: 19,
@@ -181,7 +176,6 @@ const collectionsData: CollectionsData = {
           description: 'A study in elegance and poise',
           price: '$600',
           dimensions: '24" x 36"',
-          year: '2023'
         },
         {
           id: 20,
@@ -191,7 +185,6 @@ const collectionsData: CollectionsData = {
           description: 'A study in elegance and poise',
           price: '$600',
           dimensions: '24" x 36"',
-          year: '2023'
         },
         {
           id: 21,
@@ -201,7 +194,6 @@ const collectionsData: CollectionsData = {
           description: 'A study in elegance and poise',
           price: '$600',
           dimensions: '24" x 36"',
-          year: '2023'
         },
         {
           id: 22,
@@ -210,7 +202,6 @@ const collectionsData: CollectionsData = {
           description: 'A study in elegance and poise',
           price: '$420',
           dimensions: '24" x 36"',
-          year: '2023'
         }
       ]
     },
@@ -224,8 +215,7 @@ const collectionsData: CollectionsData = {
           image: '/images/pet-portrait/Jessie.jpg',
           description: 'A vibrant portrait capturing Jessie\'s playful spirit and distinctive markings. The warm tones highlight her beautiful coat while maintaining the depth of her expressive eyes.',
           price: '$790',
-          dimensions: '35" x 45"',
-          year: '2023'
+          dimensions: '35" x 45"'
         },
         {
           id: 12,
@@ -234,7 +224,6 @@ const collectionsData: CollectionsData = {
           description: 'A charming group portrait featuring three beloved pets. The composition beautifully balances each pet\'s unique personality while creating a harmonious family portrait.',
           price: '$990',
           dimensions: '51" x 61"',
-          year: '2023'
         },
         {
           id: 13,
@@ -243,7 +232,6 @@ const collectionsData: CollectionsData = {
           description: 'An elegant portrait that captures Mame\'s graceful presence. The artist\'s attention to detail brings out the subtle textures of her fur and the gentle expression in her eyes.',
           price: '$790',
           dimensions: '35" x 45"',
-          year: '2023'
         },
         {
           id: 14,
@@ -252,7 +240,6 @@ const collectionsData: CollectionsData = {
           description: 'A dynamic duo portrait that showcases the special bond between these two pets. The composition highlights their individual personalities while celebrating their companionship.',
           price: '$990',
           dimensions: '51" x 61"',
-          year: '2023'
         },
         {
           id: 15,
@@ -261,7 +248,6 @@ const collectionsData: CollectionsData = {
           description: 'A delightful portrait that captures the endearing features of this charming pug. The artist has masterfully rendered the distinctive wrinkles and expressive face that make pugs so lovable.',
           price: '$490',
           dimensions: '25" x 30"',
-          year: '2023'
         },
         {
           id: 16,
@@ -270,7 +256,6 @@ const collectionsData: CollectionsData = {
           description: 'A striking portrait of two pets that perfectly captures their unique personalities. The composition creates a beautiful balance between the two subjects, highlighting their individual characteristics.',
           price: '$990',
           dimensions: '51" x 61"',
-          year: '2023'
         },
       ]
     }
@@ -585,10 +570,27 @@ const collectionsData: CollectionsData = {
                       <strong>Dimensions:</strong> {painting.dimensions}
                     </Typography>
                   )}
-                  {painting.year && (
-                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                      <strong>Year:</strong> {painting.year}
-                    </Typography>
+                  {collectionId === 'fluid-art' && (
+                    <>
+                      {painting.title === 'Red Desert' && (
+                        <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                          Metallic Paint
+                        </Typography>
+                      )}
+                      {(painting.title === "Colour's Dance" || painting.title === "Contours") && (
+                        <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                          Set of two
+                        </Typography>
+                      )}
+                      {(painting.title === 'Young & Beauty' || painting.title === 'Jellyfish Prom') && (
+                        <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                          Set of four
+                        </Typography>
+                      )}
+                      <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                        Gloss Varnish
+                      </Typography>
+                    </>
                   )}
                   {painting.price && (
                     <Typography 

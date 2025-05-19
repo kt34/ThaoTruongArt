@@ -25,8 +25,7 @@ const collectionsData = {
         image: '/images/fluid-art/red-desert-1.jpg',
         description: 'Explosion of colors in perfect harmony',
         price: '$380',
-        dimensions: '20" x 30"',
-        year: '2023'
+        dimensions: '20" x 30"'
       },
       {
         id: 4,
@@ -34,8 +33,7 @@ const collectionsData = {
         image: '/images/fluid-art/colour-dance-1.jpg',
         description: 'Explosion of colors in perfect harmony',
         price: '$380',
-        dimensions: '20" x 30"',
-        year: '2023'
+        dimensions: '20" x 30"'
       },
       {
         id: 5,
@@ -43,8 +41,7 @@ const collectionsData = {
         image: '/images/fluid-art/aqua-swash-1.jpg',
         description: 'Explosion of colors in perfect harmony',
         price: '$380',
-        dimensions: '20" x 30"',
-        year: '2023'
+        dimensions: '20" x 30"'
       },
       {
         id: 6,
@@ -52,8 +49,7 @@ const collectionsData = {
         image: '/images/fluid-art/the-harmony-1.jpg',
         description: 'Explosion of colors in perfect harmony',
         price: '$380',
-        dimensions: '20" x 30"',
-        year: '2023'
+        dimensions: '20" x 30"'
       },
       {
         id: 7,
@@ -61,8 +57,15 @@ const collectionsData = {
         image: '/images/fluid-art/blue-lagoon-1.jpg',
         description: 'Explosion of colors in perfect harmony',
         price: '$380',
-        dimensions: '20" x 30"',
-        year: '2023'
+        dimensions: '20" x 30"'
+      },
+      {
+        id: 25,
+        title: 'Young & Beauty',
+        image: '/images/fluid-art/young-n-beauty-1.jpg',
+        description: 'Explosion of colors in perfect harmony',
+        price: '$380',
+        dimensions: '20" x 30"'
       },
       {
         id: 8,
@@ -70,8 +73,7 @@ const collectionsData = {
         image: '/images/fluid-art/jellyfish-prom-1.jpg',
         description: 'Explosion of colors in perfect harmony',
         price: '$380',
-        dimensions: '20" x 30"',
-        year: '2023'
+        dimensions: '20" x 30"'
       },
       {
         id: 9,
@@ -79,8 +81,7 @@ const collectionsData = {
         image: '/images/fluid-art/contours-1.jpg',
         description: 'Explosion of colors in perfect harmony',
         price: '$380',
-        dimensions: '20" x 30"',
-        year: '2023'
+        dimensions: '20" x 30"'
       }
     ]
   },
@@ -94,8 +95,7 @@ const collectionsData = {
         image: '/images/nature-image2.jpg',
         description: 'Capturing the first light of day',
         price: '$520',
-        dimensions: '30" x 40"',
-        year: '2023'
+        dimensions: '30" x 40"'
       }
     ]
   },
@@ -107,64 +107,63 @@ const collectionsData = {
         id: 10,
         title: 'Woman Figure #1',
         image: '/images/women-figures/1.jpg',
+        additionalImages: ['/images/women-figures/1a.jpg', '/images/women-figures/1b.jpg'],
         description: 'A study in elegance and poise',
         price: '$600',
-        dimensions: '24" x 36"',
-        year: '2023'
+        dimensions: '24" x 36"'
       },
       {
         id: 17,
         title: 'Woman Figure #2',
         image: '/images/women-figures/2.jpg',
+        additionalImages: ['/images/women-figures/2a.jpg'],
         description: 'A study in elegance and poise',
         price: '$600',
-        dimensions: '24" x 36"',
-        year: '2023'
+        dimensions: '24" x 36"'
       },
       {
         id: 18,
         title: 'Woman Figure #3',
         image: '/images/women-figures/3.jpg',
+        additionalImages: ['/images/women-figures/3a.jpg'],
         description: 'A study in elegance and poise',
         price: '$600',
-        dimensions: '24" x 36"',
-        year: '2023'
+        dimensions: '24" x 36"'
       },
       {
         id: 19,
         title: 'Woman Figure #4',
         image: '/images/women-figures/4.jpg',
+        additionalImages: ['/images/women-figures/4a.jpg'],
         description: 'A study in elegance and poise',
         price: '$600',
-        dimensions: '24" x 36"',
-        year: '2023'
+        dimensions: '24" x 36"'
       },
       {
         id: 20,
         title: 'Woman Figure #5',
         image: '/images/women-figures/5.jpg',
+        additionalImages: ['/images/women-figures/5a.jpg'],
         description: 'A study in elegance and poise',
         price: '$600',
-        dimensions: '24" x 36"',
-        year: '2023'
+        dimensions: '24" x 36"'
       },
       {
         id: 21,
         title: 'Woman Figure #6',
         image: '/images/women-figures/6.jpg',
+        additionalImages: ['/images/women-figures/6a.jpg'],
         description: 'A study in elegance and poise',
         price: '$600',
-        dimensions: '24" x 36"',
-        year: '2023'
+        dimensions: '24" x 36"'
       },
       {
         id: 22,
         title: 'Woman Figure #7',
         image: '/images/women-figures/7.jpg',
         description: 'A study in elegance and poise',
-        price: '$600',
-        dimensions: '24" x 36"',
-        year: '2023'
+        price: '$420',
+        dimensions: '24" x 36"'
       },
     ]
   },
