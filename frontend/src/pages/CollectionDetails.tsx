@@ -1,5 +1,5 @@
 import { Box, Typography, Container, Card, CardMedia, CardContent, Button, TextField, Alert, CircularProgress } from '@mui/material';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import AnimatedSection from '../components/AnimatedSection';
 
@@ -208,6 +208,7 @@ const collectionsData = {
 const CollectionDetail = () => {
   const { collectionId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const collection = collectionsData[collectionId as keyof typeof collectionsData];
   const [formData, setFormData] = useState({
     name: '',
@@ -217,6 +218,14 @@ const CollectionDetail = () => {
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 0); // or 100ms if needed for animations to settle
+  
+    return () => clearTimeout(timeout);
+  }, [location.pathname]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -254,10 +263,6 @@ const CollectionDetail = () => {
       [name]: value,
     }));
   };
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   if (!collection) {
     return (
