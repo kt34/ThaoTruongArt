@@ -77,7 +77,7 @@ const Home = () => {
                   textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
                 }}
               >
-                Thao Truong Art
+                ThaoTruong Art
               </Typography>
               <Typography
                 variant="h5"

@@ -208,7 +208,7 @@ const collectionsData: CollectionsData = {
           title: 'Woman Figure #7',
           image: '/images/women-figures/7.jpg',
           description: 'A study in elegance and poise',
-          price: '$600',
+          price: '$420',
           dimensions: '24" x 36"',
           year: '2023'
         }
@@ -286,6 +286,10 @@ const collectionsData: CollectionsData = {
   
     const collection = collectionsData[collectionId as keyof typeof collectionsData];
     const painting = collection?.paintings.find(p => p.id === Number(paintingId));
+  
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
   
     const getPaintingImages = async (painting: Painting) => {
       if (!painting) return [];

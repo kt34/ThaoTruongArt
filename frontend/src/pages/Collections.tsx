@@ -11,7 +11,7 @@ const Collections = () => {
     },
     {
       title: 'Women Figures',
-      image: '/images/women-figure.jpg',
+      image: '/images/women-figures/1.jpg',
       path: '/collections/women-figures'
     },
     {

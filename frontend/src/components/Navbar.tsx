@@ -128,7 +128,7 @@ const Navbar = () => {
                   }
                 }}
               >
-                Thao Truong Art
+                ThaoTruong Art
               </Typography>
               <IconButton
                 color="inherit"
@@ -179,7 +179,7 @@ const Navbar = () => {
                 }
               }}
             >
-              Thao Truong Art
+              ThaoTruong Art
             </Typography>
             <Box sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
               {['home', 'about'].map((text) => (
