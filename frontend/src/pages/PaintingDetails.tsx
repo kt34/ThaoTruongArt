@@ -146,62 +146,62 @@ const collectionsData: CollectionsData = {
           title: 'Woman Figure #1',
           image: '/images/women-figures/1.jpg',
           additionalImages: ['/images/women-figures/1a.jpg', '/images/women-figures/1b.jpg'],
-          description: 'A study in elegance and poise',
-          price: '$600',
-          dimensions: '24" x 36"'
+          description: 'Acrylic on stretched canvas',
+          price: 'A$420',
+          dimensions: '60cm(H) x 50cm(w) x 3cm(D)'
         },
         {
           id: 17,
           title: 'Woman Figure #2',
           image: '/images/women-figures/2.jpg',
           additionalImages: ['/images/women-figures/2a.jpg'],
-          description: 'A study in elegance and poise',
-          price: '$600',
-          dimensions: '24" x 36"',
+          description: 'Acrylic on stretched canvas',
+          price: 'A$420',
+          dimensions: '60cm(H) x 50cm(w) x 3cm(D)'
         },
         {
           id: 18,
           title: 'Woman Figure #3',
           image: '/images/women-figures/3.jpg',
           additionalImages: ['/images/women-figures/3a.jpg'],
-          description: 'A study in elegance and poise',
-          price: '$600',
-          dimensions: '24" x 36"',
+          description: 'Acrylic on stretched canvas',
+          price: 'A$420',
+          dimensions: '50cm(H) x 100cm(w) x 1.5cm(D)'
         },
         {
           id: 19,
           title: 'Woman Figure #4',
           image: '/images/women-figures/4.jpg',
           additionalImages: ['/images/women-figures/4a.jpg'],
-          description: 'A study in elegance and poise',
-          price: '$600',
-          dimensions: '24" x 36"',
+          description: 'Acrylic on stretched canvas',
+          price: 'A$420',
+          dimensions: '50cm(H) x 60cm(w) x 3cm(D)'
         },
         {
           id: 20,
           title: 'Woman Figure #5',
           image: '/images/women-figures/5.jpg',
           additionalImages: ['/images/women-figures/5a.jpg'],
-          description: 'A study in elegance and poise',
-          price: '$600',
-          dimensions: '24" x 36"',
+          description: 'Acrylic on stretched canvas',
+          price: 'A$420',
+          dimensions: '60cm(H) x 60cm(w) x 3cm(D)'
         },
         {
           id: 21,
           title: 'Woman Figure #6',
           image: '/images/women-figures/6.jpg',
           additionalImages: ['/images/women-figures/6a.jpg'],
-          description: 'A study in elegance and poise',
-          price: '$600',
-          dimensions: '24" x 36"',
+          description: 'Acrylic on stretched canvas',
+          price: 'A$420',
+          dimensions: '50cm(H) x 60cm(w) x 3cm(D)'
         },
         {
           id: 22,
           title: 'Woman Figure #7',
           image: '/images/women-figures/7.jpg',
-          description: 'A study in elegance and poise',
-          price: '$420',
-          dimensions: '24" x 36"',
+          description: 'Acrylic on stretched canvas',
+          price: 'A$420',
+          dimensions: '60cm(H) x 76cm(w) x 3cm(D)'
         }
       ]
     },
@@ -570,7 +570,7 @@ const collectionsData: CollectionsData = {
                       <strong>Dimensions:</strong> {painting.dimensions}
                     </Typography>
                   )}
-                  {collectionId === 'fluid-art' && (
+                  {(collectionId === 'fluid-art' || collectionId === 'women-figures') && (
                     <>
                       {painting.title === 'Red Desert' && (
                         <Typography variant="body1" sx={{ fontWeight: 500 }}>
