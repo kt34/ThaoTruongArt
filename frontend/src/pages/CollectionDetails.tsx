@@ -66,6 +66,15 @@ const collectionsData = {
       },
       {
         id: 8,
+        title: 'Jellyfish Prom',
+        image: '/images/fluid-art/jellyfish-prom-1.jpg',
+        description: 'Explosion of colors in perfect harmony',
+        price: '$380',
+        dimensions: '20" x 30"',
+        year: '2023'
+      },
+      {
+        id: 9,
         title: 'Contours',
         image: '/images/fluid-art/contours-1.jpg',
         description: 'Explosion of colors in perfect harmony',

@@ -7,25 +7,21 @@ const Collections = () => {
     {
       title: 'Australian Birds',
       image: '/images/australian-bird.jpg',
-      description: 'Australia is home to a diverse range of bird species, many of which are found nowhere else in the world. From the vibrant Rainbow Lorikeet and the iconic Laughing Kookaburra to the strikingly intelligent Australian Magpie, the country\'s birdlife is colorful and unique.',
       path: '/collections/australian-birds'
     },
     {
       title: 'Female Figures',
       image: '/images/female-figure.jpg',
-      description: 'Australia is home to a diverse range of bird species, many of which are found nowhere else in the world. From the vibrant Rainbow Lorikeet and the iconic Laughing Kookaburra to the strikingly intelligent Australian Magpie, the country\'s birdlife is colorful and unique.',
       path: '/collections/female-figures'
     },
     {
       title: 'Pet Portraits',
       image: '/images/pet-painting.jpg',
-      description: 'Australia is home to a diverse range of bird species, many of which are found nowhere else in the world. From the vibrant Rainbow Lorikeet and the iconic Laughing Kookaburra to the strikingly intelligent Australian Magpie, the country\'s birdlife is colorful and unique.',
       path: '/collections/pet-portraits'
     },
     {
       title: 'Fluid Art',
-      image: '/images/fluid-art/fluid-painting.jpg',
-      description: 'Australia is home to a diverse range of bird species, many of which are found nowhere else in the world. From the vibrant Rainbow Lorikeet and the iconic Laughing Kookaburra to the strikingly intelligent Australian Magpie, the country\'s birdlife is colorful and unique.',
+      image: '/images/fluid-art/aqua-swash-1.jpg',
       path: '/collections/fluid-art'
     }
   ];
@@ -39,7 +35,7 @@ const Collections = () => {
             component="h1"
             sx={{
               color: 'secondary.main',
-              mb: 4,
+              mb: 7,
               textAlign: 'center',
             }}
           >
@@ -84,19 +80,21 @@ const Collections = () => {
               >
                 <CardMedia
                   component="img"
-                  height="300"
+                  height="400"
                   image={collection.image}
                   alt={collection.title}
                   sx={{
-                    objectFit: 'cover'
+                    width: '100%',
+                    aspectRatio: '3/2',
+                    objectFit: 'contain',
+                    backgroundColor: 'white',
+                    display: 'block',
+                    padding: '20px'
                   }}
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography gutterBottom variant="h5" component="h2">
                     {collection.title}
-                  </Typography>
-                  <Typography>
-                    {collection.description}
                   </Typography>
                 </CardContent>
               </Card>
