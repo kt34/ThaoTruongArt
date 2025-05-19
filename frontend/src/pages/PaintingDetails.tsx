@@ -230,11 +230,6 @@ const collectionsData: CollectionsData = {
     const getPaintingImages = async (painting: Painting) => {
       if (!painting) return [];
       
-      // For pet portrait ID 1, show the same image three times
-      if (painting.id === 11) {
-        return [painting.image, painting.image, painting.image];
-      }
-      
       // For fluid art paintings, use the additionalImages array
       if (collectionId === 'fluid-art') {
         return [painting.image, ...(painting.additionalImages || [])];
