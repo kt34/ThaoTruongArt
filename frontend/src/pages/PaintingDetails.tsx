@@ -268,6 +268,7 @@ const collectionsData: CollectionsData = {
     const [fadeIn, setFadeIn] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [paintingImages, setPaintingImages] = useState<string[]>([]);
+    const [isTransitioning, setIsTransitioning] = useState(false);
   
     const collection = collectionsData[collectionId as keyof typeof collectionsData];
     const painting = collection?.paintings.find(p => p.id === Number(paintingId));
@@ -300,27 +301,41 @@ const collectionsData: CollectionsData = {
     }, [painting, collectionId]);
   
     const handleNext = () => {
+      if (isTransitioning) return;
+      setIsTransitioning(true);
       setFadeIn(false);
       setTimeout(() => {
         setCurrentImageIndex((prev) => (prev + 1) % (paintingImages.length || 1));
         setFadeIn(true);
+        setTimeout(() => {
+          setIsTransitioning(false);
+        }, 300);
       }, 300);
     };
   
     const handlePrevious = () => {
+      if (isTransitioning) return;
+      setIsTransitioning(true);
       setFadeIn(false);
       setTimeout(() => {
         setCurrentImageIndex((prev) => (prev - 1 + (paintingImages.length || 1)) % (paintingImages.length || 1));
         setFadeIn(true);
+        setTimeout(() => {
+          setIsTransitioning(false);
+        }, 300);
       }, 300);
     };
   
     const handleIndicatorClick = (index: number) => {
-      if (index === currentImageIndex) return;
+      if (isTransitioning || index === currentImageIndex) return;
+      setIsTransitioning(true);
       setFadeIn(false);
       setTimeout(() => {
         setCurrentImageIndex(index);
         setFadeIn(true);
+        setTimeout(() => {
+          setIsTransitioning(false);
+        }, 300);
       }, 300);
     };
   
