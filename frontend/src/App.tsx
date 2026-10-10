@@ -8,6 +8,7 @@ import Contact from './pages/Contact';
 import Footer from './components/Footer';
 import CollectionDetails from './pages/CollectionDetails';
 import PaintingDetails from './pages/PaintingDetails';
+import PptxMatch from './pptx-match/PptxMatch';
 import { useEffect } from 'react';
 import { colors, fonts } from './constants';
 
@@ -77,20 +78,28 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <ScrollToSection />
-        <Navbar />
-        <main>
-          <Routes>
-            <Route path="/" element={
-              <>
-                <Home />
-                <Collections />
-                <Contact />
-              </>
-            } />
-            <Route path="/collections/:collectionId" element={<CollectionDetails />} />
-            <Route path="/painting/:collectionId/:paintingId" element={<PaintingDetails />} />
-          </Routes>
-        </main>
+        <Routes>
+          {/* Original slide-for-slide version of the design, kept for comparison. */}
+          <Route path="/pptx-match" element={<PptxMatch />} />
+          <Route path="*" element={
+            <>
+              <Navbar />
+              <main>
+                <Routes>
+                  <Route path="/" element={
+                    <>
+                      <Home />
+                      <Collections />
+                      <Contact />
+                    </>
+                  } />
+                  <Route path="/collections/:collectionId" element={<CollectionDetails />} />
+                  <Route path="/painting/:collectionId/:paintingId" element={<PaintingDetails />} />
+                </Routes>
+              </main>
+            </>
+          } />
+        </Routes>
         <Footer />
       </ThemeProvider>
     </BrowserRouter>

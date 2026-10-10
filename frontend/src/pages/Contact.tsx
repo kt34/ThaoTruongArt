@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { ContentCopy, Check, MailOutline, OpenInNew } from '@mui/icons-material';
 import AnimatedSection from '../components/AnimatedSection';
-import { HEADER_OFFSET } from '../components/Navbar';
+import { Section, Container } from '../components/Layout';
+import { headingText, bodyText, imageRadius, softShadow, headerOffset } from '../styles';
 import { colors, fonts, CONTACT_EMAIL, gmailComposeUrl, mailtoUrl } from '../constants';
 
 const topics = [
@@ -29,22 +30,14 @@ const Contact = () => {
   };
 
   return (
-    <Box
+    <Section
       id="contact"
-      component="section"
-      sx={{
-        bgcolor: colors.teal,
-        color: colors.white,
-        scrollMarginTop: `${HEADER_OFFSET}px`,
-        borderTop: `1px solid rgba(255,255,255,0.18)`,
-        px: { xs: 2, sm: 3, md: '6%' },
-        py: { xs: 7, md: '6vw' },
-      }}
+      bg={colors.teal}
+      color={colors.white}
+      sx={{ scrollMarginTop: headerOffset, borderTop: '1px solid rgba(255,255,255,0.15)' }}
     >
-      <Box
+      <Container
         sx={{
-          maxWidth: 1240,
-          mx: 'auto',
           display: 'grid',
           gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
           gap: { xs: 5, md: 8 },
@@ -52,23 +45,23 @@ const Contact = () => {
         }}
       >
         <AnimatedSection>
-          <Typography component="h2" sx={{ fontFamily: fonts.heading, fontSize: { xs: '2.6rem', md: '3.6rem' }, lineHeight: 1.1, mb: 2 }}>
+          <Typography component="h2" sx={{ ...headingText, mb: 2 }}>
             Contact
           </Typography>
-          <Typography component="p" sx={{ fontFamily: fonts.heading, fontSize: { xs: '1.5rem', md: '2rem' }, mb: 3, color: colors.blush }}>
+          <Typography component="p" sx={{ fontFamily: fonts.heading, fontSize: { xs: '1.35rem', md: '1.6rem' }, mb: 3, color: colors.blush }}>
             I’d love to hear from you
           </Typography>
-          <Typography sx={{ fontSize: { xs: '1.1rem', md: '1.25rem' }, letterSpacing: '0.03em', lineHeight: 1.6, mb: 2 }}>
+          <Typography sx={{ ...bodyText, mb: 2 }}>
             Whether you have a question about my artwork, are interested in commissioning a custom piece,
             enquiring about workshops, or simply want to say hello, please feel free to get in touch.
           </Typography>
-          <Typography sx={{ fontSize: { xs: '1.1rem', md: '1.25rem' }, fontStyle: 'italic', letterSpacing: '0.03em' }}>
+          <Typography sx={{ ...bodyText, fontStyle: 'italic' }}>
             Thank you for visiting Joyful Art GetAway.
           </Typography>
         </AnimatedSection>
 
         <AnimatedSection delay={0.15}>
-          <Box sx={{ bgcolor: colors.cream, color: colors.black, boxShadow: '0 18px 40px rgba(0,0,0,0.25)', overflow: 'hidden' }}>
+          <Box sx={{ bgcolor: colors.cream, color: colors.black, borderRadius: imageRadius, boxShadow: softShadow, overflow: 'hidden' }}>
             {/* Colour bands echo the palette used throughout the site. */}
             <Box sx={{ display: 'flex', height: 10 }}>
               {[colors.sage, colors.blush, colors.rose, colors.plum, colors.sand].map((c) => (
@@ -118,6 +111,7 @@ const Contact = () => {
                   alignItems: 'center',
                   gap: 1.5,
                   border: '1px solid rgba(0,0,0,0.15)',
+                  borderRadius: imageRadius,
                   bgcolor: colors.white,
                   pl: 2,
                   pr: 0.5,
@@ -145,7 +139,7 @@ const Contact = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 endIcon={<OpenInNew />}
-                sx={{ py: 1.6, fontSize: '1.1rem', borderRadius: 0, boxShadow: 'none', '&:hover': { boxShadow: 'none' } }}
+                sx={{ py: 1.6, fontSize: '1.1rem', borderRadius: imageRadius, boxShadow: 'none', '&:hover': { boxShadow: 'none' } }}
               >
                 Draft an email in Gmail
               </Button>
@@ -163,8 +157,8 @@ const Contact = () => {
             </Box>
           </Box>
         </AnimatedSection>
-      </Box>
-    </Box>
+      </Container>
+    </Section>
   );
 };
 

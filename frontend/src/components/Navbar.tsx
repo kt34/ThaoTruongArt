@@ -3,9 +3,7 @@ import { Menu as MenuIcon, Close as CloseIcon } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { colors, fonts, FACEBOOK_URL, INSTAGRAM_URL } from '../constants';
-
-// Height of the compact bar; sections use it as their scroll-margin.
-export const HEADER_OFFSET = 76;
+import { headerOffset } from '../styles';
 
 const navItems = [
   { label: 'About the Artist', section: 'about' },
@@ -26,108 +24,11 @@ const SocialIcons = ({ size }: { size: number }) => (
         target="_blank"
         rel="noopener noreferrer"
         aria-label={s.label}
-        sx={{ display: 'block', transition: 'transform 0.2s', '&:hover': { transform: 'translateY(-2px)' } }}
+        sx={{ display: 'block', borderRadius: '6px', overflow: 'hidden', transition: 'transform 0.2s ease', '&:hover': { transform: 'translateY(-2px)' } }}
       >
         <Box component="img" src={s.src} alt="" sx={{ width: size, height: size }} />
       </Box>
     ))}
-  </Box>
-);
-
-interface BarProps {
-  compact: boolean;
-  isMobile: boolean;
-  onNavigate: (section: string) => void;
-  onOpenMenu: () => void;
-}
-
-const Bar = ({ compact, isMobile, onNavigate, onOpenMenu }: BarProps) => (
-  <Box
-    sx={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      gap: 3,
-      px: { xs: 2, md: '2%' },
-      py: compact ? 1.25 : 3.5,
-      minHeight: compact ? HEADER_OFFSET : undefined,
-    }}
-  >
-    <Box
-      component="button"
-      onClick={() => onNavigate('top')}
-      aria-label="ThaoTruong Art, back to top"
-      sx={{
-        background: 'none',
-        border: 'none',
-        p: 0,
-        cursor: 'pointer',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        flexShrink: 0,
-      }}
-    >
-      <Box
-        component="img"
-        src="/images/design/logo-wordmark.png"
-        alt="ThaoTruong Art"
-        sx={{ width: compact ? { xs: 190, sm: 240 } : 'clamp(280px, 34vw, 510px)', height: 'auto' }}
-      />
-      <Box
-        component="img"
-        src="/images/design/logo-tagline.png"
-        alt="Joyful Art Getaway"
-        sx={{ width: compact ? { xs: 120, sm: 150 } : 'clamp(240px, 29vw, 440px)', height: 'auto', mt: compact ? 0 : 1 }}
-      />
-    </Box>
-
-    {isMobile ? (
-      <IconButton color="inherit" aria-label="Open menu" onClick={onOpenMenu}>
-        <MenuIcon fontSize="large" />
-      </IconButton>
-    ) : (
-      <Box
-        component="nav"
-        sx={{ display: 'flex', alignItems: 'center', gap: { md: 3, lg: 5 }, alignSelf: compact ? 'center' : 'flex-start', mt: compact ? 0 : 2 }}
-      >
-        {navItems.map((item) => (
-          <Box
-            key={item.section}
-            component="button"
-            onClick={() => onNavigate(item.section)}
-            sx={{
-              background: 'none',
-              border: 'none',
-              p: 0,
-              cursor: 'pointer',
-              color: colors.white,
-              fontFamily: fonts.heading,
-              fontSize: compact ? '1.05rem' : 'clamp(1rem, 1.45vw, 1.4rem)',
-              whiteSpace: 'nowrap',
-              position: 'relative',
-              '&::after': {
-                content: '""',
-                position: 'absolute',
-                left: 0,
-                bottom: -6,
-                width: 0,
-                height: '2px',
-                bgcolor: colors.cream,
-                transition: 'width 0.3s ease',
-              },
-              '&:hover::after, &:focus-visible::after': { width: '100%' },
-              '&:focus-visible': { outline: 'none' },
-            }}
-          >
-            {item.label}
-          </Box>
-        ))}
-        <Box sx={{ ml: { md: 1, lg: 4 } }}>
-          <SocialIcons size={compact ? 30 : 40} />
-        </Box>
-      </Box>
-    )}
   </Box>
 );
 
@@ -140,7 +41,7 @@ const Navbar = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 220);
+    const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -157,47 +58,97 @@ const Navbar = () => {
     }
   };
 
-  const barProps = { isMobile, onNavigate: handleNavigation, onOpenMenu: () => setMobileOpen(true) };
-
   return (
-    <>
-      {isMobile ? (
-        // On small screens a single compact bar stays pinned to the top.
-        <Box component="header" sx={{ position: 'sticky', top: 0, zIndex: 1100, bgcolor: colors.teal, color: colors.white, boxShadow: '0 2px 12px rgba(0,0,0,0.18)' }}>
-          <Bar compact {...barProps} />
+    <Box
+      component="header"
+      sx={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 1100,
+        bgcolor: colors.teal,
+        color: colors.white,
+        boxShadow: scrolled ? '0 4px 20px rgba(0,0,0,0.15)' : 'none',
+        transition: 'box-shadow 0.3s ease',
+      }}
+    >
+      <Box
+        sx={{
+          maxWidth: 1280,
+          mx: 'auto',
+          height: headerOffset,
+          px: { xs: 2, sm: 3, md: 4 },
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 3,
+        }}
+      >
+        <Box
+          component="button"
+          onClick={() => handleNavigation('top')}
+          aria-label="ThaoTruong Art, back to top"
+          sx={{ background: 'none', border: 'none', p: 0, cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}
+        >
+          <Box component="img" src="/images/design/logo-wordmark.png" alt="ThaoTruong Art" sx={{ width: { xs: 180, md: 250 }, height: 'auto' }} />
+          <Box component="img" src="/images/design/logo-tagline.png" alt="Joyful Art Getaway" sx={{ width: { xs: 115, md: 160 }, height: 'auto', mt: 0.25 }} />
         </Box>
-      ) : (
-        <>
-          {/* Full header from the design, then a compact bar that slides in once it scrolls away. */}
-          <Box component="header" sx={{ bgcolor: colors.teal, color: colors.white }}>
-            <Bar compact={false} {...barProps} />
+
+        {isMobile ? (
+          <IconButton color="inherit" aria-label="Open menu" onClick={() => setMobileOpen(true)}>
+            <MenuIcon fontSize="large" />
+          </IconButton>
+        ) : (
+          <Box component="nav" sx={{ display: 'flex', alignItems: 'center', gap: { md: 4, lg: 5 } }}>
+            {navItems.map((item) => (
+              <Box
+                key={item.section}
+                component="button"
+                onClick={() => handleNavigation(item.section)}
+                sx={{
+                  background: 'none',
+                  border: 'none',
+                  p: 0,
+                  cursor: 'pointer',
+                  color: colors.white,
+                  fontFamily: fonts.heading,
+                  fontSize: '1.05rem',
+                  letterSpacing: '0.02em',
+                  whiteSpace: 'nowrap',
+                  position: 'relative',
+                  opacity: 0.92,
+                  transition: 'opacity 0.2s ease',
+                  '&:hover': { opacity: 1 },
+                  '&::after': {
+                    content: '""',
+                    position: 'absolute',
+                    left: 0,
+                    bottom: -6,
+                    width: '100%',
+                    height: '2px',
+                    bgcolor: colors.cream,
+                    transform: 'scaleX(0)',
+                    transformOrigin: 'left',
+                    transition: 'transform 0.3s ease',
+                  },
+                  '&:hover::after, &:focus-visible::after': { transform: 'scaleX(1)' },
+                  '&:focus-visible': { outline: 'none' },
+                }}
+              >
+                {item.label}
+              </Box>
+            ))}
+            <Box sx={{ ml: 1 }}>
+              <SocialIcons size={32} />
+            </Box>
           </Box>
-          <Box
-            aria-hidden={!scrolled}
-            inert={!scrolled || undefined}
-            sx={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              zIndex: 1100,
-              bgcolor: colors.teal,
-              color: colors.white,
-              boxShadow: '0 2px 12px rgba(0,0,0,0.18)',
-              transform: scrolled ? 'translateY(0)' : 'translateY(-100%)',
-              transition: 'transform 0.3s ease',
-            }}
-          >
-            <Bar compact {...barProps} />
-          </Box>
-        </>
-      )}
+        )}
+      </Box>
 
       <Drawer
         anchor="right"
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
-        PaperProps={{ sx: { width: 260, bgcolor: colors.teal, color: colors.white } }}
+        PaperProps={{ sx: { width: 270, bgcolor: colors.teal, color: colors.white } }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 1 }}>
           <IconButton color="inherit" aria-label="Close menu" onClick={() => setMobileOpen(false)}>
@@ -206,7 +157,7 @@ const Navbar = () => {
         </Box>
         <List>
           {navItems.map((item) => (
-            <ListItemButton key={item.section} onClick={() => handleNavigation(item.section)}>
+            <ListItemButton key={item.section} onClick={() => handleNavigation(item.section)} sx={{ py: 1.5 }}>
               <ListItemText primary={item.label} primaryTypographyProps={{ fontFamily: fonts.heading, fontSize: '1.15rem' }} />
             </ListItemButton>
           ))}
@@ -215,7 +166,7 @@ const Navbar = () => {
           <SocialIcons size={36} />
         </Box>
       </Drawer>
-    </>
+    </Box>
   );
 };
 
