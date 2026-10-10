@@ -1,12 +1,14 @@
-import { Box, Typography, Container, Card, CardMedia, CardContent, Button, TextField, Alert, CircularProgress } from '@mui/material';
+import { Box, Typography, Container, Card, CardMedia, CardContent, Button } from '@mui/material';
+import { OpenInNew } from '@mui/icons-material';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import AnimatedSection from '../components/AnimatedSection';
+import { colors, fonts, gmailComposeUrl, mailtoUrl } from '../constants';
 
 // Temporary mock data - replace with your actual data
 const collectionsData = {
   'fluid-art': {
-    title: 'Fluid Art',
+    title: 'Abstract Fluid Art',
     description: 'A mesmerizing collection of fluid art paintings that capture the beauty of color and movement.',
     paintings: [
       {
@@ -86,7 +88,7 @@ const collectionsData = {
     ]
   },
   'australian-birds': {
-    title: 'Australian Birds',
+    title: 'Australian Native Birds',
     description: 'Inspired by the beauty of the natural world.',
     paintings: [
       {
@@ -100,7 +102,7 @@ const collectionsData = {
     ]
   },
   'women-figures': {
-    title: 'Women Figures',
+    title: 'Women in Abstract',
     description: 'Expressive portraits that capture the essence of the subject.',
     paintings: [
       {
@@ -210,15 +212,6 @@ const CollectionDetail = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const collection = collectionsData[collectionId as keyof typeof collectionsData];
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: ''
-  });
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
-
   useEffect(() => {
     const timeout = setTimeout(() => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -226,43 +219,6 @@ const CollectionDetail = () => {
   
     return () => clearTimeout(timeout);
   }, [location.pathname]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('loading');
-    setErrorMessage('');
-
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/contact`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          message: `Pet Portrait Commission Request:\n\nPet's Name: ${formData.phone}\n\nAdditional Details:\n${formData.message}`
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to send message');
-      }
-
-      setStatus('success');
-      setFormData({ name: '', email: '', phone: '', message: '' });
-    } catch (error) {
-      setStatus('error');
-      setErrorMessage('Failed to send message. Please try again later.');
-    }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
 
   if (!collection) {
     return (
@@ -289,14 +245,16 @@ const CollectionDetail = () => {
   }
 
   return (
-    <Box sx={{ 
+    <Box sx={{
       minHeight: '100vh',
       display: 'flex',
       flexDirection: 'column',
+      bgcolor: colors.cream,
+      color: colors.black,
     }}>
-      <Box sx={{ 
-        flex: 1, 
-        py: 3, 
+      <Box sx={{
+        flex: 1,
+        py: { xs: 5, md: 7 },
         width: '100vw',
         maxWidth: '100%',
         overflow: 'hidden',
@@ -305,10 +263,18 @@ const CollectionDetail = () => {
       }}>
         <AnimatedSection>
           <Container maxWidth="xl">
-            <Typography variant="h3" component="h1" gutterBottom align="center">
+            <Box
+              component={Link}
+              to="/"
+              state={{ scrollTo: 'collections' }}
+              sx={{ display: 'inline-block', color: colors.teal, fontFamily: fonts.heading, mb: 3, '&:hover': { textDecoration: 'underline' } }}
+            >
+              ← Gallery Collections
+            </Box>
+            <Typography variant="h3" component="h1" gutterBottom align="center" sx={{ color: colors.teal }}>
               {collection.title}
             </Typography>
-            <Typography variant="h6" color="text.secondary" align="center" sx={{ mb: 6 }}>
+            <Typography align="center" sx={{ mb: 6, maxWidth: 820, mx: 'auto', fontSize: '1.2rem', letterSpacing: '0.05em', lineHeight: 1.6, color: 'text.secondary' }}>
               {collection.description}
             </Typography>
           </Container>
@@ -386,7 +352,7 @@ const CollectionDetail = () => {
             <Container maxWidth="lg" sx={{ mt: 8, mb: 8 }}>
               <Typography variant="h3" component="h2" gutterBottom align="center" sx={{ 
                 mb: 6,
-                fontFamily: "'Playfair Display', serif",
+                fontFamily: "Arial, Helvetica, sans-serif",
                 fontWeight: 500,
                 color: 'primary.main'
               }}>
@@ -404,7 +370,7 @@ const CollectionDetail = () => {
                   mb: 4, 
                   fontWeight: 'bold',
                   color: 'primary.main',
-                  fontFamily: "'Playfair Display', serif"
+                  fontFamily: "Arial, Helvetica, sans-serif"
                 }}>
                   ORDER IN 3 SIMPLE STEPS:
                 </Typography>
@@ -494,7 +460,7 @@ const CollectionDetail = () => {
                       mb: 2, 
                       fontWeight: 'bold',
                       color: 'primary.main',
-                      fontFamily: "'Playfair Display', serif"
+                      fontFamily: "Arial, Helvetica, sans-serif"
                     }}>MEDIUM</Typography>
                     <Typography variant="h4" sx={{ 
                       mb: 2, 
@@ -522,7 +488,7 @@ const CollectionDetail = () => {
                       mb: 2, 
                       fontWeight: 'bold',
                       color: 'primary.main',
-                      fontFamily: "'Playfair Display', serif"
+                      fontFamily: "Arial, Helvetica, sans-serif"
                     }}>LARGE</Typography>
                     <Typography variant="h4" sx={{ 
                       mb: 2, 
@@ -552,69 +518,39 @@ const CollectionDetail = () => {
                     />
                   </Card>
                 </Box>
-                <Box sx={{ flex: 1 }}>
-                  {status === 'success' && (
-                    <Alert severity="success" sx={{ mb: 2 }}>
-                      Your commission request has been sent successfully!
-                    </Alert>
-                  )}
-                  {status === 'error' && (
-                    <Alert severity="error" sx={{ mb: 2 }}>
-                      {errorMessage}
-                    </Alert>
-                  )}
-                  <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                    <Typography variant="h6" gutterBottom>
-                      Request a Commission
-                    </Typography>
-                    <TextField
-                      required
-                      fullWidth
-                      label="Your Name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      variant="outlined"
-                    />
-                    <TextField
-                      required
-                      fullWidth
-                      label="Email Address"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      variant="outlined"
-                    />
-                    <TextField
-                      fullWidth
-                      label="Pet's Name"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      variant="outlined"
-                    />
-                    <TextField
-                      fullWidth
-                      label="Additional Details"
-                      name="message"
-                      multiline
-                      rows={4}
-                      value={formData.message}
-                      onChange={handleChange}
-                      variant="outlined"
-                    />
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      size="large"
-                      sx={{ mt: 2 }}
-                      disabled={status === 'loading'}
+                <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 2.5 }}>
+                  <Typography variant="h5" component="h3" sx={{ color: 'primary.main' }}>
+                    Request a Commission
+                  </Typography>
+                  <Typography variant="body1" sx={{ fontSize: '1.1rem', lineHeight: 1.7 }}>
+                    Send an email with your pet's name, your preferred canvas size, and a few photos of your
+                    pet. I'll get back to you to confirm the details of your commission.
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    size="large"
+                    href={gmailComposeUrl(
+                      'Pet Portrait Commission',
+                      "Hi Thao,\n\nI'd love to commission a pet portrait.\n\nPet's name:\nPreferred size (Standard / Medium / Large):\nAdditional details:\n\n(Please remember to attach a few photos of your pet.)\n"
+                    )}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    endIcon={<OpenInNew />}
+                    sx={{ py: 1.6, fontSize: '1.1rem', borderRadius: 0, boxShadow: 'none', alignSelf: 'flex-start' }}
+                  >
+                    Draft a commission email in Gmail
+                  </Button>
+                  <Typography sx={{ fontSize: '0.98rem', color: 'text.secondary' }}>
+                    Not using Gmail?{' '}
+                    <Box
+                      component="a"
+                      href={mailtoUrl('Pet Portrait Commission')}
+                      sx={{ color: colors.teal, textDecoration: 'underline', textUnderlineOffset: 3 }}
                     >
-                      {status === 'loading' ? <CircularProgress size={24} /> : 'Submit Request'}
-                    </Button>
-                  </Box>
+                      Open your mail app
+                    </Box>
+                  </Typography>
                 </Box>
               </Box>
             </Container>

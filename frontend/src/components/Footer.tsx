@@ -1,21 +1,21 @@
-import { Box, Typography, Container } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import { colors } from '../constants';
 
-const Footer = () => {
-  return (
-    <Box sx={{ py: 10, bgcolor: 'background.default', mt: 'auto' }}>
-      <Container maxWidth="lg">
-        <Box sx={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center'
-        }}>
-          <Typography variant="body2" color="text.secondary">
-            © {new Date().getFullYear()} Thao Truong Art. All rights reserved.
-          </Typography>
-        </Box>
-      </Container>
-    </Box>
-  );
-};
+const Footer = () => (
+  <Box
+    component="footer"
+    sx={{
+      bgcolor: colors.teal,
+      borderTop: '1px solid rgba(255,255,255,0.18)',
+      py: 4,
+      px: 2,
+      textAlign: 'center',
+    }}
+  >
+    <Typography sx={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.95rem', letterSpacing: '0.05em' }}>
+      © {new Date().getFullYear()} Thao Truong Art · Joyful Art Getaway
+    </Typography>
+  </Box>
+);
 
-export default Footer; 
+export default Footer;
