@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import CloseIcon from '@mui/icons-material/Close';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import AnimatedSection from '../components/AnimatedSection';
-import { colors, gmailComposeUrl } from '../constants';
+import EmailActions from '../components/EmailActions';
+import { colors } from '../constants';
 
 interface Painting {
   id: number;
@@ -623,17 +623,16 @@ const collectionsData: CollectionsData = {
                   )}
                 </Box>
   
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  href={gmailComposeUrl(`Enquiry about "${painting.title}"`, `Hi Thao,\n\nI'm interested in "${painting.title}".\n\n`)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  endIcon={<OpenInNewIcon />}
-                  sx={{ mt: 2, alignSelf: 'flex-start', px: 4, py: 1.5, borderRadius: 0, boxShadow: 'none' }}
-                >
-                  Enquire about this piece
-                </Button>
+                <Box sx={{ mt: 2 }}>
+                  <EmailActions
+                    subject={`Enquiry about "${painting.title}"`}
+                    body={`Hi Thao,
+
+I'm interested in "${painting.title}".
+
+`}
+                  />
+                </Box>
 
                 <Button
                   variant="outlined"

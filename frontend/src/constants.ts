@@ -29,6 +29,14 @@ export const gmailComposeUrl = (subject = '', body = '') => {
   return `https://mail.google.com/mail/?${params.toString()}`;
 };
 
+// Opens Outlook on the web with the recipient (and optional subject/body) pre-filled.
+export const outlookComposeUrl = (subject = '', body = '') => {
+  const params = new URLSearchParams({ to: CONTACT_EMAIL });
+  if (subject) params.set('subject', subject);
+  if (body) params.set('body', body);
+  return `https://outlook.live.com/mail/0/deeplink/compose?${params.toString()}`;
+};
+
 export const mailtoUrl = (subject = '', body = '') => {
   const params = new URLSearchParams();
   if (subject) params.set('subject', subject);

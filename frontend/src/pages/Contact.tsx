@@ -1,34 +1,11 @@
-import { useState } from 'react';
-import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
-import { ContentCopy, Check, MailOutline, OpenInNew } from '@mui/icons-material';
+import { Box, Typography } from '@mui/material';
 import AnimatedSection from '../components/AnimatedSection';
+import EmailActions from '../components/EmailActions';
 import { Section, Container } from '../components/Layout';
 import { headingText, bodyText, imageRadius, softShadow, headerOffset } from '../styles';
-import { colors, fonts, CONTACT_EMAIL, gmailComposeUrl, mailtoUrl } from '../constants';
-
-const topics = [
-  { label: 'My artwork', subject: 'Question about your artwork' },
-  { label: 'A commission', subject: 'Commission enquiry' },
-  { label: 'Workshops', subject: 'Workshop enquiry' },
-  { label: 'Just saying hello', subject: 'Hello from your website' },
-];
-
-const greeting = 'Hi Thao,\n\n';
+import { colors, fonts } from '../constants';
 
 const Contact = () => {
-  const [topic, setTopic] = useState(topics[0]);
-  const [copied, setCopied] = useState(false);
-
-  const copyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText(CONTACT_EMAIL);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Clipboard can be unavailable (e.g. insecure context); the address is still visible to copy by hand.
-    }
-  };
-
   return (
     <Section
       id="contact"
@@ -70,90 +47,10 @@ const Contact = () => {
             </Box>
 
             <Box sx={{ p: { xs: 3, sm: 4.5 } }}>
-              <Typography component="h3" sx={{ fontFamily: fonts.heading, fontSize: '1.2rem', mb: 2 }}>
-                What would you like to talk about?
+              <Typography component="h3" sx={{ fontFamily: fonts.heading, fontSize: '1.2rem', mb: 2.5 }}>
+                Send me an email
               </Typography>
-              <Box role="radiogroup" aria-label="Email topic" sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.25, mb: 4 }}>
-                {topics.map((t) => {
-                  const selected = t.label === topic.label;
-                  return (
-                    <Box
-                      key={t.label}
-                      component="button"
-                      role="radio"
-                      aria-checked={selected}
-                      onClick={() => setTopic(t)}
-                      sx={{
-                        fontFamily: fonts.body,
-                        fontSize: '1rem',
-                        letterSpacing: '0.03em',
-                        px: 2,
-                        py: 0.9,
-                        borderRadius: 999,
-                        cursor: 'pointer',
-                        border: `1.5px solid ${selected ? colors.plum : 'rgba(0,0,0,0.25)'}`,
-                        bgcolor: selected ? colors.plum : 'transparent',
-                        color: selected ? colors.white : colors.black,
-                        transition: 'all 0.2s ease',
-                        '&:hover': { borderColor: colors.plum },
-                        '&:focus-visible': { outline: `2px solid ${colors.teal}`, outlineOffset: 2 },
-                      }}
-                    >
-                      {t.label}
-                    </Box>
-                  );
-                })}
-              </Box>
-
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1.5,
-                  border: '1px solid rgba(0,0,0,0.15)',
-                  borderRadius: imageRadius,
-                  bgcolor: colors.white,
-                  pl: 2,
-                  pr: 0.5,
-                  py: 0.5,
-                  mb: 3,
-                }}
-              >
-                <MailOutline sx={{ color: colors.teal }} />
-                <Typography sx={{ flex: 1, fontSize: { xs: '1rem', sm: '1.1rem' }, letterSpacing: '0.02em', wordBreak: 'break-all' }}>
-                  {CONTACT_EMAIL}
-                </Typography>
-                <Tooltip title={copied ? 'Copied!' : 'Copy email address'}>
-                  <IconButton onClick={copyEmail} aria-label="Copy email address" sx={{ color: colors.teal }}>
-                    {copied ? <Check /> : <ContentCopy fontSize="small" />}
-                  </IconButton>
-                </Tooltip>
-              </Box>
-
-              <Button
-                fullWidth
-                size="large"
-                variant="contained"
-                color="secondary"
-                href={gmailComposeUrl(topic.subject, greeting)}
-                target="_blank"
-                rel="noopener noreferrer"
-                endIcon={<OpenInNew />}
-                sx={{ py: 1.6, fontSize: '1.1rem', borderRadius: imageRadius, boxShadow: 'none', '&:hover': { boxShadow: 'none' } }}
-              >
-                Draft an email in Gmail
-              </Button>
-
-              <Typography sx={{ mt: 2, textAlign: 'center', fontSize: '0.98rem', color: 'text.secondary' }}>
-                Not using Gmail?{' '}
-                <Box
-                  component="a"
-                  href={mailtoUrl(topic.subject, greeting)}
-                  sx={{ color: colors.teal, textDecoration: 'underline', textUnderlineOffset: 3, '&:hover': { color: colors.plum } }}
-                >
-                  Open your mail app
-                </Box>
-              </Typography>
+              <EmailActions showAddress subject="Hello from your website" body={'Hi Thao,\n\n'} />
             </Box>
           </Box>
         </AnimatedSection>

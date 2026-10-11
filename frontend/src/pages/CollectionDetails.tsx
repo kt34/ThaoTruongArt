@@ -1,9 +1,9 @@
 import { Box, Typography, Container, Card, CardMedia, CardContent, Button } from '@mui/material';
-import { OpenInNew } from '@mui/icons-material';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import AnimatedSection from '../components/AnimatedSection';
-import { colors, fonts, gmailComposeUrl, mailtoUrl } from '../constants';
+import EmailActions from '../components/EmailActions';
+import { colors, fonts } from '../constants';
 
 // Temporary mock data - replace with your actual data
 const collectionsData = {
@@ -526,31 +526,10 @@ const CollectionDetail = () => {
                     Send an email with your pet's name, your preferred canvas size, and a few photos of your
                     pet. I'll get back to you to confirm the details of your commission.
                   </Typography>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    size="large"
-                    href={gmailComposeUrl(
-                      'Pet Portrait Commission',
-                      "Hi Thao,\n\nI'd love to commission a pet portrait.\n\nPet's name:\nPreferred size (Standard / Medium / Large):\nAdditional details:\n\n(Please remember to attach a few photos of your pet.)\n"
-                    )}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    endIcon={<OpenInNew />}
-                    sx={{ py: 1.6, fontSize: '1.1rem', borderRadius: 0, boxShadow: 'none', alignSelf: 'flex-start' }}
-                  >
-                    Draft a commission email in Gmail
-                  </Button>
-                  <Typography sx={{ fontSize: '0.98rem', color: 'text.secondary' }}>
-                    Not using Gmail?{' '}
-                    <Box
-                      component="a"
-                      href={mailtoUrl('Pet Portrait Commission')}
-                      sx={{ color: colors.teal, textDecoration: 'underline', textUnderlineOffset: 3 }}
-                    >
-                      Open your mail app
-                    </Box>
-                  </Typography>
+                  <EmailActions
+                    subject="Pet Portrait Commission"
+                    body={"Hi Thao,\n\nI'd love to commission a pet portrait.\n\nPet's name:\nPreferred size (Standard / Medium / Large):\nAdditional details:\n\n(Please remember to attach a few photos of your pet.)\n"}
+                  />
                 </Box>
               </Box>
             </Container>
