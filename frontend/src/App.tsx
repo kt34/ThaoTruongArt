@@ -1,13 +1,11 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Collections from './pages/Collections';
 import Contact from './pages/Contact';
 import Footer from './components/Footer';
-import CollectionDetails from './pages/CollectionDetails';
-import PaintingDetails from './pages/PaintingDetails';
 import PptxMatch from './pptx-match/PptxMatch';
 import { useEffect } from 'react';
 import { colors, fonts } from './constants';
@@ -93,8 +91,9 @@ function App() {
                       <Contact />
                     </>
                   } />
-                  <Route path="/collections/:collectionId" element={<CollectionDetails />} />
-                  <Route path="/painting/:collectionId/:paintingId" element={<PaintingDetails />} />
+                  {/* Collection and painting pages are blocked for now; redirect to the gallery section. */}
+                  <Route path="/collections/*" element={<Navigate to="/" replace state={{ scrollTo: 'collections' }} />} />
+                  <Route path="/painting/*" element={<Navigate to="/" replace state={{ scrollTo: 'collections' }} />} />
                 </Routes>
               </main>
             </>
