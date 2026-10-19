@@ -1,109 +1,66 @@
-import { Box, Typography, Container, Card, CardContent, CardMedia } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
+import { Section, Container } from '../components/Layout';
+import { headingText, imageRadius, headerOffset } from '../styles';
+import { collections, colors, fonts } from '../constants';
 
-const Collections = () => {
-  const collections = [
-    {
-      title: 'Australian Birds',
-      image: '/images/australian-bird.jpg',
-      path: '/collections/australian-birds'
-    },
-    {
-      title: 'Women Figures',
-      image: '/images/women-figures/1.jpg',
-      path: '/collections/women-figures'
-    },
-    {
-      title: 'Pet Portraits',
-      image: '/images/pet-painting.jpg',
-      path: '/collections/pet-portraits'
-    },
-    {
-      title: 'Fluid Art',
-      image: '/images/fluid-art/aqua-swash-1.jpg',
-      path: '/collections/fluid-art'
-    }
-  ];
+const Collections = () => (
+  <Section id="collections" bg={colors.teal} color={colors.white} sx={{ scrollMarginTop: headerOffset }}>
+    <Container>
+      <AnimatedSection>
+        <Typography component="h2" sx={{ ...headingText, textAlign: 'center', mb: { xs: 5, md: 7 } }}>
+          Gallery Collections
+        </Typography>
+      </AnimatedSection>
 
-  return (
-    <Box sx={{ py: 2, scrollMarginTop: '60px', width: '100%', maxWidth: '100%' }}>
-      <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3, md: 4 } }}>
-        <AnimatedSection>
-          <Typography
-            variant="h2"
-            component="h1"
-            sx={{
-              color: 'secondary.main',
-              mb: 7,
-              textAlign: 'center',
-            }}
-          >
-            Collections
-          </Typography>
-        </AnimatedSection>
-
-        <Box sx={{ 
-          display: 'grid', 
-          gridTemplateColumns: { 
-            xs: '1fr', 
-            sm: 'repeat(2, 1fr)', 
-            md: 'repeat(4, 1fr)' 
-          }, 
-          gap: 4,
-          width: '100%',
-          maxWidth: '100%'
-        }}>
-          {collections.map((collection, index) => (
-            <AnimatedSection key={index} delay={index * 0.1}>
-              <Card
-                component={Link}
-                to={collection.path}
-                sx={{
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  transition: 'transform 0.3s ease-in-out',
-                  color: 'inherit',
-                  '&:hover': {
-                    transform: 'scale(1.02)',
-                    color: 'inherit',
-                    textDecoration: 'none',
-                  },
-                  '&:focus': {
-                    outline: 'none',
-                  },
-                  '&:focus-visible': {
-                    outline: 'none',
-                  },
-                }}
-              >
-                <CardMedia
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' },
+          gap: { xs: 3, md: 3.5 },
+        }}
+      >
+        {collections.map((collection, index) => (
+          <AnimatedSection key={collection.id} delay={index * 0.08}>
+            <Box
+              component={Link}
+              to={`/collections/${collection.id}`}
+              sx={{
+                display: 'block',
+                height: '100%',
+                bgcolor: colors.cream,
+                color: colors.black,
+                borderRadius: imageRadius,
+                overflow: 'hidden',
+                boxShadow: '0 6px 18px rgba(0,0,0,0.15)',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                '&:hover, &:focus-visible': {
+                  transform: 'translateY(-6px)',
+                  boxShadow: '0 16px 34px rgba(0,0,0,0.25)',
+                },
+                '&:hover img': { transform: 'scale(1.05)' },
+                '&:focus-visible': { outline: `3px solid ${colors.cream}`, outlineOffset: 4 },
+              }}
+            >
+              <Box sx={{ overflow: 'hidden' }}>
+                <Box
                   component="img"
-                  height="400"
-                  image={collection.image}
+                  src={collection.cover}
                   alt={collection.title}
-                  sx={{
-                    width: '100%',
-                    aspectRatio: '3/2',
-                    objectFit: 'contain',
-                    backgroundColor: 'white',
-                    display: 'block',
-                    padding: '20px'
-                  }}
+                  loading="lazy"
+                  sx={{ width: '100%', aspectRatio: '1 / 1', objectFit: 'cover', transition: 'transform 0.5s ease' }}
                 />
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {collection.title}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </AnimatedSection>
-          ))}
-        </Box>
-      </Container>
-    </Box>
-  );
-};
+              </Box>
+              <Box sx={{ textAlign: 'center', fontFamily: fonts.heading, fontSize: '1.15rem', py: 2.25, px: 1.5 }}>
+                {collection.title}
+              </Box>
+            </Box>
+          </AnimatedSection>
+        ))}
+      </Box>
+    </Container>
+  </Section>
+);
 
-export default Collections; 
+export default Collections;

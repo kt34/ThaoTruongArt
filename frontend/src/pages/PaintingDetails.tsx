@@ -5,6 +5,8 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import CloseIcon from '@mui/icons-material/Close';
 import AnimatedSection from '../components/AnimatedSection';
+import EmailActions from '../components/EmailActions';
+import { colors } from '../constants';
 
 interface Painting {
   id: number;
@@ -377,7 +379,7 @@ const collectionsData: CollectionsData = {
       <Box sx={{ 
         minHeight: '100vh', 
         py: 4,
-        bgcolor: '#fafafa',
+        bgcolor: colors.cream,
         width: '100vw',
         maxWidth: '100%',
         overflow: 'hidden',
@@ -545,7 +547,7 @@ const collectionsData: CollectionsData = {
                 <Typography 
                   variant="h3" 
                   sx={{ 
-                    fontFamily: "'Playfair Display', serif",
+                    fontFamily: 'Arial, Helvetica, sans-serif',
                     color: 'primary.main',
                     fontWeight: 500,
                     textAlign: 'left',
@@ -621,11 +623,22 @@ const collectionsData: CollectionsData = {
                   )}
                 </Box>
   
-                <Button 
-                  variant="outlined" 
-                  onClick={() => navigate(-1)} 
-                  sx={{ 
-                    mt: 4,
+                <Box sx={{ mt: 2 }}>
+                  <EmailActions
+                    subject={`Enquiry about "${painting.title}"`}
+                    body={`Hi Thao,
+
+I'm interested in "${painting.title}".
+
+`}
+                  />
+                </Box>
+
+                <Button
+                  variant="outlined"
+                  onClick={() => navigate(-1)}
+                  sx={{
+                    mt: 1,
                     alignSelf: 'flex-start',
                     px: 4,
                     py: 1.5,

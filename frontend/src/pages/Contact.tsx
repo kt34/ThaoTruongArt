@@ -1,150 +1,62 @@
-import { useState } from 'react';
-import { Box, Container, TextField, Button, Typography, Alert, CircularProgress } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import AnimatedSection from '../components/AnimatedSection';
+import EmailActions from '../components/EmailActions';
+import { Section, Container } from '../components/Layout';
+import { headingText, bodyText, imageRadius, softShadow, headerOffset } from '../styles';
+import { colors, fonts } from '../constants';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: ''
-  });
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('loading');
-    setErrorMessage('');
-
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/contact`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to send message');
-      }
-
-      setStatus('success');
-      setFormData({ name: '', email: '', phone: '', message: '' });
-    } catch (error) {
-      setStatus('error');
-      setErrorMessage('Failed to send message. Please try again later.');
-    }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
   return (
-    <Container maxWidth="md" sx={{ py: 8 }}>
-      <Typography
-        variant="h2"
-        component="h1"
+    <Section
+      id="contact"
+      bg={colors.teal}
+      color={colors.white}
+      sx={{ scrollMarginTop: headerOffset, borderTop: '1px solid rgba(255,255,255,0.15)' }}
+    >
+      <Container
         sx={{
-          color: 'secondary.main',
-          mb: 4,
-          textAlign: 'center',
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
+          gap: { xs: 5, md: 8 },
+          alignItems: 'center',
         }}
       >
-        Contact
-      </Typography>
-      <Box sx={{ color: 'secondary.main', mb: 4 }}>
-        <Typography paragraph>
-          Interested in a special artwork designed for your space? Thao Truong offers custom sizes and commissioned artworks. The creative process is flexible. The artist will engage directly with the client via email or online meeting to develop the creative brief and understand desired outcomes. A 50% deposit is required to confirm commission (non-refundable). For collaborations and commissions, contact Thao.
-        </Typography>
-        <Typography paragraph>
-          thaotruongartistry@gmail.com
-        </Typography>
-      </Box>
-      {status === 'success' && (
-        <Alert severity="success" sx={{ mb: 2 }}>
-          Message sent successfully!
-        </Alert>
-      )}
-      {status === 'error' && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {errorMessage}
-        </Alert>
-      )}
-      <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
-        <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-          <TextField
-            fullWidth
-            label="Name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            fullWidth
-            label="Email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </Box>
-        <Box sx={{ mb: 2 }}>
-          <TextField
-            fullWidth
-            label="Phone Number"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            required
-          />
-        </Box>
-        <Box sx={{ mb: 2 }}>
-          <TextField
-            fullWidth
-            label="Message"
-            name="message"
-            multiline
-            rows={4}
-            value={formData.message}
-            onChange={handleChange}
-            required
-          />
-        </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Button
-            type="submit"
-            variant="contained"
-            size="large"
-            sx={{
-              px: 4,
-              py: 1.5,
-              backgroundColor: 'primary.main',
-              '&:hover': {
-                backgroundColor: 'primary.dark',
-              },
-              '&:focus': {
-                outline: 'none',
-              },
-              '&:active': {
-                backgroundColor: 'transparent',
-              }
-            }}
-            disabled={status === 'loading'}
-          >
-            {status === 'loading' ? <CircularProgress size={24} /> : 'Send'}
-          </Button>
-        </Box>
-      </Box>
-    </Container>
+        <AnimatedSection>
+          <Typography component="h2" sx={{ ...headingText, mb: 2 }}>
+            Contact
+          </Typography>
+          <Typography component="p" sx={{ fontFamily: fonts.heading, fontSize: { xs: '1.35rem', md: '1.6rem' }, mb: 3, color: colors.blush }}>
+            I’d love to hear from you
+          </Typography>
+          <Typography sx={{ ...bodyText, mb: 2 }}>
+            Whether you have a question about my artwork, are interested in commissioning a custom piece,
+            enquiring about workshops, or simply want to say hello, please feel free to get in touch.
+          </Typography>
+          <Typography sx={{ ...bodyText, fontStyle: 'italic' }}>
+            Thank you for visiting Joyful Art GetAway.
+          </Typography>
+        </AnimatedSection>
+
+        <AnimatedSection delay={0.15}>
+          <Box sx={{ bgcolor: colors.cream, color: colors.black, borderRadius: imageRadius, boxShadow: softShadow, overflow: 'hidden' }}>
+            {/* Colour bands echo the palette used throughout the site. */}
+            <Box sx={{ display: 'flex', height: 10 }}>
+              {[colors.sage, colors.blush, colors.rose, colors.plum, colors.sand].map((c) => (
+                <Box key={c} sx={{ flex: 1, bgcolor: c }} />
+              ))}
+            </Box>
+
+            <Box sx={{ p: { xs: 3, sm: 4.5 } }}>
+              <Typography component="h3" sx={{ fontFamily: fonts.heading, fontSize: '1.2rem', mb: 2.5 }}>
+                Send me an email
+              </Typography>
+              <EmailActions showAddress subject="Hello from your website" body={'Hi Thao,\n\n'} />
+            </Box>
+          </Box>
+        </AnimatedSection>
+      </Container>
+    </Section>
   );
 };
 
-export default Contact; 
+export default Contact;

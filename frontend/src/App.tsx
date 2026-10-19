@@ -5,71 +5,50 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Collections from './pages/Collections';
 import Contact from './pages/Contact';
-import FAQ from './pages/FAQ';
 import Footer from './components/Footer';
 import CollectionDetails from './pages/CollectionDetails';
 import PaintingDetails from './pages/PaintingDetails';
+import PptxMatch from './pptx-match/PptxMatch';
 import { useEffect } from 'react';
+import { colors, fonts } from './constants';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#4B3C21',
-      light: '#6B5C41',
-      dark: '#2B1C01',
+      main: colors.teal,
+      light: '#5E8DA1',
+      dark: '#2B5264',
+      contrastText: colors.white,
     },
     secondary: {
-      main: '#332916',
-      light: '#534936',
-      dark: '#130900',
+      main: colors.plum,
+      light: '#9D6176',
+      dark: '#5F2E3E',
+      contrastText: colors.white,
     },
     background: {
-      default: '#FFFFFF',
-      paper: '#FFFFFF',
+      default: colors.teal,
+      paper: colors.cream,
+    },
+    text: {
+      primary: colors.black,
+      secondary: '#4A5560',
     },
   },
   typography: {
-    fontFamily: "'Poppins', 'Playfair Display', 'Trebuchet MS', Arial, sans-serif",
-    h1: {
-      fontFamily: "'Playfair Display', serif",
-      fontWeight: 400,
-    },
-    h2: {
-      fontFamily: "'Playfair Display', serif",
-      fontWeight: 400,
-    },
-    h3: {
-      fontFamily: "'Playfair Display', serif",
-      fontWeight: 400,
-    },
-    h4: {
-      fontFamily: "'Playfair Display', serif",
-      fontWeight: 400,
-    },
-    h5: {
-      fontFamily: "'Playfair Display', serif",
-      fontWeight: 400,
-    },
-    h6: {
-      fontFamily: "'Playfair Display', serif",
-      fontWeight: 400,
-    },
-    body1: {
-      fontFamily: "'Poppins', sans-serif",
-    },
-    body2: {
-      fontFamily: "'Poppins', sans-serif",
-    },
+    fontFamily: fonts.body,
+    h1: { fontFamily: fonts.heading, fontWeight: 400 },
+    h2: { fontFamily: fonts.heading, fontWeight: 400 },
+    h3: { fontFamily: fonts.heading, fontWeight: 400 },
+    h4: { fontFamily: fonts.heading, fontWeight: 400 },
+    h5: { fontFamily: fonts.heading, fontWeight: 400 },
+    h6: { fontFamily: fonts.heading, fontWeight: 400 },
+    button: { fontFamily: fonts.heading, textTransform: 'none' },
   },
   components: {
-    MuiLink: {
+    MuiCssBaseline: {
       styleOverrides: {
-        root: {
-          textDecoration: 'none',
-          '&:hover': {
-            textDecoration: 'underline',
-          },
-        },
+        body: { backgroundColor: colors.teal },
       },
     },
   },
@@ -79,17 +58,14 @@ const ScrollToSection = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.state?.scrollTo) {
-      const element = document.getElementById(location.state.scrollTo);
-      if (element) {
-        const offset = 60; // Height of the navbar
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - offset;
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-      }
+    const target = location.state?.scrollTo;
+    if (target) {
+      // Wait a frame so the home page sections exist before scrolling.
+      requestAnimationFrame(() => {
+        document.getElementById(target)?.scrollIntoView({ behavior: 'smooth' });
+      });
+    } else {
+      window.scrollTo(0, 0);
     }
   }, [location]);
 
@@ -102,29 +78,28 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <ScrollToSection />
-        <Navbar />
-        <main>
-          <Routes>
-            <Route path="/" element={
-              <>
-                <section id="home">
-                  <Home />
-                </section>
-                <section id="collections">
-                  <Collections />
-                </section>
-                <section id="contact">
-                  <Contact />
-                </section>
-                <section id="faq">
-                  <FAQ />
-                </section>
-              </>
-            } />
-            <Route path="/collections/:collectionId" element={<CollectionDetails />} />
-            <Route path="/painting/:collectionId/:paintingId" element={<PaintingDetails />} />
-          </Routes>
-        </main>
+        <Routes>
+          {/* Original slide-for-slide version of the design, kept for comparison. */}
+          <Route path="/pptx-match" element={<PptxMatch />} />
+          <Route path="*" element={
+            <>
+              <Navbar />
+              <main>
+                <Routes>
+                  <Route path="/" element={
+                    <>
+                      <Home />
+                      <Collections />
+                      <Contact />
+                    </>
+                  } />
+                  <Route path="/collections/:collectionId" element={<CollectionDetails />} />
+                  <Route path="/painting/:collectionId/:paintingId" element={<PaintingDetails />} />
+                </Routes>
+              </main>
+            </>
+          } />
+        </Routes>
         <Footer />
       </ThemeProvider>
     </BrowserRouter>
