@@ -17,7 +17,7 @@ export const fonts = {
   heading: 'Arial, Helvetica, sans-serif',
 };
 
-export const CONTACT_EMAIL = 'thaotruongart@gmail.com';
+export const CONTACT_EMAIL = 'thaotruongart@yahoo.com';
 export const FACEBOOK_URL = 'https://www.facebook.com/ThaoTruongArt';
 export const INSTAGRAM_URL = 'https://www.instagram.com/thaotruongart';
 

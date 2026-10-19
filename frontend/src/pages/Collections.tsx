@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
 import AnimatedSection from '../components/AnimatedSection';
 import { Section, Container } from '../components/Layout';
 import { headingText, imageRadius, headerOffset } from '../styles';
@@ -24,8 +23,6 @@ const Collections = () => (
         {collections.map((collection, index) => (
           <AnimatedSection key={collection.id} delay={index * 0.08}>
             <Box
-              component={Link}
-              to={`/collections/${collection.id}`}
               sx={{
                 display: 'block',
                 height: '100%',
@@ -34,13 +31,6 @@ const Collections = () => (
                 borderRadius: imageRadius,
                 overflow: 'hidden',
                 boxShadow: '0 6px 18px rgba(0,0,0,0.15)',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                '&:hover, &:focus-visible': {
-                  transform: 'translateY(-6px)',
-                  boxShadow: '0 16px 34px rgba(0,0,0,0.25)',
-                },
-                '&:hover img': { transform: 'scale(1.05)' },
-                '&:focus-visible': { outline: `3px solid ${colors.cream}`, outlineOffset: 4 },
               }}
             >
               <Box sx={{ overflow: 'hidden' }}>
