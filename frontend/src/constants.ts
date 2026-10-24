@@ -13,7 +13,7 @@ export const colors = {
 };
 
 export const fonts = {
-  body: "'Quattrocento Sans', 'Segoe UI', Arial, sans-serif",
+  body: "'DM Sans', 'Segoe UI', Arial, sans-serif",
   heading: 'Arial, Helvetica, sans-serif',
 };
 
