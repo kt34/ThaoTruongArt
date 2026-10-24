@@ -173,7 +173,7 @@ const JoyfulGetaway = () => (
           src="/images/design/studio-bruno.jpg"
           alt="Thao painting in her studio with Bruno"
           loading="lazy"
-          sx={{ width: '100%', maxWidth: 480, mx: 'auto', aspectRatio: '4 / 5', objectFit: 'cover', borderRadius: imageRadius, boxShadow: softShadow }}
+          sx={{ width: '100%', maxWidth: 480, mx: 'auto', aspectRatio: '4 / 5', objectFit: 'cover', borderRadius: imageRadius, boxShadow: softShadow}}
         />
       </AnimatedSection>
     </Container>
