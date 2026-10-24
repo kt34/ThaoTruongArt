@@ -27,7 +27,12 @@ a {
   text-decoration: none;
 }
 
+/* Discourage casual saving: no long-press save menu, selection or dragging */
 img {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
   display: block;
   max-width: 100%;
 }

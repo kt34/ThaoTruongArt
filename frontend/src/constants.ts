@@ -50,6 +50,7 @@ export const collections = [
     id: 'australian-birds',
     title: 'Australian Native Birds',
     cover: '/images/design/cover-australian-birds.jpg',
+    coverPosition: 'center 90%',
   },
   {
     id: 'pet-portraits',
