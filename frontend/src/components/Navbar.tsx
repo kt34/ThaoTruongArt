@@ -99,7 +99,7 @@ const Navbar = () => {
           }}
         >
           <Box component="img" src="/images/design/logo-wordmark.png" alt="ThaoTruong Art" sx={{ width: { xs: 180, md: 250 }, height: 'auto' }} />
-          <Box component="img" src="/images/design/logo-tagline.png" alt="Joyful Art Getaway" sx={{ width: { xs: 150, md: 200 }, height: 'auto', mt: 0.25, transform: 'translateX(-5%)' /* image has extra left padding; centre the text under the wordmark */ }} />
+          <Box component="img" src="/images/design/logo-tagline.png" alt="Joyful Art Getaway" sx={{ width: { xs: 168, md: 230 }, height: 'auto', mt: 0.25, transform: 'translateX(-5%)' /* image has extra left padding; centre the text under the wordmark */ }} />
         </Box>
 
         {isMobile ? (
