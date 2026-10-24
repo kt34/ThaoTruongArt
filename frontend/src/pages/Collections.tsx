@@ -8,8 +8,21 @@ const Collections = () => (
   <Section id="collections" bg={colors.teal} color={colors.white} sx={{ scrollMarginTop: headerOffset }}>
     <Container>
       <AnimatedSection>
-        <Typography component="h2" sx={{ ...headingText, textAlign: 'center', mb: { xs: 5, md: 7 } }}>
+        <Typography component="h2" sx={{ ...headingText, textAlign: 'center', mb: 1.5 }}>
           Gallery Collections
+        </Typography>
+        <Typography
+          sx={{
+            textAlign: 'center',
+            fontFamily: fonts.body,
+            fontSize: { xs: '0.9rem', md: '1rem' },
+            fontStyle: 'italic',
+            letterSpacing: '0.08em',
+            opacity: 0.8,
+            mb: { xs: 5, md: 7 },
+          }}
+        >
+          Full collections coming soon
         </Typography>
       </AnimatedSection>
 
@@ -39,7 +52,7 @@ const Collections = () => (
                   src={collection.cover}
                   alt={collection.title}
                   loading="lazy"
-                  sx={{ width: '100%', aspectRatio: '1 / 1', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                  sx={{ width: '100%', aspectRatio: '1 / 1', objectFit: 'cover', objectPosition: collection.coverPosition ?? 'center', transition: 'transform 0.5s ease' }}
                 />
               </Box>
               <Box sx={{ textAlign: 'center', fontFamily: fonts.heading, fontSize: '1.15rem', py: 2.25, px: 1.5 }}>

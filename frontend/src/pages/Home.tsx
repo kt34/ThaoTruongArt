@@ -35,11 +35,11 @@ const Intro = () => (
         <Box sx={{ textShadow: '0 1px 2px rgba(0,0,0,0.12)', textAlign: { xs: 'center', md: 'left' } }}>
           <Typography
             component="h1"
-            sx={{ fontFamily: fonts.body, fontWeight: 700, fontSize: { xs: '2rem', md: '2.75rem' }, letterSpacing: '0.04em', lineHeight: 1.2, mb: 3 }}
+            sx={{ fontFamily: fonts.body, fontWeight: 700, fontSize: { xs: '1.7rem', md: '2.75rem' }, letterSpacing: '0.04em', lineHeight: 1.2, mb: 3 }}
           >
             Hi, I’m Thao Truong
           </Typography>
-          <Typography sx={bodyText}>
+          <Typography sx={{ ...bodyText, fontSize: { xs: '1.17rem', md: '1.25rem' } }}>
             Art has always been a source of joy, creativity, and personal fulfilment in my life. As a
             self-taught artist, my artistic journey began in 2020 as a hobby, exploring arts and crafts
             simply for the love of creating. What started as a relaxing pastime soon grew into a true
@@ -60,11 +60,13 @@ const FluidBeginnings = () => (
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: { md: 'flex-end' }, order: { xs: 2, md: 1 } }}>
       <Box sx={{ maxWidth: { md: 600 }, width: '100%', px: { xs: 3, md: 4 }, pr: { md: 8 }, py: sectionPadding }}>
         <AnimatedSection>
-          <Box sx={{ width: 56, height: 3, bgcolor: colors.teal, mb: 3 }} />
-          <Typography sx={{ ...bodyText, color: '#1D1D1D', fontSize: { xs: '1.15rem', md: '1.45rem' }, lineHeight: 1.7 }}>
-            My artistic journey began with fluid art, where I explored the beauty of colour, movement, and
-            creative expression through a variety of techniques.
-          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Box sx={{ width: 56, height: 3, bgcolor: colors.teal, mb: 3 }} />
+            <Typography sx={{ ...bodyText, color: '#1D1D1D', fontSize: { xs: '1.15rem', md: '1.45rem' }, lineHeight: 1.7 }}>
+              My artistic journey began with fluid art, where I explored the beauty of colour, movement, and
+              creative expression through a variety of techniques.
+            </Typography>
+          </Box>
         </AnimatedSection>
       </Box>
     </Box>
@@ -82,7 +84,7 @@ const FluidBeginnings = () => (
 const collage = [
   { src: '/images/design/gumleaf-painting.jpg', alt: 'Painting gum leaves and blossoms', sx: { top: '0%', left: '0%', width: '62%', aspectRatio: '5 / 4', rotate: '-5deg', zIndex: 1 } },
   { src: '/images/design/feather-painting.jpg', alt: 'Painting detailed bird feathers', sx: { top: '24%', right: '0%', width: '46%', aspectRatio: '3 / 4', rotate: '6deg', zIndex: 2 } },
-  { src: '/images/design/movement.jpg', alt: 'Movement, a black and white street scene', sx: { bottom: '0%', left: '10%', width: '52%', aspectRatio: '1 / 1', rotate: '-2deg', zIndex: 3 } },
+  { src: '/images/design/movement.jpg', alt: 'Movement, a black and white street scene', sx: { bottom: '0%', left: '4%', width: '52%', aspectRatio: '1 / 1', rotate: '0deg', zIndex: 3 } },
 ];
 
 const EvolvingInterests = () => (
@@ -156,7 +158,7 @@ const JoyfulGetaway = () => (
             borderRadius: imageRadius,
             mt: 5,
             p: { xs: 3, md: 4 },
-            borderLeft: `5px solid ${colors.teal}`,
+            borderLeft: { xs: `8px solid ${colors.teal}`, md: `5px solid ${colors.teal}` },
           }}
         >
           <Typography sx={{ ...bodyText, fontStyle: 'italic' }}>

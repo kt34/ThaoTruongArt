@@ -87,10 +87,19 @@ const Navbar = () => {
           component="button"
           onClick={() => handleNavigation('top')}
           aria-label="ThaoTruong Art, back to top"
-          sx={{ background: 'none', border: 'none', p: 0, cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}
+          sx={{
+            background: 'none',
+            border: 'none',
+            p: 0,
+            cursor: 'pointer',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            flexShrink: 0,
+          }}
         >
           <Box component="img" src="/images/design/logo-wordmark.png" alt="ThaoTruong Art" sx={{ width: { xs: 180, md: 250 }, height: 'auto' }} />
-          <Box component="img" src="/images/design/logo-tagline.png" alt="Joyful Art Getaway" sx={{ width: { xs: 115, md: 160 }, height: 'auto', mt: 0.25 }} />
+          <Box component="img" src="/images/design/logo-tagline.png" alt="Joyful Art Getaway" sx={{ width: { xs: 150, md: 200 }, height: 'auto', mt: 0.25, transform: 'translateX(-5%)' /* image has extra left padding; centre the text under the wordmark */ }} />
         </Box>
 
         {isMobile ? (

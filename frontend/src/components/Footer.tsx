@@ -13,7 +13,7 @@ const Footer = () => (
     }}
   >
     <Typography sx={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.95rem', letterSpacing: '0.05em' }}>
-      © {new Date().getFullYear()} Thao Truong Art · Joyful Art Getaway
+      © {new Date().getFullYear()} ThaoTruong Art · Joyful Art Getaway
     </Typography>
   </Box>
 );
