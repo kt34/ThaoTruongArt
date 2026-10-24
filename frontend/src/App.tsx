@@ -8,6 +8,7 @@ import Contact from './pages/Contact';
 import Footer from './components/Footer';
 import PptxMatch from './pptx-match/PptxMatch';
 import { useEffect } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { colors, fonts } from './constants';
 
 const theme = createTheme({
@@ -100,6 +101,7 @@ function App() {
           } />
         </Routes>
         <Footer />
+        <Analytics />
       </ThemeProvider>
     </BrowserRouter>
   );
