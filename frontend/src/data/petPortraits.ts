@@ -79,5 +79,6 @@ export const petPortraits: Collection = {
   noun: { singular: 'portrait', plural: 'portraits' },
   cardFit: 'cover',
   commission: true,
+  mobileTitleFirst: true,
   artworks: portraits,
 };

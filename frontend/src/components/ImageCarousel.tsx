@@ -12,6 +12,8 @@ interface ImageCarouselProps {
   alt: string;
   // Shown beside the image on desktop (above it on phones), with the thumbnails underneath.
   title?: ReactNode;
+  // On phones, show the title above the image instead of below the thumbnails.
+  mobileTitleFirst?: boolean;
 }
 
 const SWIPE_THRESHOLD = 60;
@@ -109,7 +111,7 @@ const Stage = ({ images, alt, index, direction, go, height, onImageClick }: Stag
   );
 };
 
-const ImageCarousel = ({ images, alt, title }: ImageCarouselProps) => {
+const ImageCarousel = ({ images, alt, title, mobileTitleFirst = false }: ImageCarouselProps) => {
   const [[index, direction], setPage] = useState<[number, number]>([0, 0]);
   const [fullscreen, setFullscreen] = useState(false);
   const multiple = images.length > 1;
@@ -134,18 +136,24 @@ const ImageCarousel = ({ images, alt, title }: ImageCarouselProps) => {
   if (!current) return null;
 
   return (
-    // Phones: title, image, thumbnails stacked. Desktop: image on the left, title and thumbnails beside it.
+    // Phones: image, thumbnails, then the title and details underneath (the usual shop/gallery order),
+    // or the title first when mobileTitleFirst is set. Desktop: image on the left, title and thumbnails beside it.
     <Box
       sx={{
         display: 'grid',
         gridTemplateColumns: { xs: '1fr', md: '8fr 4fr' },
         gridTemplateRows: { md: 'auto 1fr' },
-        gridTemplateAreas: { xs: '"title" "stage" "thumbs"', md: '"stage title" "stage thumbs"' },
+        gridTemplateAreas: {
+          xs: mobileTitleFirst ? '"title" "stage" "thumbs"' : '"stage" "thumbs" "title"',
+          md: '"stage title" "stage thumbs"',
+        },
         columnGap: { md: 6 },
         alignItems: 'start',
       }}
     >
-      {title && <Box sx={{ gridArea: 'title', mb: { xs: 3, md: 3.5 } }}>{title}</Box>}
+      {title && (
+        <Box sx={{ gridArea: 'title', mt: { xs: mobileTitleFirst ? 0 : 3.5, md: 0 }, mb: { xs: mobileTitleFirst ? 3 : 0, md: 3.5 } }}>{title}</Box>
+      )}
 
       <Box sx={{ gridArea: 'stage', minWidth: 0 }}>
       <Box
