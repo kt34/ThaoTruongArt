@@ -5,6 +5,9 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Collections from './pages/Collections';
 import Contact from './pages/Contact';
+import CollectionPage from './pages/CollectionPage';
+import ArtworkPage from './pages/ArtworkPage';
+import { galleryCollections } from './data/collections';
 import Footer from './components/Footer';
 import PptxMatch from './pptx-match/PptxMatch';
 import { useEffect } from 'react';
@@ -92,7 +95,11 @@ function App() {
                       <Contact />
                     </>
                   } />
-                  {/* Collection and painting pages are blocked for now; redirect to the gallery section. */}
+                  {galleryCollections.flatMap((c) => [
+                    <Route key={c.slug} path={`/collections/${c.slug}`} element={<CollectionPage collection={c} />} />,
+                    <Route key={`${c.slug}-artwork`} path={`/collections/${c.slug}/:slug`} element={<ArtworkPage collection={c} />} />,
+                  ])}
+                  {/* Other collection and painting pages are blocked for now; redirect to the gallery section. */}
                   <Route path="/collections/*" element={<Navigate to="/" replace state={{ scrollTo: 'collections' }} />} />
                   <Route path="/painting/*" element={<Navigate to="/" replace state={{ scrollTo: 'collections' }} />} />
                 </Routes>
