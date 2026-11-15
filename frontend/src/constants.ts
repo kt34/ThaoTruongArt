@@ -62,6 +62,7 @@ export const collections = [
     id: 'women-figures',
     title: 'Women in Abstract',
     cover: '/images/design/cover-women-abstract.jpg',
+    href: '/collections/women-in-abstract',
   },
   {
     id: 'fluid-art',

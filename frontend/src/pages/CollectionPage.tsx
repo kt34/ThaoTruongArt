@@ -1,35 +1,34 @@
 import { Box, Typography } from '@mui/material';
 import AnimatedSection from '../components/AnimatedSection';
+import ArtworkCard from '../components/ArtworkCard';
 import CommissionSection from '../components/CommissionSection';
-import PortraitCard from '../components/PortraitCard';
 import { Container } from '../components/Layout';
-import { petPortraits, PET_PORTRAITS_INTRO, PET_PORTRAITS_FEATURE } from '../data/petPortraits';
+import type { Collection } from '../data/types';
 import { colors } from '../constants';
 import { headingText, bodyText, imageRadius } from '../styles';
 
-const PetPortraits = () => (
+// A gallery collection: banner (title, intro, feature photo), then a grid of its artworks.
+const CollectionPage = ({ collection }: { collection: Collection }) => (
   <>
-    {/* Banner: title and intro on the left, feature photo on the right. */}
     <Box component="section" sx={{ bgcolor: colors.teal, color: colors.white, py: { xs: 4, md: 6 } }}>
       <Container>
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: { xs: 4, md: 8 }, alignItems: 'center' }}>
           <Box>
             <Typography component="h1" sx={{ ...headingText, fontSize: { xs: '2.4rem', md: '3.25rem' }, mb: 2.5 }}>
-              Pet Portraits
+              {collection.title}
             </Typography>
-            <Typography sx={{ ...bodyText, maxWidth: 520 }}>{PET_PORTRAITS_INTRO}</Typography>
+            <Typography sx={{ ...bodyText, maxWidth: 520 }}>{collection.intro}</Typography>
           </Box>
           <Box
             component="img"
-            src={PET_PORTRAITS_FEATURE}
-            alt="The Awesome Three, a pet portrait of a dog and two cats, on an easel in the studio"
+            src={collection.feature.src}
+            alt={collection.feature.alt}
             sx={{ width: '100%', aspectRatio: '3 / 2', objectFit: 'cover', borderRadius: imageRadius, display: 'block' }}
           />
         </Box>
       </Container>
     </Box>
 
-    {/* Artwork grid. */}
     <Box component="section" sx={{ bgcolor: colors.cream, color: colors.black, py: { xs: 5, md: 7 } }}>
       <Container>
         <Box
@@ -45,8 +44,12 @@ const PetPortraits = () => (
             letterSpacing: '0.04em',
           }}
         >
-          <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Click a portrait to see more photos</Box>
-          <span>{petPortraits.length} portraits</span>
+          <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+            Click any {collection.noun.singular} to see more photos
+          </Box>
+          <span>
+            {collection.artworks.length} {collection.noun.plural}
+          </span>
         </Box>
 
         <Box
@@ -57,17 +60,17 @@ const PetPortraits = () => (
             rowGap: { xs: 5, md: 7 },
           }}
         >
-          {petPortraits.map((pet, i) => (
-            <AnimatedSection key={pet.slug} delay={(i % 3) * 0.08}>
-              <PortraitCard pet={pet} eager={i < 3} />
+          {collection.artworks.map((artwork, i) => (
+            <AnimatedSection key={artwork.slug} delay={(i % 3) * 0.08}>
+              <ArtworkCard artwork={artwork} collection={collection} eager={i < 3} />
             </AnimatedSection>
           ))}
         </Box>
       </Container>
     </Box>
 
-    <CommissionSection />
+    {collection.commission && <CommissionSection />}
   </>
 );
 
-export default PetPortraits;
+export default CollectionPage;

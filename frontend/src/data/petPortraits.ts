@@ -1,28 +1,9 @@
-// Pet Portraits collection, in the order of the "Pets' Portrait collection" deck.
-// Images live in /public/images/pet-portraits. `card` is the grid thumbnail; `images` fill the
-// gallery on each portrait's page, first image shown first.
+import type { Artwork, Collection } from './types';
 
-export interface PortraitImage {
-  src: string;
-  caption: string;
-}
-
-export interface PetPortrait {
-  slug: string;
-  name: string;
-  card: string;
-  images: PortraitImage[];
-}
-
+// Pet Portraits, in the order of the "Pets' Portrait collection" deck.
 const dir = '/images/pet-portraits';
 
-export const PET_PORTRAITS_INTRO =
-  'Celebrate the special bond you share with your beloved pet through a custom portrait that captures their unique personality, charm, and spirit.';
-
-// Shown on the collection banner.
-export const PET_PORTRAITS_FEATURE = `${dir}/awesome-three-easel.jpg`;
-
-export const petPortraits: PetPortrait[] = [
+const portraits: Artwork[] = [
   {
     slug: 'mame-the-cub',
     name: 'Mame the Cub',
@@ -85,3 +66,18 @@ export const petPortraits: PetPortrait[] = [
     images: [{ src: `${dir}/guinea-pigs.jpg`, caption: 'The painting' }],
   },
 ];
+
+export const petPortraits: Collection = {
+  slug: 'pet-portraits',
+  title: 'Pet Portraits',
+  intro:
+    'Celebrate the special bond you share with your beloved pet through a custom portrait that captures their unique personality, charm, and spirit.',
+  feature: {
+    src: `${dir}/awesome-three-easel.jpg`,
+    alt: 'The Awesome Three, a pet portrait of a dog and two cats, on an easel in the studio',
+  },
+  noun: { singular: 'portrait', plural: 'portraits' },
+  cardFit: 'cover',
+  commission: true,
+  artworks: portraits,
+};

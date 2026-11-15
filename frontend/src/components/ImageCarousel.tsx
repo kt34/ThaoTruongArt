@@ -3,12 +3,12 @@ import type { ReactNode } from 'react';
 import { Box, Dialog, IconButton, Typography } from '@mui/material';
 import { ChevronLeft, ChevronRight, Close, ZoomIn } from '@mui/icons-material';
 import { AnimatePresence, motion } from 'framer-motion';
-import type { PortraitImage } from '../data/petPortraits';
+import type { ArtworkImage } from '../data/types';
 import { colors } from '../constants';
 import { imageRadius } from '../styles';
 
 interface ImageCarouselProps {
-  images: PortraitImage[];
+  images: ArtworkImage[];
   alt: string;
   // Shown beside the image on desktop (above it on phones), with the thumbnails underneath.
   title?: ReactNode;
@@ -43,7 +43,7 @@ const revealOnHoverSx = {
 } as const;
 
 interface StageProps {
-  images: PortraitImage[];
+  images: ArtworkImage[];
   alt: string;
   index: number;
   direction: number;
