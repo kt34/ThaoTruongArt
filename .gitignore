@@ -70,3 +70,9 @@ out/
 # Misc
 .DS_Store
 Thumbs.db 
+
+# Pptx
+galleries-pptx/
+
+# DS Store
+.DS_Store
