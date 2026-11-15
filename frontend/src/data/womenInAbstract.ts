@@ -27,6 +27,7 @@ export const womenInAbstract: Collection = {
   tags: ['Original artwork', 'Exhibition collection'],
   cardFit: 'contain',
   commission: false,
+  enquire: true,
   artworks: [
     figure(1, '50 × 60 × 3 cm'),
     figure(2, '50 × 60 × 3 cm'),
