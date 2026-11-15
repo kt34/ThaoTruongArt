@@ -95,7 +95,13 @@ const ArtworkPage = ({ collection }: { collection: Collection }) => {
           </Box>
 
           {/* Keyed by artwork so the gallery starts at the first image on each page. */}
-          <ImageCarousel key={artwork.slug} images={artwork.images} alt={`${collection.title}: ${artwork.name}`} title={sidebar} />
+          <ImageCarousel
+            key={artwork.slug}
+            images={artwork.images}
+            alt={`${collection.title}: ${artwork.name}`}
+            title={sidebar}
+            mobileTitleFirst={collection.mobileTitleFirst}
+          />
         </Container>
       </Box>
 
