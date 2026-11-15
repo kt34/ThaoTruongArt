@@ -5,6 +5,8 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Collections from './pages/Collections';
 import Contact from './pages/Contact';
+import PetPortraits from './pages/PetPortraits';
+import PetPortraitDetail from './pages/PetPortraitDetail';
 import Footer from './components/Footer';
 import PptxMatch from './pptx-match/PptxMatch';
 import { useEffect } from 'react';
@@ -92,7 +94,9 @@ function App() {
                       <Contact />
                     </>
                   } />
-                  {/* Collection and painting pages are blocked for now; redirect to the gallery section. */}
+                  <Route path="/collections/pet-portraits" element={<PetPortraits />} />
+                  <Route path="/collections/pet-portraits/:slug" element={<PetPortraitDetail />} />
+                  {/* Other collection and painting pages are blocked for now; redirect to the gallery section. */}
                   <Route path="/collections/*" element={<Navigate to="/" replace state={{ scrollTo: 'collections' }} />} />
                   <Route path="/painting/*" element={<Navigate to="/" replace state={{ scrollTo: 'collections' }} />} />
                 </Routes>

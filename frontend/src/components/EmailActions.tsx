@@ -10,6 +10,8 @@ interface EmailActionsProps {
   // Show the address itself, so visitors can always copy it by hand.
   showAddress?: boolean;
   align?: 'left' | 'center';
+  // Light text for use on the teal background.
+  onDark?: boolean;
 }
 
 const linkSx = {
@@ -26,7 +28,15 @@ const linkSx = {
 };
 
 // "Email Thao" opens the visitor's default mail app; the links below cover web mail users and copying the address.
-const EmailActions = ({ subject = '', body = '', showAddress = false, align = 'left' }: EmailActionsProps) => {
+const darkLinkSx = {
+  ...linkSx,
+  color: colors.white,
+  '&:hover': { color: colors.blush },
+  '&:focus-visible': { outline: `2px solid ${colors.blush}`, outlineOffset: 2 },
+};
+
+const EmailActions = ({ subject = '', body = '', showAddress = false, align = 'left', onDark = false }: EmailActionsProps) => {
+  const links = onDark ? darkLinkSx : linkSx;
   const [copied, setCopied] = useState(false);
 
   const copyEmail = async () => {
@@ -65,18 +75,18 @@ const EmailActions = ({ subject = '', body = '', showAddress = false, align = 'l
 
       <Typography
         component="div"
-        sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: centred ? 'center' : 'flex-start', alignItems: 'center', columnGap: 1.25, fontSize: '0.98rem', color: 'text.secondary' }}
+        sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: centred ? 'center' : 'flex-start', alignItems: 'center', columnGap: 1.25, fontSize: '0.98rem', color: onDark ? 'rgba(255,255,255,0.8)' : 'text.secondary' }}
       >
         <span>Or:</span>
-        <Box component="a" href={gmailComposeUrl(subject, body)} target="_blank" rel="noopener noreferrer" sx={linkSx}>
+        <Box component="a" href={gmailComposeUrl(subject, body)} target="_blank" rel="noopener noreferrer" sx={links}>
           Open in Gmail
         </Box>
         <span aria-hidden>·</span>
-        <Box component="a" href={outlookComposeUrl(subject, body)} target="_blank" rel="noopener noreferrer" sx={linkSx}>
+        <Box component="a" href={outlookComposeUrl(subject, body)} target="_blank" rel="noopener noreferrer" sx={links}>
           Outlook
         </Box>
         <span aria-hidden>·</span>
-        <Box component="button" type="button" onClick={copyEmail} sx={linkSx} aria-live="polite">
+        <Box component="button" type="button" onClick={copyEmail} sx={links} aria-live="polite">
           {copied ? 'Copied!' : 'Copy address'}
         </Box>
       </Typography>

@@ -56,6 +56,7 @@ export const collections = [
     id: 'pet-portraits',
     title: 'Pet Portraits',
     cover: '/images/design/cover-pet-portraits.jpg',
+    href: '/collections/pet-portraits',
   },
   {
     id: 'women-figures',
