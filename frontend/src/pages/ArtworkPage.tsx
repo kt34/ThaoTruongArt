@@ -4,6 +4,7 @@ import { Link as RouterLink, Navigate, useParams } from 'react-router-dom';
 import ImageCarousel from '../components/ImageCarousel';
 import CommissionSection from '../components/CommissionSection';
 import ArtworkCard from '../components/ArtworkCard';
+import EnquireButton from '../components/EnquireButton';
 import { Container } from '../components/Layout';
 import type { Collection } from '../data/types';
 import { colors, fonts } from '../constants';
@@ -60,6 +61,12 @@ const ArtworkPage = ({ collection }: { collection: Collection }) => {
               </Box>
             </Box>
           ))}
+        </Box>
+      )}
+
+      {collection.enquire && (
+        <Box sx={{ mt: 2.5 }}>
+          <EnquireButton artworkName={artwork.name} />
         </Box>
       )}
     </Box>

@@ -29,5 +29,7 @@ export interface Collection {
   cardFit: 'cover' | 'contain';
   // Show the "Commission a pet portrait" section.
   commission: boolean;
+  // Show a small "Enquire about this piece" button on each artwork page (email pre-filled with its name).
+  enquire?: boolean;
   artworks: Artwork[];
 }
