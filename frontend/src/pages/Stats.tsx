@@ -625,7 +625,7 @@ const Stats = () => {
             </Box>
 
             <Box sx={{ fontSize: 12, color: ui.faint, mt: 3, textAlign: 'center' }}>
-              {data.granularity === 'hour' ? `${longDate(data.since)}, by hour (your local time)` : `${longDate(data.since)} – ${longDate(data.until)} (days in UTC)`} · From Vercel Web Analytics
+              {data.granularity === 'hour' ? `${longDate(data.since)}, by hour` : `${longDate(data.since)} – ${longDate(data.until)}`} (your local time) · From Vercel Web Analytics
             </Box>
           </Box>
         )}

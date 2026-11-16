@@ -3,9 +3,8 @@
 // Reads this site's Vercel Web Analytics through Vercel's API, so the /stats page can show
 // visitors without anyone logging in to Vercel. The access token stays on the server.
 //
-// - A range of several days is broken down per day.
-// - A single day is broken down per hour, in the viewer's time zone (`tz` = the browser's
-//   getTimezoneOffset(), e.g. -600 for AEST).
+// - Days are the viewer's local days (`tz` = the browser's getTimezoneOffset(), e.g. -660 for AEDT).
+// - A range of several days is broken down per day; a single day per hour.
 //
 // Environment variables (set in Vercel → Project → Settings → Environment Variables):
 //   ANALYTICS_TOKEN       Vercel access token (Account Settings → Tokens). Required.
@@ -31,7 +30,7 @@ interface Totals {
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
     status,
-    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'private, max-age=300' },
+    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'private, max-age=60' },
   });
 
 const isoDay = (d: Date) => d.toISOString().slice(0, 10);
@@ -70,13 +69,13 @@ export async function GET(request: Request): Promise<Response> {
   const hourly = days === 1;
   const tz = Math.max(-840, Math.min(840, Number(url.searchParams.get('tz')) || 0));
 
-  // Hourly: the viewer's local midnight to midnight, as timestamps. Daily: whole UTC days.
+  // Every view uses the viewer's local days (midnight to midnight), sent to Vercel as exact
+  // timestamps. Vercel can only group by UTC day, so days are fetched one at a time below.
+  // (Uses today's UTC offset for the whole range, so a daylight-saving change can shift one hour.)
   const start = dayMs(since) + tz * 60 * 1000;
-  const window = hourly ? { since: String(start), until: String(start + DAY_MS - 1) } : { since, until };
+  const window = { since: String(start), until: String(start + days * DAY_MS - 1) };
   // The same-length period just before, for the "+12%" comparison.
-  const previous = hourly
-    ? { since: String(start - DAY_MS), until: String(start - 1) }
-    : { since: isoDay(new Date(dayMs(since) - days * DAY_MS)), until: isoDay(new Date(dayMs(since) - DAY_MS)) };
+  const previous = { since: String(start - days * DAY_MS), until: String(start - 1) };
 
   const query = async (path: string, params: Record<string, string>) => {
     const qs = new URLSearchParams({ projectId, ...window, ...params });
@@ -86,14 +85,10 @@ export async function GET(request: Request): Promise<Response> {
     return res.json();
   };
 
-  // Total visitors and page views. Vercel's count endpoint misreads exact timestamps, so for a
-  // single (local-time) day add up a per-country breakdown instead: each visitor has one country,
-  // so the rows sum to the true unique visitors.
+  // Total visitors and page views for a time window. Vercel's count endpoint misreads exact
+  // timestamps, so add up a per-country breakdown instead: each visitor has one country, so the
+  // rows sum to the true number of unique visitors.
   const totalsFor = async (params: Record<string, string>): Promise<Totals> => {
-    if (!hourly) {
-      const result = await query('count', params);
-      return { visitors: result.data?.visitors ?? 0, pageviews: result.data?.pageviews ?? 0 };
-    }
     const result = await query('aggregate', { ...params, by: 'country', limit: '100' });
     return ((result.data ?? []) as { visitors?: number; pageviews?: number }[]).reduce<Totals>(
       (sum, row) => ({ visitors: sum.visitors + (row.visitors ?? 0), pageviews: sum.pageviews + (row.pageviews ?? 0) }),
@@ -101,12 +96,39 @@ export async function GET(request: Request): Promise<Response> {
     );
   };
 
+  // One local day at a time, a few in parallel so Vercel isn't hit with 30 requests at once.
+  const dailyPoints = async () => {
+    const dayStarts = Array.from({ length: days }, (_, i) => start + i * DAY_MS);
+    const results: Totals[] = new Array(days);
+    let next = 0;
+    const worker = async () => {
+      while (next < days) {
+        const i = next++;
+        results[i] = await totalsFor({ since: String(dayStarts[i]), until: String(dayStarts[i] + DAY_MS - 1) });
+      }
+    };
+    await Promise.all(Array.from({ length: Math.min(6, days) }, worker));
+    return dayStarts.map((_, i) => ({ time: isoDay(new Date(dayMs(since) + i * DAY_MS)), ...results[i] }));
+  };
+
+  const hourlyPoints = async () => {
+    const result = await query('aggregate', { by: 'hour', limit: '100' });
+    const found = new Map<number, Totals>();
+    for (const row of (result.data ?? []) as Record<string, string | number | undefined>[]) {
+      found.set(Date.parse(String(row.timestamp)), { visitors: Number(row.visitors ?? 0), pageviews: Number(row.pageviews ?? 0) });
+    }
+    return Array.from({ length: 24 }, (_, i) => {
+      const t = start + i * HOUR_MS;
+      return { time: new Date(t).toISOString(), ...(found.get(t) ?? { visitors: 0, pageviews: 0 }) };
+    });
+  };
+
   try {
-    const [totals, prev, series, byCountry, byPage, byReferrer, byDevice] = await Promise.all([
+    const [totals, prev, points, byCountry, byPage, byReferrer, byDevice] = await Promise.all([
       totalsFor({}),
       // The previous period can fall outside the plan's reporting window; then there's just no comparison.
       totalsFor(previous).catch(() => null),
-      query('aggregate', { by: hourly ? 'hour' : 'day', limit: '100' }),
+      hourly ? hourlyPoints() : dailyPoints(),
       query('aggregate', { by: 'country', limit: '10' }),
       query('aggregate', { by: 'requestPath', limit: '10' }),
       query('aggregate', { by: 'referrerHostname', limit: '10' }),
@@ -121,21 +143,6 @@ export async function GET(request: Request): Promise<Response> {
         visitors: Number(row.visitors ?? 0),
         pageviews: Number(row.pageviews ?? 0),
       }));
-
-    // One point per hour or day, filling in the ones with no visits.
-    const found = new Map<number, Totals>();
-    for (const row of (series.data ?? []) as Row[]) {
-      found.set(Date.parse(String(row.timestamp)), { visitors: Number(row.visitors ?? 0), pageviews: Number(row.pageviews ?? 0) });
-    }
-    const points = hourly
-      ? Array.from({ length: 24 }, (_, i) => {
-          const t = start + i * HOUR_MS;
-          return { time: new Date(t).toISOString(), ...(found.get(t) ?? { visitors: 0, pageviews: 0 }) };
-        })
-      : Array.from({ length: days }, (_, i) => {
-          const t = dayMs(since) + i * DAY_MS;
-          return { time: isoDay(new Date(t)), ...(found.get(t) ?? { visitors: 0, pageviews: 0 }) };
-        });
 
     return json({
       since,
