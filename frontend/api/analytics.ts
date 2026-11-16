@@ -14,7 +14,8 @@
 declare const process: { env: Record<string, string | undefined> };
 
 const API = 'https://api.vercel.com/v1/query/web-analytics/visits';
-const RANGES = [7, 30, 90];
+// Vercel's Hobby plan keeps one month of Web Analytics, so ranges stop at 30 days.
+const RANGES = [7, 14, 30];
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 interface Totals {
@@ -67,7 +68,8 @@ export async function GET(request: Request): Promise<Response> {
   try {
     const [count, previous, byDay, byCountry, byPage, byReferrer, byDevice] = await Promise.all([
       query('count', {}),
-      query('count', { since: prevSince, until: prevUntil }),
+      // The previous period can fall outside the plan's reporting window; then there's just no comparison.
+      query('count', { since: prevSince, until: prevUntil }).catch(() => null),
       query('aggregate', { by: 'day', limit: '100' }),
       query('aggregate', { by: 'country', limit: '10' }),
       query('aggregate', { by: 'requestPath', limit: '10' }),
@@ -99,7 +101,7 @@ export async function GET(request: Request): Promise<Response> {
       since,
       until,
       totals: { visitors: count.data?.visitors ?? 0, pageviews: count.data?.pageviews ?? 0 },
-      previousTotals: { visitors: previous.data?.visitors ?? 0, pageviews: previous.data?.pageviews ?? 0 },
+      previousTotals: previous ? { visitors: previous.data?.visitors ?? 0, pageviews: previous.data?.pageviews ?? 0 } : null,
       daily,
       countries: breakdown(byCountry, 'country', 'Unknown'),
       pages: breakdown(byPage, 'requestPath', '/'),
