@@ -7,6 +7,7 @@ import ArtworkCard from '../components/ArtworkCard';
 import EnquireButton from '../components/EnquireButton';
 import { Container } from '../components/Layout';
 import type { Collection } from '../data/types';
+import { COLLECTIONS_BASE } from '../data/collections';
 import { colors, fonts } from '../constants';
 
 const MORE_COUNT = 3;
@@ -16,7 +17,7 @@ const ArtworkPage = ({ collection }: { collection: Collection }) => {
   const { slug } = useParams();
   const { artworks } = collection;
   const index = artworks.findIndex((a) => a.slug === slug);
-  if (index === -1) return <Navigate to={`/collections/${collection.slug}`} replace />;
+  if (index === -1) return <Navigate to={`${COLLECTIONS_BASE}/${collection.slug}`} replace />;
 
   const artwork = artworks[index];
   // The next few artworks in order, wrapping round to the start.
@@ -78,7 +79,7 @@ const ArtworkPage = ({ collection }: { collection: Collection }) => {
         <Container>
           <Box
             component={RouterLink}
-            to={`/collections/${collection.slug}`}
+            to={`${COLLECTIONS_BASE}/${collection.slug}`}
             sx={{
               display: 'inline-flex',
               alignItems: 'center',

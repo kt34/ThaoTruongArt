@@ -5,7 +5,9 @@ import { Section, Container } from '../components/Layout';
 import { headingText, imageRadius, headerOffset } from '../styles';
 import { collections, colors, fonts } from '../constants';
 
-const Collections = () => (
+// `preview` (only on the hidden /test home page) makes finished collections clickable.
+// Without it, this is the public version: plain cards and "Full collections coming soon".
+const Collections = ({ preview = false }: { preview?: boolean }) => (
   <Section id="collections" bg={colors.teal} color={colors.white} sx={{ scrollMarginTop: headerOffset }}>
     <Container>
       <AnimatedSection>
@@ -23,7 +25,7 @@ const Collections = () => (
             mb: { xs: 5, md: 7 },
           }}
         >
-          More collections coming soon
+          {preview ? 'More collections coming soon' : 'Full collections coming soon'}
         </Typography>
       </AnimatedSection>
 
@@ -34,10 +36,12 @@ const Collections = () => (
           gap: { xs: 3, md: 3.5 },
         }}
       >
-        {collections.map((collection, index) => (
+        {collections.map((collection, index) => {
+          const href = preview ? collection.href : undefined;
+          return (
           <AnimatedSection key={collection.id} delay={index * 0.08}>
             <Box
-              {...(collection.href ? { component: RouterLink, to: collection.href } : {})}
+              {...(href ? { component: RouterLink, to: href } : {})}
               sx={{
                 display: 'block',
                 height: '100%',
@@ -47,7 +51,7 @@ const Collections = () => (
                 borderRadius: imageRadius,
                 overflow: 'hidden',
                 boxShadow: '0 6px 18px rgba(0,0,0,0.15)',
-                ...(collection.href && {
+                ...(href && {
                   transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                   '&:hover': { transform: 'translateY(-4px)', boxShadow: '0 12px 28px rgba(0,0,0,0.25)' },
                   '&:hover img': { transform: 'scale(1.05)' },
@@ -66,13 +70,16 @@ const Collections = () => (
               </Box>
               <Box sx={{ textAlign: 'center', fontFamily: fonts.heading, fontSize: '1.15rem', py: 2.25, px: 1.5 }}>
                 {collection.title}
-                <Box component="span" sx={{ display: 'block', mt: 0.5, fontFamily: fonts.body, fontSize: '0.85rem', letterSpacing: '0.06em', color: collection.href ? colors.teal : 'text.secondary', fontStyle: collection.href ? 'normal' : 'italic' }}>
-                  {collection.href ? 'View collection →' : 'Coming soon'}
-                </Box>
+                {preview && (
+                  <Box component="span" sx={{ display: 'block', mt: 0.5, fontFamily: fonts.body, fontSize: '0.85rem', letterSpacing: '0.06em', color: href ? colors.teal : 'text.secondary', fontStyle: href ? 'normal' : 'italic' }}>
+                    {href ? 'View collection →' : 'Coming soon'}
+                  </Box>
+                )}
               </Box>
             </Box>
           </AnimatedSection>
-        ))}
+          );
+        })}
       </Box>
     </Container>
   </Section>
