@@ -86,11 +86,26 @@ export async function GET(request: Request): Promise<Response> {
     return res.json();
   };
 
+  // Total visitors and page views. Vercel's count endpoint misreads exact timestamps, so for a
+  // single (local-time) day add up a per-country breakdown instead: each visitor has one country,
+  // so the rows sum to the true unique visitors.
+  const totalsFor = async (params: Record<string, string>): Promise<Totals> => {
+    if (!hourly) {
+      const result = await query('count', params);
+      return { visitors: result.data?.visitors ?? 0, pageviews: result.data?.pageviews ?? 0 };
+    }
+    const result = await query('aggregate', { ...params, by: 'country', limit: '100' });
+    return ((result.data ?? []) as { visitors?: number; pageviews?: number }[]).reduce<Totals>(
+      (sum, row) => ({ visitors: sum.visitors + (row.visitors ?? 0), pageviews: sum.pageviews + (row.pageviews ?? 0) }),
+      { visitors: 0, pageviews: 0 },
+    );
+  };
+
   try {
-    const [count, prev, series, byCountry, byPage, byReferrer, byDevice] = await Promise.all([
-      query('count', {}),
+    const [totals, prev, series, byCountry, byPage, byReferrer, byDevice] = await Promise.all([
+      totalsFor({}),
       // The previous period can fall outside the plan's reporting window; then there's just no comparison.
-      query('count', previous).catch(() => null),
+      totalsFor(previous).catch(() => null),
       query('aggregate', { by: hourly ? 'hour' : 'day', limit: '100' }),
       query('aggregate', { by: 'country', limit: '10' }),
       query('aggregate', { by: 'requestPath', limit: '10' }),
@@ -126,8 +141,8 @@ export async function GET(request: Request): Promise<Response> {
       since,
       until,
       granularity: hourly ? 'hour' : 'day',
-      totals: { visitors: count.data?.visitors ?? 0, pageviews: count.data?.pageviews ?? 0 },
-      previousTotals: prev ? { visitors: prev.data?.visitors ?? 0, pageviews: prev.data?.pageviews ?? 0 } : null,
+      totals,
+      previousTotals: prev,
       points,
       countries: breakdown(byCountry, 'country', 'Unknown'),
       pages: breakdown(byPage, 'requestPath', '/'),
