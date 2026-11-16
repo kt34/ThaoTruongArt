@@ -10,6 +10,7 @@ import ArtworkPage from './pages/ArtworkPage';
 import { galleryCollections, COLLECTIONS_BASE, PREVIEW_HOME } from './data/collections';
 import Footer from './components/Footer';
 import PptxMatch from './pptx-match/PptxMatch';
+import Stats from './pages/Stats';
 import { useEffect } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { colors, fonts } from './constants';
@@ -83,6 +84,8 @@ function App() {
         <Routes>
           {/* Original slide-for-slide version of the design, kept for comparison. */}
           <Route path="/pptx-match" element={<PptxMatch />} />
+          {/* Private analytics page (not linked from the site); has its own header, no site footer. */}
+          <Route path="/stats" element={<Stats />} />
           <Route path="*" element={
             <>
               <Navbar />
@@ -116,7 +119,10 @@ function App() {
             </>
           } />
         </Routes>
-        <Footer />
+        <Routes>
+          <Route path="/stats" element={null} />
+          <Route path="*" element={<Footer />} />
+        </Routes>
         <Analytics />
       </ThemeProvider>
     </BrowserRouter>
