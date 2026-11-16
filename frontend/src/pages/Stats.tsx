@@ -11,14 +11,22 @@ interface Item {
   pageviews: number;
 }
 
+interface Point {
+  // A date (YYYY-MM-DD) for daily points, or an ISO timestamp for hourly points.
+  time: string;
+  visitors: number;
+  pageviews: number;
+}
+
 interface StatsData {
-  range: number;
   since: string;
   until: string;
+  // A single day is broken down per hour; longer ranges per day.
+  granularity: 'day' | 'hour';
   totals: { visitors: number; pageviews: number };
   // null when the previous period is outside Vercel's reporting window.
   previousTotals: { visitors: number; pageviews: number } | null;
-  daily: { date: string; visitors: number; pageviews: number }[];
+  points: Point[];
   countries: Item[];
   pages: Item[];
   referrers: Item[];
@@ -26,7 +34,7 @@ interface StatsData {
 }
 
 type Metric = 'visitors' | 'pageviews';
-type Status = 'loading' | 'ready' | 'password' | 'not-configured' | 'error';
+type Status = 'loading' | 'ready' | 'password' | 'not-configured' | 'too-old' | 'error';
 
 // Vercel dashboard look: Geist, near-black text, light gray borders, blue chart.
 const ui = {
@@ -44,11 +52,39 @@ const ui = {
   red: '#d93036',
 };
 
-const RANGES = [
-  { value: 7, label: 'Last 7 days' },
-  { value: 14, label: 'Last 14 days' },
-  { value: 30, label: 'Last 30 days' },
-];
+// Dates are the viewer's local calendar days, as YYYY-MM-DD.
+const localDay = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const daysAgo = (n: number) => {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return localDay(d);
+};
+// Vercel's Hobby plan keeps one month of analytics.
+const OLDEST_DAYS_BACK = 29;
+
+const PRESETS = [
+  { value: 'today', label: 'Today', since: () => daysAgo(0), until: () => daysAgo(0) },
+  { value: 'yesterday', label: 'Yesterday', since: () => daysAgo(1), until: () => daysAgo(1) },
+  { value: '7', label: 'Last 7 days', since: () => daysAgo(6), until: () => daysAgo(0) },
+  { value: '14', label: 'Last 14 days', since: () => daysAgo(13), until: () => daysAgo(0) },
+  { value: '30', label: 'Last 30 days', since: () => daysAgo(29), until: () => daysAgo(0) },
+] as const;
+type Preset = (typeof PRESETS)[number]['value'] | 'custom';
+
+const controlSx = {
+  font: 'inherit',
+  fontSize: 14,
+  color: '#171717',
+  bgcolor: '#ffffff',
+  border: '1px solid #ebebeb',
+  borderRadius: '6px',
+  height: 36,
+  px: 1.5,
+  boxSizing: 'border-box',
+  '&:hover': { borderColor: '#d4d4d4' },
+  '&:focus-visible': { outline: '2px solid #0070f3', outlineOffset: 1 },
+} as const;
+const chevron = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`;
 
 const PASSWORD_KEY = 'stats-password';
 const readStored = () => {
@@ -68,9 +104,12 @@ const storePassword = (value: string) => {
 };
 
 const fmt = (n: number) => n.toLocaleString('en-AU');
+// Daily points are calendar dates (shown as-is); hourly points are instants (shown in local time).
 const shortDate = (iso: string) => new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', timeZone: 'UTC' });
 const longDate = (iso: string) =>
   new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+const hourLabel = (iso: string) => new Date(iso).toLocaleTimeString('en-AU', { hour: 'numeric' }).replace(' ', '').toLowerCase();
+const hourRange = (iso: string) => `${hourLabel(iso)} – ${hourLabel(new Date(Date.parse(iso) + 3600e3).toISOString())}`;
 
 const regionNames = (() => {
   try {
@@ -118,20 +157,31 @@ const Change = ({ current, previous }: { current: number; previous: number }) =>
   );
 };
 
-// Area chart with a crosshair tooltip that snaps to the nearest day.
-const Chart = ({ daily, metric }: { daily: StatsData['daily']; metric: Metric }) => {
+// Area chart with a crosshair tooltip that snaps to the nearest day (or hour, for a single day).
+// Clicking a day opens that day hour by hour.
+interface ChartProps {
+  points: Point[];
+  granularity: StatsData['granularity'];
+  metric: Metric;
+  onPickDay?: (day: string) => void;
+}
+
+const Chart = ({ points, granularity, metric, onPickDay }: ChartProps) => {
   const [hover, setHover] = useState<number | null>(null);
   const ref = useRef<HTMLDivElement>(null);
-  const values = daily.map((d) => d[metric]);
+  const hourly = granularity === 'hour';
+  const values = points.map((d) => d[metric]);
   const max = niceMax(Math.max(0, ...values));
-  const n = daily.length;
+  const n = points.length;
   const x = (i: number) => (n === 1 ? 50 : (i / (n - 1)) * 100);
   const y = (v: number) => 100 - (v / max) * 100;
 
   const line = values.map((v, i) => `${i ? 'L' : 'M'}${x(i)},${y(v)}`).join(' ');
   const area = `${line} L${x(n - 1)},100 L${x(0)},100 Z`;
   const ticks = [0, 0.25, 0.5, 0.75, 1].map((t) => Math.round(max * t));
-  const labelEvery = Math.max(1, Math.ceil(n / 7));
+  const labelEvery = hourly ? 3 : Math.max(1, Math.ceil(n / 7));
+  const pickable = !hourly && !!onPickDay;
+  const pointLabel = (p: Point) => (hourly ? hourLabel(p.time) : shortDate(p.time));
 
   const onMove = (e: ReactPointerEvent) => {
     const box = ref.current?.getBoundingClientRect();
@@ -156,15 +206,23 @@ const Chart = ({ daily, metric }: { daily: StatsData['daily']; metric: Metric })
       <Box
         ref={ref}
         onPointerMove={onMove}
+        onClick={() => {
+          if (pickable && hover !== null && points[hover]) onPickDay?.(points[hover].time);
+        }}
         onPointerLeave={() => setHover(null)}
         tabIndex={0}
-        aria-label={`${label} per day chart. Use the left and right arrow keys to read each day.`}
+        aria-label={
+          hourly
+            ? `${label} per hour chart. Use the left and right arrow keys to read each hour.`
+            : `${label} per day chart. Use the left and right arrow keys to read each day, and Enter to open that day.`
+        }
         onKeyDown={(e) => {
           if (e.key === 'ArrowRight') setHover((h) => Math.min(n - 1, (h ?? -1) + 1));
           if (e.key === 'ArrowLeft') setHover((h) => Math.max(0, (h ?? n) - 1));
+          if (e.key === 'Enter' && pickable && hover !== null && points[hover]) onPickDay?.(points[hover].time);
         }}
         onBlur={() => setHover(null)}
-        sx={{ position: 'relative', height: 260, outline: 'none', '&:focus-visible': { boxShadow: `0 0 0 2px ${ui.blue}`, borderRadius: '4px' } }}
+        sx={{ position: 'relative', height: 260, outline: 'none', cursor: pickable ? 'pointer' : 'default', '&:focus-visible': { boxShadow: `0 0 0 2px ${ui.blue}`, borderRadius: '4px' } }}
       >
         {/* Gridlines */}
         {ticks.map((t) => (
@@ -182,7 +240,7 @@ const Chart = ({ daily, metric }: { daily: StatsData['daily']; metric: Metric })
           <path d={line} fill="none" stroke={ui.blue} strokeWidth="2" vectorEffect="non-scaling-stroke" strokeLinejoin="round" strokeLinecap="round" />
         </svg>
 
-        {hover !== null && daily[hover] && (
+        {hover !== null && points[hover] && (
           <>
             <Box sx={{ position: 'absolute', top: 0, bottom: 0, left: `${x(hover)}%`, borderLeft: `1px solid ${ui.faint}`, pointerEvents: 'none' }} />
             <Box
@@ -218,7 +276,7 @@ const Chart = ({ daily, metric }: { daily: StatsData['daily']; metric: Metric })
                 zIndex: 1,
               }}
             >
-              <Box sx={{ fontSize: 12, color: ui.muted, mb: 0.5 }}>{longDate(daily[hover].date)}</Box>
+              <Box sx={{ fontSize: 12, color: ui.muted, mb: 0.5 }}>{hourly ? hourRange(points[hover].time) : longDate(points[hover].time)}</Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, fontSize: 13 }}>
                 <Box sx={{ width: 10, height: 2, bgcolor: ui.blue, borderRadius: 1 }} />
                 <Box component="span" sx={{ fontWeight: 600, color: ui.text }}>
@@ -228,6 +286,7 @@ const Chart = ({ daily, metric }: { daily: StatsData['daily']; metric: Metric })
                   {label}
                 </Box>
               </Box>
+              {pickable && <Box sx={{ fontSize: 11, color: ui.faint, mt: 0.75 }}>Click to see this day by hour</Box>}
             </Box>
           </>
         )}
@@ -236,10 +295,10 @@ const Chart = ({ daily, metric }: { daily: StatsData['daily']; metric: Metric })
       {/* X axis labels */}
       <Box />
       <Box sx={{ position: 'relative', height: 24, mt: 1 }}>
-        {daily.map((d, i) =>
+        {points.map((d, i) =>
           i % labelEvery === 0 || i === n - 1 ? (
             <Box
-              key={d.date}
+              key={d.time}
               sx={{
                 position: 'absolute',
                 left: `${x(i)}%`,
@@ -250,7 +309,7 @@ const Chart = ({ daily, metric }: { daily: StatsData['daily']; metric: Metric })
                 display: i !== 0 && i !== n - 1 && i % (labelEvery * 2) !== 0 ? { xs: 'none', sm: 'block' } : 'block',
               }}
             >
-              {shortDate(d.date)}
+              {pointLabel(d)}
             </Box>
           ) : null,
         )}
@@ -301,7 +360,9 @@ const Message = ({ title, children }: { title: string; children: React.ReactNode
 );
 
 const Stats = () => {
-  const [range, setRange] = useState(30);
+  const [preset, setPreset] = useState<Preset>('30');
+  // Used when preset is 'custom' (picked dates, or a day clicked on the chart).
+  const [custom, setCustom] = useState({ since: daysAgo(6), until: daysAgo(0) });
   const [metric, setMetric] = useState<Metric>('visitors');
   const [data, setData] = useState<StatsData | null>(null);
   const [status, setStatus] = useState<Status>('loading');
@@ -327,10 +388,15 @@ const Stats = () => {
     };
   }, []);
 
+  const chosen = PRESETS.find((p) => p.value === preset);
+  const since = chosen ? chosen.since() : custom.since;
+  const until = chosen ? chosen.until() : custom.until;
+
   const load = useCallback(async () => {
     setStatus('loading');
     try {
-      const res = await fetch(`/api/analytics?range=${range}`, { headers: password ? { 'x-analytics-password': password } : {} });
+      const qs = new URLSearchParams({ since, until, tz: String(new Date().getTimezoneOffset()) });
+      const res = await fetch(`/api/analytics?${qs}`, { headers: password ? { 'x-analytics-password': password } : {} });
       if (res.status === 401) {
         setWrongPassword(Boolean(password));
         storePassword('');
@@ -338,13 +404,14 @@ const Stats = () => {
         return;
       }
       if (res.status === 503) return setStatus('not-configured');
+      if (res.status === 400) return setStatus('too-old');
       if (!res.ok) return setStatus('error');
       setData(await res.json());
       setStatus('ready');
     } catch {
       setStatus('error');
     }
-  }, [range, password]);
+  }, [since, until, password]);
 
   useEffect(() => {
     load();
@@ -355,6 +422,21 @@ const Stats = () => {
     storePassword(draft);
     setWrongPassword(false);
     setPassword(draft);
+  };
+
+  const pickDay = (day: string) => {
+    setPreset('custom');
+    setCustom({ since: day, until: day });
+  };
+  const setCustomDate = (key: 'since' | 'until', value: string) => {
+    if (!value) return;
+    setPreset('custom');
+    setCustom((c) => {
+      const next = { ...c, [key]: value };
+      // If From ends up after To, show just the picked day.
+      if (next.since > next.until) return { since: value, until: value };
+      return next;
+    });
   };
 
   const host = typeof window !== 'undefined' ? window.location.host : '';
@@ -380,35 +462,52 @@ const Stats = () => {
             </Box>
             <Box sx={{ fontSize: 14, color: ui.muted, mt: 0.5 }}>{host} · Production</Box>
           </Box>
-          <Box
-            component="select"
-            value={range}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setRange(Number(e.target.value))}
-            aria-label="Date range"
-            sx={{
-              font: 'inherit',
-              fontSize: 14,
-              color: ui.text,
-              bgcolor: ui.card,
-              border: `1px solid ${ui.border}`,
-              borderRadius: '6px',
-              height: 36,
-              pl: 1.5,
-              pr: 4,
-              cursor: 'pointer',
-              appearance: 'none',
-              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`,
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'right 12px center',
-              '&:hover': { borderColor: '#d4d4d4' },
-              '&:focus-visible': { outline: `2px solid ${ui.blue}`, outlineOffset: 1 },
-            }}
-          >
-            {RANGES.map((r) => (
-              <option key={r.value} value={r.value}>
-                {r.label}
-              </option>
-            ))}
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, alignItems: 'center' }}>
+            <Box
+              component="select"
+              value={preset}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                const value = e.target.value as Preset;
+                if (value === 'custom') setCustom({ since, until });
+                setPreset(value);
+              }}
+              aria-label="Date range"
+              sx={{ ...controlSx, pr: 4, cursor: 'pointer', appearance: 'none', backgroundImage: chevron, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}
+            >
+              {PRESETS.map((r) => (
+                <option key={r.value} value={r.value}>
+                  {r.label}
+                </option>
+              ))}
+              <option value="custom">Custom range…</option>
+            </Box>
+            {preset === 'custom' && (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Box
+                  component="input"
+                  type="date"
+                  aria-label="From"
+                  value={custom.since}
+                  min={daysAgo(OLDEST_DAYS_BACK)}
+                  max={daysAgo(0)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCustomDate('since', e.target.value)}
+                  sx={controlSx}
+                />
+                <Box component="span" sx={{ color: ui.faint, fontSize: 14 }}>
+                  to
+                </Box>
+                <Box
+                  component="input"
+                  type="date"
+                  aria-label="To"
+                  value={custom.until}
+                  min={daysAgo(OLDEST_DAYS_BACK)}
+                  max={daysAgo(0)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCustomDate('until', e.target.value)}
+                  sx={controlSx}
+                />
+              </Box>
+            )}
           </Box>
         </Box>
       </Box>
@@ -444,6 +543,10 @@ const Stats = () => {
           </Message>
         )}
 
+        {status === 'too-old' && (
+          <Message title="Those dates are too far back">Vercel keeps about the last 30 days of visitors. Pick a more recent date.</Message>
+        )}
+
         {status === 'error' && !data && (
           <Message title="Couldn’t load analytics">
             Vercel didn’t respond. Try again in a minute.{' '}
@@ -455,7 +558,7 @@ const Stats = () => {
 
         {status === 'loading' && !data && <Box sx={{ textAlign: 'center', color: ui.faint, fontSize: 14, mt: 8 }}>Loading…</Box>}
 
-        {data && status !== 'password' && (
+        {data && status !== 'password' && status !== 'too-old' && (
           // Keep the previous numbers on screen (dimmed) while a new range loads.
           <Box sx={{ opacity: status === 'loading' ? 0.55 : 1, transition: 'opacity 0.2s ease' }}>
             <Box sx={{ bgcolor: ui.card, border: `1px solid ${ui.border}`, borderRadius: '12px', overflow: 'hidden', mb: 3 }}>
@@ -496,7 +599,7 @@ const Stats = () => {
                   );
                 })}
               </Box>
-              <Chart daily={data.daily} metric={metric} />
+              <Chart points={data.points} granularity={data.granularity} metric={metric} onPickDay={pickDay} />
             </Box>
 
             <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
@@ -522,7 +625,7 @@ const Stats = () => {
             </Box>
 
             <Box sx={{ fontSize: 12, color: ui.faint, mt: 3, textAlign: 'center' }}>
-              {longDate(data.since)} – {longDate(data.until)} (UTC) · From Vercel Web Analytics
+              {data.granularity === 'hour' ? `${longDate(data.since)}, by hour (your local time)` : `${longDate(data.since)} – ${longDate(data.until)} (days in UTC)`} · From Vercel Web Analytics
             </Box>
           </Box>
         )}

@@ -1,7 +1,11 @@
-// Vercel serverless function: GET /api/analytics?range=7|30|90
+// Vercel serverless function: GET /api/analytics?since=YYYY-MM-DD&until=YYYY-MM-DD&tz=<minutes>
 //
 // Reads this site's Vercel Web Analytics through Vercel's API, so the /stats page can show
 // visitors without anyone logging in to Vercel. The access token stays on the server.
+//
+// - A range of several days is broken down per day.
+// - A single day is broken down per hour, in the viewer's time zone (`tz` = the browser's
+//   getTimezoneOffset(), e.g. -600 for AEST).
 //
 // Environment variables (set in Vercel → Project → Settings → Environment Variables):
 //   ANALYTICS_TOKEN       Vercel access token (Account Settings → Tokens). Required.
@@ -14,9 +18,10 @@
 declare const process: { env: Record<string, string | undefined> };
 
 const API = 'https://api.vercel.com/v1/query/web-analytics/visits';
-// Vercel's Hobby plan keeps one month of Web Analytics, so ranges stop at 30 days.
-const RANGES = [7, 14, 30];
 const DAY_MS = 24 * 60 * 60 * 1000;
+const HOUR_MS = 60 * 60 * 1000;
+// Vercel's Hobby plan keeps one month of Web Analytics; allow a day of slack for time zones.
+const MAX_DAYS_BACK = 31;
 
 interface Totals {
   visitors: number;
@@ -30,6 +35,8 @@ const json = (body: unknown, status = 200) =>
   });
 
 const isoDay = (d: Date) => d.toISOString().slice(0, 10);
+const isDate = (s: string | null): s is string => !!s && /^\d{4}-\d{2}-\d{2}$/.test(s) && !Number.isNaN(Date.parse(s));
+const dayMs = (iso: string) => Date.parse(`${iso}T00:00:00Z`);
 
 export async function GET(request: Request): Promise<Response> {
   const env = process.env;
@@ -44,21 +51,35 @@ export async function GET(request: Request): Promise<Response> {
     return json({ error: 'password', message: 'Password required.' }, 401);
   }
 
+  // Which days to show. Defaults to the last 30 days.
   const url = new URL(request.url);
-  const requested = Number(url.searchParams.get('range'));
-  const range = RANGES.includes(requested) ? requested : 30;
+  const today = isoDay(new Date());
+  // "Today" in Australia can already be tomorrow in UTC, so allow one day ahead.
+  const latest = isoDay(new Date(Date.now() + DAY_MS));
+  let until = url.searchParams.get('until');
+  let since = url.searchParams.get('since');
+  if (!isDate(until) || until > latest) until = today;
+  if (!isDate(since)) since = isoDay(new Date(dayMs(until) - 29 * DAY_MS));
+  if (since > until) [since, until] = [until, since];
+  const earliest = isoDay(new Date(dayMs(today) - MAX_DAYS_BACK * DAY_MS));
+  if (since < earliest) {
+    return json({ error: 'too-old', message: 'Vercel only keeps about the last 30 days of analytics.' }, 400);
+  }
 
-  // Whole days in UTC, ending today.
-  const today = new Date();
-  const since = isoDay(new Date(today.getTime() - (range - 1) * DAY_MS));
-  const until = isoDay(today);
+  const days = Math.round((dayMs(until) - dayMs(since)) / DAY_MS) + 1;
+  const hourly = days === 1;
+  const tz = Math.max(-840, Math.min(840, Number(url.searchParams.get('tz')) || 0));
 
+  // Hourly: the viewer's local midnight to midnight, as timestamps. Daily: whole UTC days.
+  const start = dayMs(since) + tz * 60 * 1000;
+  const window = hourly ? { since: String(start), until: String(start + DAY_MS - 1) } : { since, until };
   // The same-length period just before, for the "+12%" comparison.
-  const prevUntil = isoDay(new Date(new Date(since).getTime() - DAY_MS));
-  const prevSince = isoDay(new Date(new Date(since).getTime() - range * DAY_MS));
+  const previous = hourly
+    ? { since: String(start - DAY_MS), until: String(start - 1) }
+    : { since: isoDay(new Date(dayMs(since) - days * DAY_MS)), until: isoDay(new Date(dayMs(since) - DAY_MS)) };
 
   const query = async (path: string, params: Record<string, string>) => {
-    const qs = new URLSearchParams({ projectId, since, until, ...params });
+    const qs = new URLSearchParams({ projectId, ...window, ...params });
     if (env.ANALYTICS_TEAM_ID) qs.set('teamId', env.ANALYTICS_TEAM_ID);
     const res = await fetch(`${API}/${path}?${qs}`, { headers: { Authorization: `Bearer ${token}` } });
     if (!res.ok) throw new Error(`Vercel API ${path} responded ${res.status}: ${(await res.text()).slice(0, 300)}`);
@@ -66,11 +87,11 @@ export async function GET(request: Request): Promise<Response> {
   };
 
   try {
-    const [count, previous, byDay, byCountry, byPage, byReferrer, byDevice] = await Promise.all([
+    const [count, prev, series, byCountry, byPage, byReferrer, byDevice] = await Promise.all([
       query('count', {}),
       // The previous period can fall outside the plan's reporting window; then there's just no comparison.
-      query('count', { since: prevSince, until: prevUntil }).catch(() => null),
-      query('aggregate', { by: 'day', limit: '100' }),
+      query('count', previous).catch(() => null),
+      query('aggregate', { by: hourly ? 'hour' : 'day', limit: '100' }),
       query('aggregate', { by: 'country', limit: '10' }),
       query('aggregate', { by: 'requestPath', limit: '10' }),
       query('aggregate', { by: 'referrerHostname', limit: '10' }),
@@ -86,23 +107,28 @@ export async function GET(request: Request): Promise<Response> {
         pageviews: Number(row.pageviews ?? 0),
       }));
 
-    // Fill in days with no visits so the chart has one bar per day.
-    const perDay = new Map<string, Totals>();
-    for (const row of byDay.data ?? []) {
-      perDay.set(String(row.timestamp).slice(0, 10), { visitors: row.visitors ?? 0, pageviews: row.pageviews ?? 0 });
+    // One point per hour or day, filling in the ones with no visits.
+    const found = new Map<number, Totals>();
+    for (const row of (series.data ?? []) as Row[]) {
+      found.set(Date.parse(String(row.timestamp)), { visitors: Number(row.visitors ?? 0), pageviews: Number(row.pageviews ?? 0) });
     }
-    const daily = Array.from({ length: range }, (_, i) => {
-      const date = isoDay(new Date(new Date(since).getTime() + i * DAY_MS));
-      return { date, ...(perDay.get(date) ?? { visitors: 0, pageviews: 0 }) };
-    });
+    const points = hourly
+      ? Array.from({ length: 24 }, (_, i) => {
+          const t = start + i * HOUR_MS;
+          return { time: new Date(t).toISOString(), ...(found.get(t) ?? { visitors: 0, pageviews: 0 }) };
+        })
+      : Array.from({ length: days }, (_, i) => {
+          const t = dayMs(since) + i * DAY_MS;
+          return { time: isoDay(new Date(t)), ...(found.get(t) ?? { visitors: 0, pageviews: 0 }) };
+        });
 
     return json({
-      range,
       since,
       until,
+      granularity: hourly ? 'hour' : 'day',
       totals: { visitors: count.data?.visitors ?? 0, pageviews: count.data?.pageviews ?? 0 },
-      previousTotals: previous ? { visitors: previous.data?.visitors ?? 0, pageviews: previous.data?.pageviews ?? 0 } : null,
-      daily,
+      previousTotals: prev ? { visitors: prev.data?.visitors ?? 0, pageviews: prev.data?.pageviews ?? 0 } : null,
+      points,
       countries: breakdown(byCountry, 'country', 'Unknown'),
       pages: breakdown(byPage, 'requestPath', '/'),
       referrers: breakdown(byReferrer, 'referrerHostname', 'Direct'),
