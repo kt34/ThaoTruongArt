@@ -56,13 +56,13 @@ export const collections = [
     id: 'pet-portraits',
     title: 'Pet Portraits',
     cover: '/images/design/cover-pet-portraits.jpg',
-    href: '/collections/pet-portraits',
+    href: '/test/collections/pet-portraits',
   },
   {
     id: 'women-figures',
     title: 'Women in Abstract',
     cover: '/images/design/cover-women-abstract.jpg',
-    href: '/collections/women-in-abstract',
+    href: '/test/collections/women-in-abstract',
   },
   {
     id: 'fluid-art',

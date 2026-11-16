@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { colors, fonts, FACEBOOK_URL, INSTAGRAM_URL } from '../constants';
 import { headerOffset } from '../styles';
+import { PREVIEW_HOME } from '../data/collections';
 
 const navItems = [
   { label: 'About the Artist', section: 'about' },
@@ -49,8 +50,10 @@ const Navbar = () => {
 
   const handleNavigation = (sectionId: string) => {
     setMobileOpen(false);
-    if (location.pathname !== '/') {
-      navigate('/', { state: sectionId === 'top' ? undefined : { scrollTo: sectionId } });
+    // Anywhere in the hidden preview (/test/...), the links stay within the preview.
+    const home = location.pathname === PREVIEW_HOME || location.pathname.startsWith(`${PREVIEW_HOME}/`) ? PREVIEW_HOME : '/';
+    if (location.pathname !== home) {
+      navigate(home, { state: sectionId === 'top' ? undefined : { scrollTo: sectionId } });
     } else if (sectionId === 'top') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {

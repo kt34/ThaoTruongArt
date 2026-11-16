@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import type { Artwork, Collection } from '../data/types';
+import { COLLECTIONS_BASE } from '../data/collections';
 import { colors, fonts } from '../constants';
 
 interface ArtworkCardProps {
@@ -16,7 +17,7 @@ const ArtworkCard = ({ artwork, collection, eager = false }: ArtworkCardProps) =
   return (
     <Box
       component={RouterLink}
-      to={`/collections/${collection.slug}/${artwork.slug}`}
+      to={`${COLLECTIONS_BASE}/${collection.slug}/${artwork.slug}`}
       sx={{
         display: 'flex',
         flexDirection: 'column',

@@ -7,9 +7,10 @@ import Collections from './pages/Collections';
 import Contact from './pages/Contact';
 import CollectionPage from './pages/CollectionPage';
 import ArtworkPage from './pages/ArtworkPage';
-import { galleryCollections } from './data/collections';
+import { galleryCollections, COLLECTIONS_BASE, PREVIEW_HOME } from './data/collections';
 import Footer from './components/Footer';
 import PptxMatch from './pptx-match/PptxMatch';
+import Stats from './pages/Stats';
 import { useEffect } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { colors, fonts } from './constants';
@@ -83,6 +84,8 @@ function App() {
         <Routes>
           {/* Original slide-for-slide version of the design, kept for comparison. */}
           <Route path="/pptx-match" element={<PptxMatch />} />
+          {/* Private analytics page (not linked from the site); has its own header, no site footer. */}
+          <Route path="/stats" element={<Stats />} />
           <Route path="*" element={
             <>
               <Navbar />
@@ -95,11 +98,20 @@ function App() {
                       <Contact />
                     </>
                   } />
+                  {/* Hidden preview: the same home page, but the finished collections are clickable. */}
+                  <Route path={PREVIEW_HOME} element={
+                    <>
+                      <Home />
+                      <Collections preview />
+                      <Contact />
+                    </>
+                  } />
                   {galleryCollections.flatMap((c) => [
-                    <Route key={c.slug} path={`/collections/${c.slug}`} element={<CollectionPage collection={c} />} />,
-                    <Route key={`${c.slug}-artwork`} path={`/collections/${c.slug}/:slug`} element={<ArtworkPage collection={c} />} />,
+                    <Route key={c.slug} path={`${COLLECTIONS_BASE}/${c.slug}`} element={<CollectionPage collection={c} />} />,
+                    <Route key={`${c.slug}-artwork`} path={`${COLLECTIONS_BASE}/${c.slug}/:slug`} element={<ArtworkPage collection={c} />} />,
                   ])}
-                  {/* Other collection and painting pages are blocked for now; redirect to the gallery section. */}
+                  <Route path={`${COLLECTIONS_BASE}/*`} element={<Navigate to={PREVIEW_HOME} replace state={{ scrollTo: 'collections' }} />} />
+                  {/* Public collection and painting pages are blocked for now; redirect to the gallery section. */}
                   <Route path="/collections/*" element={<Navigate to="/" replace state={{ scrollTo: 'collections' }} />} />
                   <Route path="/painting/*" element={<Navigate to="/" replace state={{ scrollTo: 'collections' }} />} />
                 </Routes>
@@ -107,7 +119,10 @@ function App() {
             </>
           } />
         </Routes>
-        <Footer />
+        <Routes>
+          <Route path="/stats" element={null} />
+          <Route path="*" element={<Footer />} />
+        </Routes>
         <Analytics />
       </ThemeProvider>
     </BrowserRouter>
