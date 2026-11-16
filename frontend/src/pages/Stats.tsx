@@ -16,7 +16,8 @@ interface StatsData {
   since: string;
   until: string;
   totals: { visitors: number; pageviews: number };
-  previousTotals: { visitors: number; pageviews: number };
+  // null when the previous period is outside Vercel's reporting window.
+  previousTotals: { visitors: number; pageviews: number } | null;
   daily: { date: string; visitors: number; pageviews: number }[];
   countries: Item[];
   pages: Item[];
@@ -45,8 +46,8 @@ const ui = {
 
 const RANGES = [
   { value: 7, label: 'Last 7 days' },
+  { value: 14, label: 'Last 14 days' },
   { value: 30, label: 'Last 30 days' },
-  { value: 90, label: 'Last 90 days' },
 ];
 
 const PASSWORD_KEY = 'stats-password';
@@ -361,8 +362,8 @@ const Stats = () => {
     () =>
       data
         ? ([
-            { key: 'visitors', label: 'Visitors', value: data.totals.visitors, previous: data.previousTotals.visitors },
-            { key: 'pageviews', label: 'Page Views', value: data.totals.pageviews, previous: data.previousTotals.pageviews },
+            { key: 'visitors', label: 'Visitors', value: data.totals.visitors, previous: data.previousTotals?.visitors ?? 0 },
+            { key: 'pageviews', label: 'Page Views', value: data.totals.pageviews, previous: data.previousTotals?.pageviews ?? 0 },
           ] as const)
         : [],
     [data],
